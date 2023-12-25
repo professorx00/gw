@@ -1,0 +1,38 @@
+{
+  "BOILERPLATE.AbilityStr": "Strength",
+  "BOILERPLATE.AbilityCon": "Constitution",
+  "BOILERPLATE.AbilityDex": "Dexterity",
+  "BOILERPLATE.AbilityInt": "Intelligence",
+  "BOILERPLATE.AbilityWis": "Wisdom",
+  "BOILERPLATE.AbilityCha": "Charisma",
+
+  "BOILERPLATE.AbilityStrAbbr": "str",
+  "BOILERPLATE.AbilityConAbbr": "con",
+  "BOILERPLATE.AbilityDexAbbr": "dex",
+  "BOILERPLATE.AbilityIntAbbr": "int",
+  "BOILERPLATE.AbilityWisAbbr": "wis",
+  "BOILERPLATE.AbilityChaAbbr": "cha",
+
+  "BOILERPLATE.EffectCreate": "Create Effect",
+  "BOILERPLATE.EffectToggle": "Toggle Effect",
+  "BOILERPLATE.EffectEdit": "Edit Effect",
+  "BOILERPLATE.EffectDelete": "Delete Effect",
+
+  "BOILERPLATE.Add": "Add",
+
+  "GW":{
+    "Bane": "Bane",
+    "Boon": "Boon",
+    "Roll": "Roll",
+    "PCheck": "Physical Check",
+    "ACheck": "Arcane Check",
+    "MCheck": "Mental Check",
+    "AAttack":"Arcane Attack",
+    "PAttack": "Physical Attack",
+    "MAttack":"Mental Attack",
+    "ACast": "Arcane Cast",
+    "PCast": "Physical Cast",
+    "MCast": "Mental Cast",
+    "with": "with"
+  }
+}

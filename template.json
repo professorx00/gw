@@ -1,0 +1,94 @@
+{
+  "Actor": {
+    "types": ["character", "npc"],
+    "templates": {
+      "base": {
+        "arcane": {
+          "base": 10,
+          "current": 10,
+          "def": 10
+        },
+        "physical": {
+          "base": 10,
+          "current": 10,
+          "def": 10
+        },
+        "mental": {
+          "base": 10,
+          "current": 10,
+          "def": 10
+        },
+        "toHit": 8,
+        "biography": "" 
+      }
+    },
+    "character": {
+      "templates": ["base"],
+      "attributes": {
+        "level": {
+          "value": 1
+        },
+        "species": "",
+        "class": "",
+        "powerDie":""
+      },
+      "abilities": {
+        "str": {
+          "value": 10
+        },
+        "dex": {
+          "value": 10
+        },
+        "con": {
+          "value": 10
+        },
+        "int": {
+          "value": 10
+        },
+        "wis": {
+          "value": 10
+        },
+        "cha": {
+          "value": 10
+        }
+      }
+    },
+    "npc": {
+      "templates": ["base"],
+      "cr": 0
+    }
+  },
+  "Item": {
+    "types": ["weapon", "defense", "feat","item"],
+    "templates": {
+      "base": {
+        "description": ""
+      }
+    },
+    "item":{
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0
+    },
+    "weapon": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "formula": "1d4",
+      "range": "close",
+      "type": "Melee"
+    },
+    "defense": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "bonus": 0,
+      "type": "Armor",
+      "pool": "physical"
+    },
+    "feat": {
+      "templates": ["base"],
+      "type": "Species"
+    }
+  }
+}

@@ -1,0 +1,121 @@
+.item-form {
+  font-family: $font-primary;
+}
+
+.sheet-header {
+  flex: 0 auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  margin-bottom: 10px;
+
+  .profile-img {
+    height: 200px;
+    width: 200px;
+  }
+
+  .profile{
+    flex: 0 0 200px;
+    margin-right: 10px;
+  }
+  .header-fields {
+    flex: 1;
+  }
+  .rollPowerDie{
+    margin-top: 10px;
+  }
+  .physical-roll{
+    font-size: large;
+    color:darkblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .physical-roll:hover{
+    color:grey;
+  }
+  .arcane-roll{
+    font-size: large;
+    color:darkblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .arcane-roll:hover{
+    color:grey;
+  }
+  .mental-roll{
+    font-size: large;
+    color:darkblue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .mental-roll:hover{
+    color:grey;
+  }
+  .defense{
+    margin-top: 10px;
+  }
+  .boxed{
+    border: black 1px solid;
+    padding: 6px !important;
+  }
+  
+  .attack-button{
+    border: 1px black solid;
+    background-color:#cca895;
+    padding: 4px;
+    margin-top: 6px;
+  }
+
+  .sheet-button{
+    border: 1px black solid;
+    background-color:#95aacc;
+    padding: 4px;
+    margin-top: 6px;
+  }
+
+  .checkLabel{
+    margin-right: 4px;
+  }
+
+
+  h1.charname {
+    height: 50px;
+    padding: 0px;
+    margin: 5px 0;
+    border-bottom: 0;
+    input {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+    }
+  }
+}
+
+.sheet-tabs {
+  flex: 0;
+}
+
+.sheet-body,
+.sheet-body .tab,
+.sheet-body .tab .editor {
+  height: 100%;
+}
+
+.tox {
+  .tox-editor-container {
+    background: $c-white;
+  }
+
+  .tox-edit-area {
+    padding: 0 8px;
+  }
+}
+

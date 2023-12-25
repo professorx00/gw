@@ -1,0 +1,70 @@
+// Add custom fonts by visiting and search https://fonts.google.com
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+// Import utilities.
+@import 'utils/typography';
+@import 'utils/colors';
+@import 'utils/mixins';
+@import 'utils/variables';
+
+/* Global styles */
+@import 'global/window';
+@import 'global/grid';
+@import 'global/flex';
+
+/* Styles limited to boilerplate sheets */
+.gw {
+  @import 'components/forms';
+  @import 'components/resource';
+  @import 'components/items';
+  @import 'components/effects';
+}
+
+#roll-dialog {
+  .roll-group {
+    padding-top   : 6px;
+    padding-bottom: 6px;
+    align-items   : center;
+    text-align    : center;
+    font-size     : larger;
+
+    input[type="number"] {
+      width     : 30px;
+      text-align: center;
+    }
+
+    .minus {
+      padding-left: 3px;
+    }
+
+    .plus {
+      padding-right: 3px;
+    }
+
+  }
+}
+
+#check-dialog {
+  .roll-group {
+    padding-top   : 6px;
+    padding-bottom: 6px;
+    align-items   : center;
+    text-align    : center;
+    font-size     : larger;
+
+    input[type="number"] {
+      width     : 30px;
+      text-align: center;
+    }
+
+    .minus {
+      padding-left: 3px;
+    }
+
+    .plus {
+      padding-right: 3px;
+    }
+
+  }
+}
+

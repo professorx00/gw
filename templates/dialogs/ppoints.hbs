@@ -1,0 +1,42 @@
+<form>
+	<div class="pool-control container">
+        <div>
+            <span>Your Roll was: {{total}} Your current {{poolType}} is at </span><span id="pool">{{poolValue}}</span>
+        </div>
+        <div >
+            <a class="" onclick="handleDecrement()">
+                <i class="fas fa-minus"></i>
+            </a>
+            <input id="poolPoints" name="poolPoints" type="number" data-dtype="Number" value="0">
+            <a class=""  onclick="handleIncrement()">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+</form>
+
+<script>
+    bbField = document.getElementById("poolPoints");
+    poolPoints = parseInt(document.getElementById("pool").innerText);
+    var count = parseInt(bbField.value);
+
+    function handleIncrement() {
+        console.log(poolPoints)
+        count++;
+        if(count > poolPoints){
+            count = count - 1
+        }
+        if(count < 0){
+            count = 0
+        }
+        bbField.value = count;
+    };
+
+    function handleDecrement() {
+        count--;
+        if(count < 0){
+            count = 0
+        }
+        bbField.value = count; 
+    };
+</script>

@@ -1,0 +1,161 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+
+  {{!-- Sheet Header --}}
+  <header class="sheet-header">
+    <div class="profile">
+      <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+      <div class="flex-center flex-group-center ">
+        <label for="system.attributes.powerDie" class="resource-label">Power Die</label>
+        {{system.attributes.powerDie}}
+        <select name="powerDie" class="powerDie">
+          {{#select system.attributes.powerDie}}
+            <option value="d4">d4</option>
+            <option value="d6">d6</option>
+            <option value="d8">d8</option>
+            <option value="d10">d10</option>
+            <option value="d12">d12</option>
+          {{/select}}  
+        </select>
+        <button class="rollPowerDie" data-rolltype="PowerDie" data-powerDie="{{system.attributes.powerDie}}"><i class="fa-regular fa-dice-d12"></i></button>
+      </div>
+    </div>
+
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+      <div class="resource flexrow flex-center flex-group-center">
+          <label for="system.attributes.level.value" class="resource-label">Level</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.attributes.level.value" value="{{system.attributes.level.value}}" data-dtype="Number"/>
+          </div>
+           <label for="system.attributes.species" class="resource-label">Species</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.attributes.species" value="{{system.attributes.species}}" />
+          </div>
+           <label for="system.attributes.class" class="resource-label">Class</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.attributes.class" value="{{system.attributes.class}}" />
+          </div>
+        </div>
+      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
+      use both the "grid" and "grid-Ncol" class where "N" can be any number
+      from 1 to 12 and will create that number of columns.  --}}
+      <div class="resources grid grid-3col">
+
+        {{!-- "flex-group-center" is also defined in the _grid.scss file
+        and it will add a small amount of padding, a border, and will
+        center all of its child elements content and text. --}}
+        <div class="resource flex-group-center boxed">
+          <label for="system.arcane.current" class="resource-label">Arcane</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.arcane.current" value="{{system.arcane.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.arcane.base" value="{{system.arcane.base}}" data-dtype="Number"/>
+        </div>
+        <div class="defense flexrow flex-center flex-between">
+            <button class="arcane-roll rollCheck" data-rolltype="ACheck" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <div>
+              <span>Defense</span>
+              <input type="text" name="system.arcane.def" data-label="def" value="{{system.arcane.def}}"/>
+            </div>
+          </div>
+          <div>
+            <button class="rollCheck attack-button" data-rolltype="AAttack" data-current="{{system.arcane.current}}" >Attack</button>
+          </div>
+          <div>
+            <button class="rollCheck sheet-button" data-rolltype="ACast" data-current="{{system.arcane.current}}" >Cast</button>
+          </div>
+        </div>
+        <div class="resource flex-group-center boxed">
+          <label for="system.physical.current" class="resource-label">Physical</label>
+          <div class="resource-content flexrow flex-center flex-between">
+            <input type="text" name="system.physical.current" value="{{system.physical.current}}" data-dtype="Number"/>
+            <span> / </span>
+            <input type="text" name="system.physical.base" value="{{system.physical.base}}" data-dtype="Number"/>
+          </div>
+          <div class="defense flexrow flex-center flex-between">
+            <button class="physical-roll rollCheck" data-rolltype="PCheck" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <div>
+              <span>Defense</span>
+              <input type="text" name="system.physical.def" data-label="def" value="{{system.physical.def}}"/>
+            </div>
+          </div>
+           <div>
+            <button class="rollCheck attack-button" data-rolltype="PAttack" data-current="{{system.physical.current}}">Attack</button>
+          </div>
+          <div>
+            <button class="rollCheck sheet-button" data-rolltype="PCast" data-current="{{system.physical.current}}">Cast</button>
+          </div>
+        </div>
+        <div class="resource flex-group-center boxed">
+          <label for="system.mental.current" class="resource-label">Mental</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.mental.current" value="{{system.mental.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.mental.base" value="{{system.mental.base}}" data-dtype="Number"/>
+        </div>
+        <div class="defense flexrow flex-center flex-between">
+            <button class="mental-roll rollCheck" data-rolltype="MCheck" data-current="{{system.mental.current}}" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <div>
+              <span>Defense</span>
+              <input type="text" name="system.mental.def" data-label="def" value="{{system.mental.def}}"/>
+            </div>
+          </div>
+           <div>
+            <button class="rollCheck attack-button" data-rolltype="MAttack" data-current="{{system.mental.current}}">Attack</button>
+          </div>
+          <div>
+            <button class="rollCheck sheet-button" data-rolltype="MCast" data-current="{{system.mental.current}}">Cast</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="item" data-tab="features">Features</a>
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="items">Items</a>
+    <!-- <a class="item" data-tab="spells">Spells</a> -->
+    <a class="item" data-tab="effects">Effects</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Owned Features Tab --}}
+    <div class="tab features" data-group="primary" data-tab="features">
+      <section class="grid grid-3col">
+        {{!-- For the main features list, span the right two columns --}}
+        <section class="main grid-span-3">
+          {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
+          {{> "systems/gw/templates/actor/parts/actor-features.html"}}
+        </section>
+
+      </section>
+    </div>
+
+    {{!-- Biography Tab --}}
+    <div class="tab biography" data-group="primary" data-tab="description">
+      {{!-- If you want TinyMCE editors to output inline rolls when rendered, you need to pass the actor's roll data to the rollData property. --}}
+      {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
+    </div>
+
+    {{!-- Owned Items Tab --}}
+    <div class="tab items" data-group="primary" data-tab="items">
+       {{> "systems/gw/templates/actor/parts/actor-items.html"}}
+    </div>
+
+    {{!-- Owned Spells Tab --}}
+    <div class="tab spells" data-group="primary" data-tab="spells">
+      {{> "systems/gw/templates/actor/parts/actor-spells.html"}}
+    </div>
+
+    {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/gw/templates/actor/parts/actor-effects.html"}}
+    </div>
+
+  </section>
+</form>
