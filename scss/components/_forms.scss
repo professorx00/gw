@@ -15,6 +15,25 @@
     height: 200px;
     width: 200px;
   }
+  .toHit{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+
+    input{
+      width: 80%;
+    }
+    label{
+      text-align: end;
+      width: 20%;
+      margin-right: 6px;
+    }
+  }
+
+  .rollInit{
+    max-width: 30px;
+  }
 
   .profile{
     flex: 0 0 200px;
@@ -25,6 +44,32 @@
   }
   .rollPowerDie{
     margin-top: 10px;
+  }
+  .destinyDieMinus{
+    max-width: 40px !important;
+    margin: 6px;
+  }
+  .destinyDiePlus{
+    max-width: 40px !important;
+    margin: 6px;
+  }
+  .shapeShift{
+    max-width: 30px;
+    max-height: 28px;
+    margin-left: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  .resetPool{
+    max-width: 30px;
+    max-height: 28px;
+    margin-left: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
   .physical-roll{
     font-size: large;

@@ -27,12 +27,16 @@
     "PCheck": "Physical Check",
     "ACheck": "Arcane Check",
     "MCheck": "Mental Check",
-    "AAttack":"Arcane Attack",
+    "AAttack": "Arcane Attack",
     "PAttack": "Physical Attack",
-    "MAttack":"Mental Attack",
+    "MAttack": "Mental Attack",
     "ACast": "Arcane Cast",
     "PCast": "Physical Cast",
     "MCast": "Mental Cast",
-    "with": "with"
+    "NPCAttack": "Attack",
+    "with": "with",
+    "name": "Name",
+    "hard": "Hard",
+    "easy": "Easy"
   }
 }

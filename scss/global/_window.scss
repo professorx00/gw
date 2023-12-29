@@ -10,3 +10,33 @@
     cursor: pointer;
   }
 }
+
+.pool-control{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 4px;
+  .point-control{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    input{
+      width: 100px;
+    }
+    .button{
+      border: 1px solid black;
+      margin-left: 3px;
+      margin-right: 3px;
+      padding: 3px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-weight: 500;
+    }
+  }
+}

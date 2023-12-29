@@ -64,5 +64,10 @@ export class BoilerplateItemSheet extends ItemSheet {
     if (!this.isEditable) return;
 
     // Roll handlers, click handlers, etc. would go here.
+    html.find(".hasBoon").click(this._hasBoon.bind(this));
+  }
+
+  async _hasBoon(){
+    this.object.update({ "system.hasBoon": !this.object.system.hasBoon });
   }
 }

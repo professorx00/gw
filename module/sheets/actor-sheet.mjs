@@ -1,4 +1,5 @@
 import {onManageActiveEffect, prepareActiveEffectCategories} from "../helpers/effects.mjs";
+import { TargetContainer } from "../app/targetnumber.mjs";
 
 /**
  * Extend the basic ActorSheet with some very simple modifications
@@ -39,20 +40,23 @@ export class GWActorSheet extends ActorSheet {
 
     // Use a safe clone of the actor data for further operations.
     const actorData = this.actor.toObject(false);
-    console.log("actorData", actorData)
+
     // Add the actor's data to context.data for easier access, as well as flags.
     context.system = actorData.system;
     context.flags = actorData.flags;
 
     // Prepare character data and items.
     if (actorData.type == "character") {
-      this._prepareItems(context);
+      this._prepareItems(context, "character");
       this._prepareCharacterData(context);
     }
 
     // Prepare NPC data and items.
     if (actorData.type == "npc") {
-      this._prepareItems(context);
+      this._prepareItems(context, "npc");
+    }
+    if (actorData.type == "vehicle") {
+      this._prepareItems(context, "vehicle");
     }
 
     // Add roll data for TinyMCE editors.
@@ -85,12 +89,18 @@ export class GWActorSheet extends ActorSheet {
    *
    * @return {undefined}
    */
-  _prepareItems(context) {
+  _prepareItems(context, type) {
     // Initialize containers.
+    const isGM = game.user.isGM;
     const gear = [];
-    const weapons =[];
+    const weapons = [];
     const defense = [];
     const feats = [];
+    const vehicleParts = [];
+    const fightingStances = [];
+    const magicalSociety = [];
+    const scrolls = [];
+    const wands = [];
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
@@ -106,6 +116,21 @@ export class GWActorSheet extends ActorSheet {
       if (i.type === "item") {
         gear.push(i);
       }
+      if (i.type === "vehicle-parts") {
+        vehicleParts.push(i);
+      }
+      if (i.type === "fighting-stances") {
+        fightingStances.push(i);
+      }
+      if (i.type === "magical-society") {
+        magicalSociety.push(i);
+      }
+      if (i.type === "scroll") {
+        scrolls.push(i);
+      }
+      if (i.type === "wand") {
+        wands.push(i);
+      }
       // Append to features.
       else if (i.type === "feat") {
         feats.push(i);
@@ -117,6 +142,14 @@ export class GWActorSheet extends ActorSheet {
     context.weapons = weapons;
     context.defense = defense;
     context.feats = feats;
+    context.fightingStances = fightingStances;
+    context.vehicleParts = vehicleParts;
+    context.magicalSociety = magicalSociety;
+    context.vehicle = type == "vehicle" ? true : false;
+    context.otherType = type != "vehicle" ? true : false;
+    context.scrolls = scrolls;
+    context.wands = wands;
+    context.isGM = isGM;
   }
 
   /* -------------------------------------------- */
@@ -169,7 +202,17 @@ export class GWActorSheet extends ActorSheet {
     html.find(".rollDamage").click(this._onRollDamage.bind(this));
 
     html.find(".powerDie").click(this._onPowerDieSelect.bind(this));
+    html.find(".initDie").click(this._onInitSelect.bind(this));
     html.find(".rollPowerDie").click(this._onRollPowerDie.bind(this));
+    html.find(".rollNPC").click(this._onRollNPC.bind(this));
+    html.find(".destinyDieMinus").click(this._removeDestinyDie.bind(this));
+    html.find(".destinyDiePlus").click(this._addDestinyDie.bind(this));
+    html.find(".destinyDieSave").click(this._saveDestinyDie.bind(this));
+    html.find(".destinyDieReset").click(this._resetDestinyDie.bind(this));
+    html.find(".resetPool").click(this._resetPool.bind(this));
+    html.find(".shapeShift").click(this._handleShapeShift.bind(this));
+    html.find(".hasBoon").click(this._changeBoon.bind(this));
+    html.find(".rollInit").click(this._rollInit.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -245,6 +288,7 @@ export class GWActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+
     await this.actor.doRoll(dataset, this.actor);
   }
 
@@ -252,20 +296,94 @@ export class GWActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+
     await this.actor.rollDamage(dataset, this.actor);
   }
 
-  async _onRollPowerDie(event){
+  async _onRollPowerDie(event) {
     const element = event.currentTarget;
     const dataset = element.dataset;
+    let targets = game.settings.get("gw", "targets");
+    console.log(targets);
 
-    this.actor._rollPowerDie(dataset)
+    this.actor._rollPowerDie(dataset);
   }
 
-  async _onPowerDieSelect(event){
+  async _onPowerDieSelect(event) {
     event.preventDefault();
     const element = event.currentTarget;
     const value = element.value;
-    this.actor._updatePowerDie(value)
+    await this.actor._updatePowerDie(value);
+  }
+  async _onInitSelect(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const value = element.value;
+    await this.actor._updateInitDie(value);
+  }
+
+  async _onRollNPC(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    await this.actor.doRoll(dataset, this.actor);
+  }
+  async _removeDestinyDie() {
+    const DDieCurrent = this.actor.system.DDie;
+    const newDDie = DDieCurrent - 1 > 0 ? DDieCurrent - 1 : 0;
+    this.actor.update({ "system.DDie": newDDie });
+  }
+  async _addDestinyDie() {
+    const DDieCurrent = this.actor.system.DDie;
+    const newDDie = DDieCurrent + 1 > 0 ? DDieCurrent + 1 : 0;
+    this.actor.update({ "system.DDie": newDDie });
+  }
+  async _saveDestinyDie() {
+    this.actor.update({ "system.startingDDie": this.actor.system.DDie });
+  }
+  async _resetDestinyDie() {
+    this.actor.update({ "system.DDie": this.actor.system.startingDDie });
+  }
+
+  async _resetPool(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    let pool = dataset.pool;
+    let systemPoolCurrent = `system.${pool}.current`;
+    this.actor.update({ [systemPoolCurrent]: this.actor.system[pool].base });
+  }
+
+  async _handleShapeShift(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    let newBase;
+    let newCurrent;
+    if (!this.actor.system.shapeshift) {
+      newBase = this.actor.system.physical.base + 2;
+      newCurrent = this.actor.system.physical.current + 2;
+    } else {
+      newBase = this.actor.system.physical.base - 2;
+      newCurrent = this.actor.system.physical.current - 2;
+    }
+    this.actor.update({
+      "system.physical.base": newBase,
+      "system.physical.current": newCurrent,
+      "system.shapeshift": !this.actor.system.shapeshift,
+    });
+  }
+
+  async _changeBoon(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const id = dataset.itemId;
+
+    this.actor.items.forEach((item) => {
+      if (item._id == id) {
+        item.update({ "system.hasBoon": !item.system.hasBoon });
+      }
+    });
+  }
+
+  async _rollInit(event) {
+    this.actor.rollInitiative();
   }
 }

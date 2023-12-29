@@ -4,50 +4,49 @@
   <header class="sheet-header">
     <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
     <div class="header-fields">
-      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  --}}
       <div class="resources grid grid-3col">
-
-        {{!-- "flex-group-center" is also defined in the _grid.scss file
-        and it will add a small amount of padding, a border, and will
-        center all of its child elements content and text. --}}
-        <div class="resource flex-group-center">
-          <label for="system.health.value" class="resource-label">Health</label>
+        <h1 class="charname grid-span-2"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+      </div>
+      <div class="resources grid grid-3col">
+        <div class="resource flex-group-center boxed">
+          <label for="system.pool.current" class="resource-label">Pool</label>
           <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.health.value" value="{{system.health.value}}" data-dtype="Number"/>
+            <input type="text" name="system.pool.current" value="{{system.pool.current}}" data-dtype="Number"/>
             <span> / </span>
-            <input type="text" name="system.health.max" value="{{system.health.max}}" data-dtype="Number"/>
+            <input type="text" name="system.pool.base" value="{{system.pool.base}}" data-dtype="Number"/>
           </div>
         </div>
-
-        <div class="resource flex-group-center">
-          <label for="system.power.value" class="resource-label">Power</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.power.value" value="{{system.power.value}}" data-dtype="Number"/>
-            <span> / </span>
-            <input type="text" name="system.power.max" value="{{system.power.max}}" data-dtype="Number"/>
-          </div>
+        <div class="toHit">
+          <label for="system.toHit" class="resource-label">To Hit</label>
+          <input type="text" name="system.toHit" class="system.toHit" value="{{system.toHit}}" data-dtype="Number"/>
         </div>
-
-        <div class="resource flex-group-center">
-          <label for="system.cr" class="resource-label">CR / XP</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.cr" value="{{system.cr}}" data-dtype="Number"/>
-            <span> / </span>
-            <input type="text" disabled="true" name="system.xp" value="{{system.xp}}" data-dtype="Number"/>
-          </div>
+        <div class="">
+            <label for="system.init" class="resource-label">Initiative</label>
+            {{system.init}}
+             <select name="init" class="initDie">
+          {{#select system.init}}
+            <option value="d4">d4</option>
+            <option value="d6">d6</option>
+            <option value="d8">d8</option>
+            <option value="d10">d10</option>
+            <option value="d12">d12</option>
+          {{/select}}  
+        </select>
         </div>
-
+        
+      </div>
+      <div class="resources grid grid-3col">
+        <button class="rollNPC" data-rolltype="arcaneNPC" data-current="{{system.pool.current}}">Pool Attack</button>
       </div>
     </div>
+    
   </header>
 
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="Feats">Feats</a>
     <a class="item" data-tab="items">Items</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
@@ -61,14 +60,19 @@
       {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
     </div>
 
+    {{!-- Owned Feats Tab --}}
+    <div class="tab items" data-group="primary" data-tab="Feats">
+       {{> "systems/gw/templates/actor/parts/actor-features.html"}}
+    </div>
+
     {{!-- Owned Items Tab --}}
     <div class="tab items" data-group="primary" data-tab="items">
-       {{> "systems/boilerplate/templates/actor/parts/actor-items.html"}}
+       {{> "systems/gw/templates/actor/parts/actor-items.html"}}
     </div>
 
     {{!-- Active Effects Tab --}}
     <div class="tab effects flexcol" data-group="primary" data-tab="effects">
-      {{> "systems/boilerplate/templates/actor/parts/actor-effects.html"}}
+      {{> "systems/gw/templates/actor/parts/actor-effects.html"}}
     </div>
 
   </section>

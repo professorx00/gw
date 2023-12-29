@@ -35,23 +35,13 @@
     <div class="tab attributes" data-group="primary" data-tab="attributes">
       {{!-- As you add new fields, add them in here! --}}
       <div class="resource">
-        <label class="resource-label">Damage</label>
+        <label class="resource-label">formula</label>
         <input type="text" name="system.formula" value="{{system.formula}}" data-dtype="String"/>
       </div>
       <div class="resource">
-        <label class="resource-label">Range</label>
-        <input type="text" name="system.range" value="{{system.range}}" data-dtype="String"/>
-      </div>
-      <div class="resource">
-        <label class="resource-label">Type</label>
-        <input type="text" name="system.type" value="{{system.type}}" data-dtype="String"/>
-      </div>
-      <div class="resource">
-        <label class="resource-label">Pool</label>
+        <label class="resource-label">Pool Type</label>
         <input type="text" name="system.pool" value="{{system.pool}}" data-dtype="String"/>
       </div>
-      <label class="resource-label">Has Boon</label>
-      <input type="checkbox" name="hasBoon" class="hasBoon" {{checked system.hasBoon}}>
     </div>
   </section>
 </form>

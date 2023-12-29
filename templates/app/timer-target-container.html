@@ -1,0 +1,11 @@
+<div class="timer-target-container">
+  {{#each targets as |target|}}
+    <div class="target" data-index="{{@index}}" data-group="targets">
+      <img src="systems/gw/assets/ui/d12/target.png">
+      <div class="textContainer">
+        <input type="number" class="value" data-target="value" value="{{target.value}}">
+        <h2 class="value">TN</h2>
+      </div>
+    </div>
+  {{/each}}
+</div>

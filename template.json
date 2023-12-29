@@ -1,36 +1,41 @@
 {
   "Actor": {
-    "types": ["character", "npc"],
+    "types": ["character", "npc", "vehicle"],
     "templates": {
       "base": {
-        "arcane": {
-          "base": 10,
-          "current": 10,
-          "def": 10
-        },
-        "physical": {
-          "base": 10,
-          "current": 10,
-          "def": 10
-        },
-        "mental": {
-          "base": 10,
-          "current": 10,
-          "def": 10
-        },
         "toHit": 8,
-        "biography": "" 
+        "biography": "",
+        "DDie": 1,
+        "StartingDDie": 1,
+        "movement": 30,
+        "shapeshift": false,
+        "init": "d4"
       }
     },
     "character": {
       "templates": ["base"],
+      "arcane": {
+        "base": 10,
+        "current": 10,
+        "def": 0
+      },
+      "physical": {
+        "base": 10,
+        "current": 10,
+        "def": 0
+      },
+      "mental": {
+        "base": 10,
+        "current": 10,
+        "def": 0
+      },
       "attributes": {
         "level": {
           "value": 1
         },
         "species": "",
         "class": "",
-        "powerDie":""
+        "powerDie": "d4"
       },
       "abilities": {
         "str": {
@@ -55,17 +60,57 @@
     },
     "npc": {
       "templates": ["base"],
-      "cr": 0
+      "pool": {
+        "base": 10,
+        "current": 10,
+        "def": 0
+      },
+      "toHit": 7
+    },
+    "vehicle": {
+      "biography": "",
+      "toHit": 8,
+      "actionPoints": 10,
+      "movement": 3,
+      "passengers": 4,
+      "turningRadius": 2,
+      "init": 1,
+      "front": {
+        "current": 10,
+        "base": 10,
+        "def": 0
+      },
+      "side": {
+        "current": 10,
+        "base": 10,
+        "def": 0
+      },
+      "back": {
+        "current": 10,
+        "base": 10,
+        "def": 0
+      }
     }
   },
   "Item": {
-    "types": ["weapon", "defense", "feat","item"],
+    "types": [
+      "weapon",
+      "scroll",
+      "wand",
+      "defense",
+      "consumable",
+      "feat",
+      "item",
+      "vehicle-parts",
+      "fighting-stances",
+      "magical-society"
+    ],
     "templates": {
       "base": {
         "description": ""
       }
     },
-    "item":{
+    "item": {
       "templates": ["base"],
       "quantity": 1,
       "weight": 0
@@ -75,20 +120,54 @@
       "quantity": 1,
       "weight": 0,
       "formula": "1d4",
-      "range": "close",
-      "type": "Melee"
+      "range": "Close",
+      "type": "Light",
+      "hasBoon": false,
+      "pool": "physical"
     },
     "defense": {
       "templates": ["base"],
       "quantity": 1,
       "weight": 0,
       "bonus": 0,
-      "type": "Armor",
+      "style": "Armor",
+      "type": "Light",
       "pool": "physical"
     },
     "feat": {
       "templates": ["base"],
       "type": "Species"
+    },
+    "vehicle-parts": {
+      "templates": ["base"],
+      "quantity": 1
+    },
+    "fighting-stances": {
+      "templates": ["base"]
+    },
+    "magical-society": {
+      "templates": ["base"]
+    },
+    "scroll": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "powerPoints": 1,
+      "pool": "physical"
+    },
+    "wand": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "powerPoints": 1,
+      "pool": "physical"
+    },
+    "consumable": {
+      "templates": ["base"],
+      "quantity": 1,
+      "weight": 0,
+      "formula": "",
+      "pool": "physical"
     }
   }
 }

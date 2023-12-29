@@ -108,62 +108,86 @@ export class GWActor extends Actor {
   }
 
   async doRoll(dataset, actorData) {
+    let title = game.i18n.localize("GW.Roll");
+    let rollInfo = {};
+    rollInfo.globalTN = game.settings.get("gw", "targets")[0].value;
+    console.log(actorData);
+    let actionText = "";
+    let poolAmount = 0;
+    let current = dataset.current;
+    rollInfo.targets = game.users.current.targets;
+    let hasBane = current <= 5;
+    rollInfo.current = dataset.current;
+    rollInfo.hasBane = hasBane;
+    dataset.hasBane = hasBane;
     const dlgContent = await renderTemplate(
       "systems/gw/templates/dialogs/pcrolls.hbs",
       dataset
     );
-    let title = game.i18n.localize("GW.Roll");
-    let targetNum = game.system?.flag?.gw?.tn || 8;
-    let target = null;
-    let actionText = "";
-    let pools = "";
-    let current = dataset.current;
-    console.log("roll type", dataset.rolltype);
+
     switch (dataset.rolltype) {
       case "PCheck":
         title = game.i18n.localize("GW.PCheck");
         actionText = title + " for " + this.name;
-        pools = "physical";
+        rollInfo.pool = "physical";
+
         break;
       case "ACheck":
         title = game.i18n.localize("GW.ACheck");
         actionText = title + " for " + this.name;
-        pools = "arcane";
+        rollInfo.pool = "arcane";
+
         break;
       case "MCheck":
         title = game.i18n.localize("GW.MCheck");
         actionText = title + " for " + this.name;
-        pools = "mental";
+        rollInfo.pool = "mental";
+
         break;
       case "AAttack":
         title = game.i18n.localize("GW.AAttack");
         actionText = title + " for " + this.name;
-        pools = "arcane";
+        rollInfo.pool = "arcane";
         break;
       case "PAttack":
         title = game.i18n.localize("GW.PAttack");
         actionText = title + " for " + this.name;
-        pools = "physical";
+        rollInfo.pool = "physical";
         break;
       case "MAttack":
         title = game.i18n.localize("GW.MAttack");
         actionText = title + " for " + this.name;
-        pools = "mental";
+        rollInfo.pool = "mental";
         break;
       case "ACast":
         title = game.i18n.localize("GW.ACast");
         actionText = title + " for " + this.name;
-        pools = "arcane";
+        rollInfo.pool = "arcane";
         break;
       case "PCast":
         title = game.i18n.localize("GW.PCast");
         actionText = title + " for " + this.name;
-        pools = "physical";
+        rollInfo.pool = "physical";
         break;
       case "MCast":
         title = game.i18n.localize("GW.MCast");
         actionText = title + " for " + this.name;
-        pools = "mental";
+        rollInfo.pool = "mental";
+        break;
+      case "arcaneNPC":
+        title = game.i18n.localize("GW.NPCAttack");
+        actionText = title + " for " + this.name;
+        rollInfo.pool = "pool";
+        break;
+      case "physicalNPC":
+        title = game.i18n.localize("GW.NPCAttack");
+        actionText = title + " for " + this.name;
+        rollInfo.pool = "physical";
+        break;
+      case "mentalNPC":
+        title = game.i18n.localize("GW.NPCAttack");
+        actionText = title + " for " + this.name;
+        rollInfo.pool = "mental";
         break;
     }
 
@@ -175,7 +199,7 @@ export class GWActor extends Actor {
           roll: {
             icon: "<i class='fas fa-dice-d12'></i>",
             label: "Roll",
-            callback: (html) => rollCallback(html, pools, current),
+            callback: (html) => rollCallback(html, rollInfo),
           },
           cancel: {
             icon: "<i class='fas fa-times'></i>",
@@ -191,19 +215,35 @@ export class GWActor extends Actor {
 
     dlg.render(true);
 
-    async function rollCallback(html, pools, current) {
+    async function rollCallback(html, rollInfo) {
       let numDice = 1;
-      let modifier = "";
-      let rollText = "1d12";
       let boon = html.find('[name="boonbane"]')[0].value.trim();
       let needs = "";
+      let targets = [];
+
+      let target = rollInfo.targets;
+      if (target.size > 0) {
+        target.forEach((toke) => {
+          targets.push(toke.document.actor);
+        });
+        targets = targets.sort((a, b) => {
+          if (a.system.toHit < b.system.toHit) {
+            return 1;
+          } else {
+            return -1;
+          }
+        });
+        needs = targets[0].system.toHit.toString();
+      }
+      let modifier = "";
+      rollInfo.rollText = "1d12";
       let rollResults = "";
       if (boon != "") {
         boon = Number.parseInt(boon);
         numDice += Math.abs(boon);
 
         if (boon < 0) {
-          rollText =
+          rollInfo.rollText =
             numDice +
             "d12 " +
             game.i18n.localize("GW.with") +
@@ -211,7 +251,7 @@ export class GWActor extends Actor {
             game.i18n.localize("GW.Bane");
           modifier = "kl";
         } else if (boon > 0) {
-          rollText =
+          rollInfo.rollText =
             numDice +
             "d12 " +
             game.i18n.localize("GW.with") +
@@ -224,17 +264,17 @@ export class GWActor extends Actor {
       const formula = numDice + "d12" + modifier;
       const diceRoll = await new Roll(formula).evaluate({ async: true });
       let rollHTML = await diceRoll.render();
-      console.log();
-      rollHTML = rollHTML.replace(formula, rollText);
-      console.log("pools", pools);
+
+      rollHTML = rollHTML.replace(formula, rollInfo.rollText);
       const rollData = {
         rollType: actionText,
         rollHTML: rollHTML,
-        needs: needs,
+        needs: rollInfo.globalTN,
         rollResults: rollResults,
-        poolType: pools,
+        poolType: rollInfo.pool,
         total: diceRoll._total,
-        poolValue: current,
+        poolValue: rollInfo.current,
+        rollText: rollInfo.rollText,
       };
 
       const usePPContent = await renderTemplate(
@@ -249,7 +289,7 @@ export class GWActor extends Actor {
           roll: {
             label: "Confirm",
             callback: (html) => {
-              usePoolPoints(html, rollData, diceRoll, rollText, actorData);
+              usePoolPoints(html, rollData, diceRoll, actorData);
             },
           },
           cancel: {
@@ -263,28 +303,27 @@ export class GWActor extends Actor {
       ppdlg.render(true);
     }
 
-    async function usePoolPoints(
-      html,
-      rollData,
-      diceRoll,
-      rollText,
-      actorData
-    ) {
+    async function usePoolPoints(html, rollData, diceRoll, actorData) {
       let poolPoints = html.find('[name="poolPoints"]')[0].value.trim();
-      console.log("Pool Type", rollData.poolType);
-      let change = actorData.system[rollData.poolType].current - parseInt(poolPoints);
-      let label = `system.${rollData.poolType}.current`
-      actorData.update({[label]: change})
+      let change =
+        actorData.system[rollData.poolType].current - parseInt(poolPoints);
+      let label = `system.${rollData.poolType}.current`;
+      actorData.update({ [label]: change });
       let newTotal = rollData.total + parseInt(poolPoints);
+      if (newTotal >= rollData.needs) {
+        rollData.rollResults = "Success";
+      } else {
+        rollData.rollResults = "Failure";
+      }
       rollData.rollHTML = rollData.rollHTML.replace(rollData.total, newTotal);
       rollData.rollHTML = rollData.rollHTML.replace(
         `<h4 class="dice-total">${rollData.total}</h4>`,
         `<h4 class="dice-total">${newTotal}</h4>`
       );
-      console.log(rollData.rollHTML);
+
       rollData.rollHTML = rollData.rollHTML.replace(
-        rollText,
-        rollText + "+" + poolPoints
+        rollData.rollText,
+        rollData.rollText + "+" + poolPoints
       );
       sendRolltoChat(html, rollData, diceRoll);
     }
@@ -346,7 +385,6 @@ export class GWActor extends Actor {
         weaponFormula =
           weaponFormula + "+1" + actorData.system.attributes.powerDie;
       }
-      console.log(weaponFormula);
       const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
       let rollHTML = await diceRoll.render();
       const rollData = {
@@ -373,14 +411,18 @@ export class GWActor extends Actor {
     }
   }
 
-  _updatePowerDie(value){
-    this.update({"system.attributes.powerDie": value})
+  _updatePowerDie(value) {
+    this.update({ "system.attributes.powerDie": value });
+  }
+  _updateInitDie(value) {
+    console.log("init Value", value);
+    this.update({ "system.init": value });
   }
 
   async _rollPowerDie(dataset, actorData) {
     let powerDie = dataset.powerdie;
-    let html = '';
-    let formula = "1"+powerDie;
+    let html = "";
+    let formula = "1" + powerDie;
     let actionText = "Power Die Roll";
     let rollResults = "";
     const diceRoll = await new Roll(formula).evaluate({ async: true });
@@ -392,22 +434,27 @@ export class GWActor extends Actor {
     };
     sendRolltoChat(html, rollData, diceRoll);
 
+    async function sendRolltoChat(html, rollData, diceRoll) {
+      let cardContent = await renderTemplate(
+        "systems/gw/templates/chatcards/normalroll.hbs",
+        rollData
+      );
 
-     async function sendRolltoChat(html, rollData, diceRoll) {
-       let cardContent = await renderTemplate(
-         "systems/gw/templates/chatcards/normalroll.hbs",
-         rollData
-       );
-
-       const chatOptions = {
-         type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-         roll: diceRoll,
-         content: cardContent,
-         speaker: ChatMessage.getSpeaker({ actor: this }),
-       };
-       ChatMessage.create(chatOptions);
-     }
+      const chatOptions = {
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        roll: diceRoll,
+        content: cardContent,
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+      };
+      ChatMessage.create(chatOptions);
+    }
   }
 
-  
+  async rollNPCAttack(dataset) {
+    const dlgContent = await renderTemplate(
+      "systems/gw/templates/dialogs/damageRolls.hbs",
+      dataset
+    );
+    let title = game.i18n.localize("GW.Roll");
+  }
 }

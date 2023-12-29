@@ -16,29 +16,65 @@
             <option value="d12">d12</option>
           {{/select}}  
         </select>
-        <button class="rollPowerDie" data-rolltype="PowerDie" data-powerDie="{{system.attributes.powerDie}}"><i class="fa-regular fa-dice-d12"></i></button>
+        <button class="rollPowerDie" data-rolltype="PowerDie" data-powerDie="{{system.attributes.powerDie}}">Roll Power Die <i class="fa-regular fa-dice-d12"></i></button>
       </div>
+      <div class="flexrow flex-center flex-group-center"><h3>Destiny Die</h3></div>
+      <div class="flexrow flex-center flex-group-center">
+        <button class="destinyDiePlus"><i class="fas fa-plus"></i></button><input type="text" name="system.DDie" value="{{system.DDie}}" data-dtype="Number"/><button class="destinyDieMinus"><i class="fas fa-minus"></i></button>
+      </div>
+      {{#if isGM}}
+      <div class="flexrow flex-center flex-group-center">
+        <button class="destinyDieSave"><i class="fas fa-floppy-disk"></i></button> <button class="destinyDieReset"><i class="fa-solid fa-repeat"></i></button>
+      </div>
+      {{/if}}
     </div>
 
     <div class="header-fields">
       <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-      <div class="resource flexrow flex-center flex-group-center">
-          <label for="system.attributes.level.value" class="resource-label">Level</label>
-          <div class="resource-content flexrow flex-center flex-between">
+      <div class="resources grid grid-2col">
+        <div class="">
+            <label for="system.attributes.level.value" class="resource-label">Level</label>
           <input type="text" name="system.attributes.level.value" value="{{system.attributes.level.value}}" data-dtype="Number"/>
-          </div>
-           <label for="system.attributes.species" class="resource-label">Species</label>
-          <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.attributes.species" value="{{system.attributes.species}}" />
-          </div>
-           <label for="system.attributes.class" class="resource-label">Class</label>
-          <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.attributes.class" value="{{system.attributes.class}}" />
+        </div>
+        <div class="">
+            <label for="system.attributes.species" class="resource-label">Species</label>
+            <div class="flexrow">
+              <input type="text" name="system.attributes.species" value="{{system.attributes.species}}" />
+              {{#if (isWere system.attributes.species)}}<button class="shapeShift"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
+            </div>
+        </div>
+      </div>
+      <div class="resources grid grid-4col">
+        <div class="">
+            <label for="system.attributes.class" class="resource-label">Class</label>
+            <input type="text" name="system.attributes.class" value="{{system.attributes.class}}" />
+        </div>
+        <div class="">
+            <label for="system.movement" class="resource-label">Movement</label>
+            <input type="text" name="system.movement" value="{{system.movement}}" />
+        </div>
+        <div class="">
+            <label for="system.toHit" class="resource-label">To Hit</label>
+            <input type="text" name="system.toHit" value="{{system.toHit}}" />
+        </div>
+        <div class="">
+            <label for="system.init" class="resource-label">Initiative</label>
+            <div class="flexrow">
+            <select name="init" class="initDie">
+              {{#select system.init}}
+                <option value="d4">d4</option>
+                <option value="d6">d6</option>
+                <option value="d8">d8</option>
+                <option value="d10">d10</option>
+                <option value="d12">d12</option>
+              {{/select}}  
+            </select>
+            <button class="rollInit"><i class="fa-regular fa-dice-d12"></i></button>
           </div>
         </div>
-      {{!-- The grid classes are defined in scss/global/_grid.scss. To use,
-      use both the "grid" and "grid-Ncol" class where "N" can be any number
-      from 1 to 12 and will create that number of columns.  --}}
+      </div>
+
+      
       <div class="resources grid grid-3col">
 
         {{!-- "flex-group-center" is also defined in the _grid.scss file
@@ -50,6 +86,7 @@
           <input type="text" name="system.arcane.current" value="{{system.arcane.current}}" data-dtype="Number"/>
           <span> / </span>
           <input type="text" name="system.arcane.base" value="{{system.arcane.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
             <button class="arcane-roll rollCheck" data-rolltype="ACheck" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
@@ -71,6 +108,7 @@
             <input type="text" name="system.physical.current" value="{{system.physical.current}}" data-dtype="Number"/>
             <span> / </span>
             <input type="text" name="system.physical.base" value="{{system.physical.base}}" data-dtype="Number"/>
+            <button class="resetPool" data-pool="physical"><i class="fa-solid fa-repeat"></i></button>
           </div>
           <div class="defense flexrow flex-center flex-between">
             <button class="physical-roll rollCheck" data-rolltype="PCheck" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
@@ -92,6 +130,7 @@
           <input type="text" name="system.mental.current" value="{{system.mental.current}}" data-dtype="Number"/>
           <span> / </span>
           <input type="text" name="system.mental.base" value="{{system.mental.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="mental"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
             <button class="mental-roll rollCheck" data-rolltype="MCheck" data-current="{{system.mental.current}}" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>

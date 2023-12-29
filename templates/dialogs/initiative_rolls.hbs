@@ -1,7 +1,7 @@
 <form>
 	<div class="pool-control container">
         <div class="label">
-            <h4>Your Roll was: <span id="roll">{{total}}</span> Your current {{poolType}} is at </span><span id="pool">{{poolValue}}</span>
+            Your current physical is at </span><span id="pool">{{current}}</span>
         </div>
         <div class="point-control">
             <a class="button" onclick="handleDecrement()">
@@ -18,19 +18,16 @@
 <script>
     bbField = document.getElementById("poolPoints");
     poolPoints = parseInt(document.getElementById("pool").innerText);
-    roll = parseInt(document.getElementById("roll").innerText);
     var count = parseInt(bbField.value);
-    var total = roll+count
 
     function handleIncrement() {
-        if(total < 12 && count < poolPoints){
+        if(count < poolPoints){
             count++
         }
         if(count < 0){
             count = 0
         }
         bbField.value = count;
-        total = roll + count;
     };
 
     function handleDecrement() {
@@ -38,7 +35,6 @@
         if(count < 0){
             count = 0
         }
-        bbField.value = count;
-        total = roll + count;
+        bbField.value = count; 
     };
 </script>

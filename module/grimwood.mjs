@@ -1,37 +1,44 @@
 // Import document classes.
 import { GWActor } from "./documents/actor.mjs";
 import { BoilerplateItem } from "./documents/item.mjs";
+import GWCombatant from "./documents/gwcombatant.mjs";
 // Import sheet classes.
 import { GWActorSheet } from "./sheets/actor-sheet.mjs";
 import { BoilerplateItemSheet } from "./sheets/item-sheet.mjs";
 // Import helper/utility classes and constants.
 import { preloadHandlebarsTemplates } from "./helpers/templates.mjs";
 import { BOILERPLATE } from "./helpers/config.mjs";
+import GWCombat from "./documents/gwcombat.mjs";
+import { TargetContainer } from "./app/targetnumber.mjs";
 
 /* -------------------------------------------- */
 /*  Init Hook                                   */
 /* -------------------------------------------- */
 
-Hooks.once('init', async function() {
-  console.log("********************Loading GW System ***************")
+Hooks.once("init", async function () {
+  console.log("********************Loading GW System ***************");
+
+  checkDsNSetting();
+  registerSystemSettings();
   // Add utility classes to the global game object so that they're more easily
   // accessible in global contexts.
   game.gw = {
     GWActor,
     BoilerplateItem,
-    rollItemMacro
+    rollItemMacro,
   };
   // Add custom constants for configuration.
   CONFIG.BOILERPLATE = BOILERPLATE;
-
+  CONFIG.Combatant.documentClass = GWCombatant;
+  CONFIG.Combat.documentClass = GWCombat;
   /**
    * Set an initiative formula for the system
    * @type {String}
    */
-  // CONFIG.Combat.initiative = {
-  //   formula: "1d12",
-  //   decimals: 2
-  // };
+  CONFIG.Combat.initiative = {
+    formula: "1d12",
+    decimals: 2,
+  };
 
   // Define custom Document classes
   CONFIG.Actor.documentClass = GWActor;
@@ -52,28 +59,77 @@ Hooks.once('init', async function() {
 /* -------------------------------------------- */
 
 // If you need to add Handlebars helpers, here are a few useful examples:
-Handlebars.registerHelper('concat', function() {
-  var outStr = '';
+Handlebars.registerHelper("concat", function () {
+  var outStr = "";
   for (var arg in arguments) {
-    if (typeof arguments[arg] != 'object') {
+    if (typeof arguments[arg] != "object") {
       outStr += arguments[arg];
     }
   }
   return outStr;
 });
 
-Handlebars.registerHelper('toLowerCase', function(str) {
+Handlebars.registerHelper("toLowerCase", function (str) {
   return str.toLowerCase();
 });
 
+Handlebars.registerHelper("isWere", function (str) {
+  return str.includes("were") || str.includes("Were");
+});
+
+Handlebars.registerHelper("isBane", function (str) {
+  return str == "true";
+});
+
+Handlebars.registerHelper("targetNumber", function (str) {
+  let number = parseInt(str);
+  console.log("TN ", number);
+  if (number <= 12) {
+    return "true";
+  } else return "false";
+});
 /* -------------------------------------------- */
 /*  Ready Hook                                  */
 /* -------------------------------------------- */
 
-Hooks.once("ready", async function() {
+Hooks.once("ready", async function () {
   // Wait to register hotbar drop hook on ready so that modules could register earlier if they want to
   Hooks.on("hotbarDrop", (bar, data, slot) => createItemMacro(data, slot));
+  //Add Target Number to Game System and Canvas
+  const app = TargetContainer.create();
+  if (app.targets.length === 0) app.addTarget();
 });
+
+// Hooks.on("ready", () => {
+//   let players = document.getElementById("sidebar");
+//   let tnContainer = document.createElement("div");
+//   tnContainer.setAttribute("class", "tnContainer");
+//   let tnTitle = document.createElement("h3");
+//   tnTitle.setAttribute("class", "tnTitle");
+//   let tnNumber = document.createElement("button");
+//   let titleText = document.createTextNode("Target Number: ");
+//   tnTitle.appendChild(titleText);
+//   tnNumber.setAttribute("class", "tnButton");
+//   let num = game.settings.get("gw", "defaultTargetNumber");
+//   let numHTML = document.createTextNode(num);
+//   tnContainer.appendChild(tnTitle);
+//   tnContainer.appendChild(tnNumber);
+//   tnNumber.appendChild(numHTML);
+//   tnContainer.appendChild(tnNumber);
+//   players.prepend(tnContainer);
+// });
+
+// Hooks.on("collapseSidebar", async (sidebar, collapsed) => {
+//   if (collapsed) {
+//     $(".tnTitle").html(function (index, html) {
+//       return html.replace("Target Number: ", "TN");
+//     });
+//   } else {
+//     $(".tnTitle").html(function (index, html) {
+//       return html.replace("TN", "Target Number: ");
+//     });
+//   }
+// });
 
 /* -------------------------------------------- */
 /*  Hotbar Macros                               */
@@ -89,28 +145,54 @@ Hooks.once("ready", async function() {
 async function createItemMacro(data, slot) {
   // First, determine if this is a valid owned item.
   if (data.type !== "Item") return;
-  if (!data.uuid.includes('Actor.') && !data.uuid.includes('Token.')) {
-    return ui.notifications.warn("You can only create macro buttons for owned Items");
+  if (!data.uuid.includes("Actor.") && !data.uuid.includes("Token.")) {
+    return ui.notifications.warn(
+      "You can only create macro buttons for owned Items"
+    );
   }
   // If it is, retrieve it based on the uuid.
   const item = await Item.fromDropData(data);
 
   // Create the macro command using the uuid.
   const command = `game.gw.rollItemMacro("${data.uuid}");`;
-  let macro = game.macros.find(m => (m.name === item.name) && (m.command === command));
+  let macro = game.macros.find(
+    (m) => m.name === item.name && m.command === command
+  );
   if (!macro) {
     macro = await Macro.create({
       name: item.name,
       type: "script",
       img: item.img,
       command: command,
-      flags: { "gw.itemMacro": true }
+      flags: { "gw.itemMacro": true },
     });
   }
   game.user.assignHotbarMacro(macro, slot);
   return false;
 }
 
+function checkDsNSetting() {
+  game.settings.register(game.system.id, "dsnSettingInit", {
+    name: "Flag for Dice So Nice settings init",
+    scope: "world",
+    config: false,
+    type: Boolean,
+    default: false,
+  });
+}
+
+function registerSystemSettings() {
+  game.settings.register("gw", "targets", {
+    name: "gw-targets",
+    hint: "GW Targets",
+    scope: "world",
+    config: false,
+    requiresReload: false,
+    type: Array,
+    default: [],
+    onChange: () => TargetContainer._onUpdate(),
+  });
+}
 /**
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
@@ -119,15 +201,17 @@ async function createItemMacro(data, slot) {
 function rollItemMacro(itemUuid) {
   // Reconstruct the drop data so that we can load the item.
   const dropData = {
-    type: 'Item',
-    uuid: itemUuid
+    type: "Item",
+    uuid: itemUuid,
   };
   // Load the item from the uuid.
-  Item.fromDropData(dropData).then(item => {
+  Item.fromDropData(dropData).then((item) => {
     // Determine if the item loaded and if it's an owned item.
     if (!item || !item.parent) {
       const itemName = item?.name ?? itemUuid;
-      return ui.notifications.warn(`Could not find item ${itemName}. You may need to delete and recreate this macro.`);
+      return ui.notifications.warn(
+        `Could not find item ${itemName}. You may need to delete and recreate this macro.`
+      );
     }
 
     // Trigger the item roll
