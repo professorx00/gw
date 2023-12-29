@@ -31,6 +31,17 @@
     }
   }
 
+  .mental-back{
+    background-color: #76C02F;
+  }
+   .physical-back{
+    background-color: #2FA6C0;
+  }
+
+  .arcane-back{
+    background-color: #C02F2F;
+  }
+
   .rollInit{
     max-width: 30px;
   }
@@ -114,7 +125,6 @@
   
   .attack-button{
     border: 1px black solid;
-    background-color:#cca895;
     padding: 4px;
     margin-top: 6px;
   }

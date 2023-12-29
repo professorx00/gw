@@ -111,7 +111,6 @@ export class GWActor extends Actor {
     let title = game.i18n.localize("GW.Roll");
     let rollInfo = {};
     rollInfo.globalTN = game.settings.get("gw", "targets")[0].value;
-    console.log(actorData);
     let actionText = "";
     let poolAmount = 0;
     let current = dataset.current;
@@ -234,6 +233,7 @@ export class GWActor extends Actor {
           }
         });
         needs = targets[0].system.toHit.toString();
+        console.log("needs 236", needs);
       }
       let modifier = "";
       rollInfo.rollText = "1d12";
@@ -269,7 +269,7 @@ export class GWActor extends Actor {
       const rollData = {
         rollType: actionText,
         rollHTML: rollHTML,
-        needs: rollInfo.globalTN,
+        needs: needs != "" ? needs : rollInfo.globalTN,
         rollResults: rollResults,
         poolType: rollInfo.pool,
         total: diceRoll._total,

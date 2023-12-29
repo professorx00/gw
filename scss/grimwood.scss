@@ -44,6 +44,53 @@
   }
 }
 
+.red-back{
+  background-color: red !important;
+}
+
+.pool-point-label-arcane{
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 800;
+  font-size: large;
+  margin-bottom: 6px;
+  color: #C02F2F;
+}
+.pool-point-label-physical{
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 800;
+  font-size: large;
+  margin-bottom: 6px;
+  color: #2fa6c0;
+}
+
+.pool-point-label-mental{
+  display: flex;
+  max-width: 100%;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-weight: 800;
+  font-size: large;
+  margin-bottom: 6px;
+  color: #76c02f;
+}
+
+.center-content-row{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
 .timer-target-container{
  $size: 80px;
   // background: #202020;
