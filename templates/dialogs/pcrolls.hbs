@@ -5,11 +5,9 @@
             <a class="item-control minus" onclick="handleDecrement()">
                 <i class="fas fa-minus"></i>
             </a>
-            {{#if (isBane hasBane)}}
-                <input id="boonbane" name="boonbane" type="number" data-dtype="Number" value="-1">
-            {{else}}
-                <input id="boonbane" name="boonbane" type="number" data-dtype="Number" value="0">
-            {{/if}}
+
+            <input id="boonbane" name="boonbane" type="number" data-dtype="Number" value="{{banes}}">
+
             <a class="item-control plus"  onclick="handleIncrement()">
                 <i class="fas fa-plus"></i>
             </a>

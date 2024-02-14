@@ -65,9 +65,26 @@ export class BoilerplateItemSheet extends ItemSheet {
 
     // Roll handlers, click handlers, etc. would go here.
     html.find(".hasBoon").click(this._hasBoon.bind(this));
+    html.find(".poolType").click(this._poolTypeSelect.bind(this));
+    html.find(".session").click(this._oncePerSession.bind(this));
+    html.find(".scene").click(this._oncePerScene.bind(this));
   }
 
-  async _hasBoon(){
+  async _hasBoon() {
     this.object.update({ "system.hasBoon": !this.object.system.hasBoon });
+  }
+
+  async _oncePerScene() {
+    this.object.update({ "system.scene": !this.object.system.scene });
+  }
+
+  async _oncePerSession() {
+    this.object.update({ "system.session": !this.object.system.session });
+  }
+
+  async _poolTypeSelect(event) {
+    const element = event.currentTarget;
+    const value = element.value;
+    this.object.update({ "system.pool": value });
   }
 }

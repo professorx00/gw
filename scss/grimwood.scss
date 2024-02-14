@@ -192,3 +192,43 @@
   }
 }
 
+.itemScrollY{
+  height: 4em;
+  max-height: 100px;
+  overflow-y: scroll;
+}
+
+.itemBorder{
+  border: 1px lightgray solid;
+}
+
+.item-desc{
+  margin-right: 0.25rem;
+}
+
+.dmgButton{
+  width: 100%;
+  border: 1px lightgray solid;
+  background-color: #C02F2F;
+  min-width: 100%;
+  padding: 0.5rem;
+  margin: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 3em;
+}
+.dmgButton:hover{
+  width: 100%;
+  border: 1px lightgray solid;
+  background-color: #d39d9d;
+  min-width: 100%;
+  padding: 0.5rem;
+  margin: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 3em;
+}

@@ -3,68 +3,54 @@
     "types": ["character", "npc", "vehicle"],
     "templates": {
       "base": {
-        "toHit": 8,
+        "toHit": 9,
         "biography": "",
         "DDie": 1,
         "StartingDDie": 1,
         "movement": 30,
+        "powerDie": "d4",
         "shapeshift": false,
-        "init": "d4"
+        "init": "d4",
+        "arcane": {
+          "base": 8,
+          "current": 8,
+          "def": 0
+        },
+        "physical": {
+          "base": 8,
+          "current": 8,
+          "def": 0
+        },
+        "mental": {
+          "base": 8,
+          "current": 8,
+          "def": 0
+        }
       }
     },
     "character": {
       "templates": ["base"],
-      "arcane": {
-        "base": 10,
-        "current": 10,
-        "def": 0
-      },
-      "physical": {
-        "base": 10,
-        "current": 10,
-        "def": 0
-      },
-      "mental": {
-        "base": 10,
-        "current": 10,
-        "def": 0
-      },
       "attributes": {
         "level": {
           "value": 1
         },
         "species": "",
-        "class": "",
-        "powerDie": "d4"
+        "class": ""
       },
-      "abilities": {
-        "str": {
-          "value": 10
-        },
-        "dex": {
-          "value": 10
-        },
-        "con": {
-          "value": 10
-        },
-        "int": {
-          "value": 10
-        },
-        "wis": {
-          "value": 10
-        },
-        "cha": {
-          "value": 10
-        }
-      }
+      "banes": 0
     },
     "npc": {
       "templates": ["base"],
-      "pool": {
+      "power": {
         "base": 10,
-        "current": 10,
-        "def": 0
+        "current": 10
       },
+      "health": {
+        "base": 10,
+        "current": 10
+      },
+      "weakness": [],
+      "resistance": [],
       "toHit": 7
     },
     "vehicle": {
@@ -75,17 +61,7 @@
       "passengers": 4,
       "turningRadius": 2,
       "init": 1,
-      "front": {
-        "current": 10,
-        "base": 10,
-        "def": 0
-      },
-      "side": {
-        "current": 10,
-        "base": 10,
-        "def": 0
-      },
-      "back": {
+      "pools": {
         "current": 10,
         "base": 10,
         "def": 0
@@ -103,11 +79,15 @@
       "item",
       "vehicle-parts",
       "fighting-stances",
-      "magical-society"
+      "magical-society",
+      "npc-ability"
     ],
     "templates": {
       "base": {
-        "description": ""
+        "description": "",
+        "equipped": false,
+        "session": false,
+        "scene": false
       }
     },
     "item": {
@@ -136,7 +116,11 @@
     },
     "feat": {
       "templates": ["base"],
-      "type": "Species"
+      "position": "side",
+      "type": "",
+      "pool": "",
+      "formula": "",
+      "passive": true
     },
     "vehicle-parts": {
       "templates": ["base"],
@@ -153,14 +137,16 @@
       "quantity": 1,
       "weight": 0,
       "powerPoints": 1,
-      "pool": "physical"
+      "pool": "arcane",
+      "formula": ""
     },
     "wand": {
       "templates": ["base"],
       "quantity": 1,
       "weight": 0,
       "powerPoints": 1,
-      "pool": "physical"
+      "pool": "arcane",
+      "formula": ""
     },
     "consumable": {
       "templates": ["base"],
@@ -168,6 +154,11 @@
       "weight": 0,
       "formula": "",
       "pool": "physical"
+    },
+    "npc-ability": {
+      "templates": ["base"],
+      "poolCost": 0,
+      "formula": ""
     }
   }
 }

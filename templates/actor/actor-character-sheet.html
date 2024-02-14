@@ -16,11 +16,14 @@
             <option value="d12">d12</option>
           {{/select}}  
         </select>
-        <button class="rollPowerDie" data-rolltype="PowerDie" data-powerDie="{{system.attributes.powerDie}}">Roll Power Die <i class="fa-regular fa-dice-d12"></i></button>
+        <button class="rollPowerDie" data-roll-type="PowerDie" data-powerDie="{{system.attributes.powerDie}}">Roll Power Die <i class="fa-regular fa-dice-d12"></i></button>
       </div>
       <div class="flexrow flex-center flex-group-center"><h3>Destiny Die</h3></div>
       <div class="flexrow flex-center flex-group-center">
         <button class="destinyDiePlus"><i class="fas fa-plus"></i></button><input type="text" name="system.DDie" value="{{system.DDie}}" data-dtype="Number"/><button class="destinyDieMinus"><i class="fas fa-minus"></i></button>
+      </div>
+      <div class="flexrow flex-center flex-group-center">
+        <button class="destinyDieroll">Roll Destiny<i class="fa-regular fa-dice-d12"></i></button>
       </div>
       {{#if isGM}}
       <div class="flexrow flex-center flex-group-center">
@@ -77,17 +80,17 @@
           <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
-            <button class="arcane-roll rollCheck" data-rolltype="ACheck" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <button class="arcane-roll rollCheck" data-roll-type="ACheck" data-powertype="arcane" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
             <div>
               <span>Defense</span>
               <input type="text" name="system.arcane.def" data-label="def" value="{{system.arcane.def}}"/>
             </div>
           </div>
           <div>
-            <button class="rollCheck attack-button arcane-back" data-rolltype="AAttack" data-current="{{system.arcane.current}}" >Attack</button>
+            <button class="rollCheck attack-button arcane-back" data-roll-type="attack" data-powertype="arcane" data-current="{{system.arcane.current}}" >Attack</button>
           </div>
           <div>
-            <button class="rollCheck sheet-button" data-rolltype="ACast" data-current="{{system.arcane.current}}" >Cast</button>
+            <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="arcane" data-current="{{system.arcane.current}}" >Cast</button>
           </div>
         </div>
         <div class="resource grid-span-4 flex-group-center boxed">
@@ -99,17 +102,17 @@
             <button class="resetPool" data-pool="physical"><i class="fa-solid fa-repeat"></i></button>
           </div>
           <div class="defense flexrow flex-center flex-between">
-            <button class="physical-roll rollCheck" data-rolltype="PCheck" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <button class="physical-roll rollCheck" data-roll-type="PCheck" data-powertype="physical" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
             <div>
               <span>Defense</span>
               <input type="text" name="system.physical.def" data-label="def" value="{{system.physical.def}}"/>
             </div>
           </div>
            <div>
-            <button class="rollCheck attack-button physical-back" data-rolltype="PAttack" data-current="{{system.physical.current}}">Attack</button>
+            <button class="rollCheck attack-button physical-back" data-roll-type="attack" data-powertype="physical" data-current="{{system.physical.current}}">Attack</button>
           </div>
           <div>
-            <button class="rollCheck sheet-button" data-rolltype="PCast" data-current="{{system.physical.current}}">Cast</button>
+            <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="physical" data-current="{{system.physical.current}}">Cast</button>
           </div>
         </div>
         <div class="resource grid-span-4 flex-group-center  boxed">
@@ -121,17 +124,17 @@
           <button class="resetPool" data-pool="mental"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
-            <button class="mental-roll rollCheck" data-rolltype="MCheck" data-current="{{system.mental.current}}" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <button class="mental-roll rollCheck" data-roll-type="MCheck" data-current="{{system.mental.current}}" data-powertype="mental" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
             <div>
               <span>Defense</span>
               <input type="text" name="system.mental.def" data-label="def" value="{{system.mental.def}}"/>
             </div>
           </div>
            <div>
-            <button class="rollCheck attack-button mental-back" data-rolltype="MAttack" data-current="{{system.mental.current}}">Attack</button>
+            <button class="rollCheck attack-button mental-back" data-roll-type="attack" data-powertype="mental"  data-current="{{system.mental.current}}">Attack</button>
           </div>
           <div>
-            <button class="rollCheck sheet-button" data-rolltype="MCast" data-current="{{system.mental.current}}">Cast</button>
+            <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="mental"  data-current="{{system.mental.current}}">Cast</button>
           </div>
         </div>
       </div>

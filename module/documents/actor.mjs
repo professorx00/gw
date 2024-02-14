@@ -107,98 +107,313 @@ export class GWActor extends Actor {
     // Process additional NPC data here.
   }
 
-  async doRoll(dataset, actorData) {
-    let title = game.i18n.localize("GW.Roll");
-    let rollInfo = {};
-    rollInfo.globalTN = game.settings.get("gw", "targets")[0].value;
-    let actionText = "";
-    let poolAmount = 0;
-    let current = dataset.current;
-    rollInfo.targets = game.users.current.targets;
-    let hasBane = current <= 5;
-    rollInfo.current = dataset.current;
-    rollInfo.hasBane = hasBane;
-    dataset.hasBane = hasBane;
-    const dlgContent = await renderTemplate(
-      "systems/gw/templates/dialogs/pcrolls.hbs",
-      dataset
-    );
+  // async doRoll(dataset, actorData) {
+  //   let title = game.i18n.localize("GW.Roll");
+  //   let rollInfo = {};
+  //   rollInfo.globalTN = game.settings.get("gw", "targets")[0].value;
+  //   let actionText = "";
+  //   let current = dataset.current;
+  //   rollInfo.targets = game.users.current.targets;
+  //   let hasBane = current <= 5;
+  //   rollInfo.current = dataset.current;
+  //   rollInfo.hasBane = hasBane;
+  //   dataset.hasBane = hasBane;
+  //   const dlgContent = await renderTemplate(
+  //     "systems/gw/templates/dialogs/pcrolls.hbs",
+  //     dataset
+  //   );
 
-    switch (dataset.rolltype) {
-      case "PCheck":
-        title = game.i18n.localize("GW.PCheck");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "physical";
+  //   switch (dataset.rolltype) {
+  //     case "PCheck":
+  //       title = game.i18n.localize("GW.PCheck");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "physical";
 
-        break;
-      case "ACheck":
-        title = game.i18n.localize("GW.ACheck");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "arcane";
+  //       break;
+  //     case "ACheck":
+  //       title = game.i18n.localize("GW.ACheck");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "arcane";
 
-        break;
-      case "MCheck":
-        title = game.i18n.localize("GW.MCheck");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "mental";
+  //       break;
+  //     case "MCheck":
+  //       title = game.i18n.localize("GW.MCheck");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "mental";
 
+  //       break;
+  //     case "AAttack":
+  //       title = game.i18n.localize("GW.AAttack");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "arcane";
+  //       break;
+  //     case "PAttack":
+  //       title = game.i18n.localize("GW.PAttack");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "physical";
+  //       break;
+  //     case "MAttack":
+  //       title = game.i18n.localize("GW.MAttack");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "mental";
+  //       break;
+  //     case "ACast":
+  //       title = game.i18n.localize("GW.ACast");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "arcane";
+  //       break;
+  //     case "PCast":
+  //       title = game.i18n.localize("GW.PCast");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "physical";
+  //       break;
+  //     case "MCast":
+  //       title = game.i18n.localize("GW.MCast");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "mental";
+  //       break;
+  //     case "arcaneNPC":
+  //       title = game.i18n.localize("GW.NPCAttack");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "pool";
+  //       break;
+  //     case "physicalNPC":
+  //       title = game.i18n.localize("GW.NPCAttack");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "physical";
+  //       break;
+  //     case "mentalNPC":
+  //       title = game.i18n.localize("GW.NPCAttack");
+  //       actionText = title + " for " + this.name;
+  //       rollInfo.pool = "mental";
+  //       break;
+  //   }
+
+  //   const dlg = new Dialog(
+  //     {
+  //       title: title,
+  //       content: dlgContent,
+  //       buttons: {
+  //         roll: {
+  //           icon: "<i class='fas fa-dice-d12'></i>",
+  //           label: "Roll",
+  //           callback: (html) => rollCallback(html, rollInfo),
+  //         },
+  //         cancel: {
+  //           icon: "<i class='fas fa-times'></i>",
+  //           label: "cancel",
+  //         },
+  //       },
+  //       default: "roll",
+  //     },
+  //     {
+  //       id: "check-dialog",
+  //     }
+  //   );
+
+  //   dlg.render(true);
+
+  //   async function rollCallback(html, rollInfo) {
+  //     let numDice = 1;
+  //     let boon = html.find('[name="boonbane"]')[0].value.trim();
+  //     let needs = "";
+  //     let targets = [];
+
+  //     let target = rollInfo.targets;
+  //     if (target.size > 0) {
+  //       target.forEach((toke) => {
+  //         targets.push(toke.document.actor);
+  //       });
+  //       targets = targets.sort((a, b) => {
+  //         if (a.system.toHit < b.system.toHit) {
+  //           return 1;
+  //         } else {
+  //           return -1;
+  //         }
+  //       });
+  //       needs = targets[0].system.toHit.toString();
+  //     }
+  //     let modifier = "";
+  //     rollInfo.rollText = "1d12";
+  //     let rollResults = "";
+  //     if (boon != "") {
+  //       boon = Number.parseInt(boon);
+  //       numDice += Math.abs(boon);
+
+  //       if (boon < 0) {
+  //         rollInfo.rollText =
+  //           numDice +
+  //           "d12 " +
+  //           game.i18n.localize("GW.with") +
+  //           " " +
+  //           game.i18n.localize("GW.Bane");
+  //         modifier = "kl";
+  //       } else if (boon > 0) {
+  //         rollInfo.rollText =
+  //           numDice +
+  //           "d12 " +
+  //           game.i18n.localize("GW.with") +
+  //           " " +
+  //           game.i18n.localize("GW.Boon");
+  //         modifier = "kh";
+  //       }
+  //     }
+
+  //     const formula = numDice + "d12" + modifier;
+  //     const diceRoll = await new Roll(formula).evaluate({ async: true });
+  //     let rollHTML = await diceRoll.render();
+
+  //     rollHTML = rollHTML.replace(formula, rollInfo.rollText);
+  //     const rollData = {
+  //       rollType: actionText,
+  //       rollHTML: rollHTML,
+  //       needs: needs != "" ? needs : rollInfo.globalTN,
+  //       rollResults: rollResults,
+  //       poolType: rollInfo.pool,
+  //       total: diceRoll._total,
+  //       poolValue: rollInfo.current,
+  //       rollText: rollInfo.rollText,
+  //     };
+
+  //     const usePPContent = await renderTemplate(
+  //       "systems/gw/templates/dialogs/ppoints.hbs",
+  //       rollData
+  //     );
+
+  //     const ppdlg = new Dialog({
+  //       title: "Do you want to use Power Points?",
+  //       content: usePPContent,
+  //       buttons: {
+  //         roll: {
+  //           label: "Confirm",
+  //           callback: (html) => {
+  //             usePoolPoints(html, rollData, diceRoll, actorData);
+  //           },
+  //         },
+  //         cancel: {
+  //           icon: "<i class='fas fa-times'></i>",
+  //           label: "cancel",
+  //           callback: (html) => sendRolltoChat(html, rollData, diceRoll),
+  //         },
+  //       },
+  //     });
+
+  //     ppdlg.render(true);
+  //   }
+
+  //   async function usePoolPoints(html, rollData, diceRoll, actorData) {
+  //     let poolPoints = html.find('[name="poolPoints"]')[0].value.trim();
+  //     let change =
+  //       actorData.system[rollData.poolType].current - parseInt(poolPoints);
+  //     let label = `system.${rollData.poolType}.current`;
+  //     actorData.update({ [label]: change });
+  //     let newTotal = rollData.total + parseInt(poolPoints);
+  //     if (newTotal >= rollData.needs) {
+  //       rollData.rollResults = "Success";
+  //     } else {
+  //       rollData.rollResults = "Failure";
+  //     }
+  //     rollData.rollHTML = rollData.rollHTML.replace(rollData.total, newTotal);
+  //     rollData.rollHTML = rollData.rollHTML.replace(
+  //       `<h4 class="dice-total">${rollData.total}</h4>`,
+  //       `<h4 class="dice-total">${newTotal}</h4>`
+  //     );
+
+  //     rollData.rollHTML = rollData.rollHTML.replace(
+  //       rollData.rollText,
+  //       rollData.rollText + "+" + poolPoints
+  //     );
+  //     sendRolltoChat(html, rollData, diceRoll);
+  //   }
+
+  //   async function sendRolltoChat(html, rollData, diceRoll) {
+  //     let cardContent = await renderTemplate(
+  //       "systems/gw/templates/chatcards/normalroll.hbs",
+  //       rollData
+  //     );
+
+  //     const chatOptions = {
+  //       type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+  //       roll: diceRoll,
+  //       content: cardContent,
+  //       speaker: ChatMessage.getSpeaker({ actor: this }),
+  //     };
+  //     ChatMessage.create(chatOptions);
+  //   }
+  // }
+
+  async doRoll(dataset) {
+    let rolltype = dataset.rollType;
+    let pool = dataset.powertype;
+    console.log("rolltype", rolltype);
+    switch (rolltype) {
+      case "weapon":
+        dataset.title = "Weapon Attack";
+        this.rolling(dataset);
         break;
-      case "AAttack":
-        title = game.i18n.localize("GW.AAttack");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "arcane";
+      case "feat":
         break;
-      case "PAttack":
-        title = game.i18n.localize("GW.PAttack");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "physical";
+      case "attack":
+        this.rolling(dataset);
         break;
-      case "MAttack":
-        title = game.i18n.localize("GW.MAttack");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "mental";
+      case "cast":
+        this.rolling(dataset);
         break;
-      case "ACast":
-        title = game.i18n.localize("GW.ACast");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "arcane";
+      case "castWand":
+        this.castWand(dataset);
         break;
-      case "PCast":
-        title = game.i18n.localize("GW.PCast");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "physical";
-        break;
-      case "MCast":
-        title = game.i18n.localize("GW.MCast");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "mental";
-        break;
-      case "arcaneNPC":
-        title = game.i18n.localize("GW.NPCAttack");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "pool";
-        break;
-      case "physicalNPC":
-        title = game.i18n.localize("GW.NPCAttack");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "physical";
-        break;
-      case "mentalNPC":
-        title = game.i18n.localize("GW.NPCAttack");
-        actionText = title + " for " + this.name;
-        rollInfo.pool = "mental";
+      case "castScroll":
+        this.castScroll(dataset);
         break;
     }
+  }
 
-    const dlg = new Dialog(
+  async rolling(dataset) {
+    let globalTN = game.settings.get("gw", "targets")[0].value;
+    let targetTN = 0;
+    let actorTargets = game.users.current.targets;
+    actorTargets.forEach((target) => {
+      const actor = game.actors.get(target.document.actorId);
+      if (targetTN < parseInt(actor.system.toHit)) {
+        targetTN = parseInt(actor.system.toHit);
+      }
+    });
+    let target = targetTN > 0 ? targetTN : globalTN;
+    let pool = dataset.powertype;
+    let current = dataset.current;
+    let hasBane = 0;
+    console.log(target);
+    if (this.system.arcane.current <= 0) {
+      hasBane = hasBane + 1;
+    }
+    if (this.system.physical.current <= 0) {
+      hasBane = hasBane + 1;
+    }
+    if (this.system.mental.current <= 0) {
+      hasBane = hasBane + 1;
+    }
+    let rollInfo = {
+      ...dataset,
+      target: target,
+      pool: pool,
+      banes: hasBane * -1,
+      current: current,
+    };
+
+    const weaponRollContent = await renderTemplate(
+      "systems/gw/templates/dialogs/pcrolls.hbs",
+      rollInfo
+    );
+
+    const weaponDlg = new Dialog(
       {
-        title: title,
-        content: dlgContent,
+        title: "Attack",
+        content: weaponRollContent,
         buttons: {
           roll: {
             icon: "<i class='fas fa-dice-d12'></i>",
             label: "Roll",
-            callback: (html) => rollCallback(html, rollInfo),
+            callback: (html) => this.weaponCallback(html, rollInfo),
           },
           cancel: {
             icon: "<i class='fas fa-times'></i>",
@@ -212,135 +427,94 @@ export class GWActor extends Actor {
       }
     );
 
-    dlg.render(true);
+    weaponDlg.render(true);
+  }
 
-    async function rollCallback(html, rollInfo) {
-      let numDice = 1;
-      let boon = html.find('[name="boonbane"]')[0].value.trim();
-      let needs = "";
-      let targets = [];
+  async castWand(dataset) {
+    console.log(dataset);
 
-      let target = rollInfo.targets;
-      if (target.size > 0) {
-        target.forEach((toke) => {
-          targets.push(toke.document.actor);
-        });
-        targets = targets.sort((a, b) => {
-          if (a.system.toHit < b.system.toHit) {
-            return 1;
-          } else {
-            return -1;
-          }
-        });
-        needs = targets[0].system.toHit.toString();
-        console.log("needs 236", needs);
-      }
-      let modifier = "";
-      rollInfo.rollText = "1d12";
-      let rollResults = "";
-      if (boon != "") {
-        boon = Number.parseInt(boon);
-        numDice += Math.abs(boon);
+    if (parseInt(dataset.current) < parseInt(dataset.powerpoints)) {
+      const wandContent = await renderTemplate(
+        "systems/gw/templates/dialogs/wand.hbs",
+        dataset
+      );
 
-        if (boon < 0) {
-          rollInfo.rollText =
-            numDice +
-            "d12 " +
-            game.i18n.localize("GW.with") +
-            " " +
-            game.i18n.localize("GW.Bane");
-          modifier = "kl";
-        } else if (boon > 0) {
-          rollInfo.rollText =
-            numDice +
-            "d12 " +
-            game.i18n.localize("GW.with") +
-            " " +
-            game.i18n.localize("GW.Boon");
-          modifier = "kh";
+      const wanddlg = new Dialog(
+        {
+          title: "Wand Error",
+          content: wandContent,
+          buttons: {
+            cancel: {
+              icon: "<i class='fas fa-times'></i>",
+              label: "cancel",
+            },
+          },
+        },
+        {
+          id: "wand-dialog",
         }
-      }
+      );
 
-      const formula = numDice + "d12" + modifier;
-      const diceRoll = await new Roll(formula).evaluate({ async: true });
+      wanddlg.render(true);
+
+      return;
+    }
+    this.update({
+      "system.arcane.current":
+        parseInt(dataset.current) - parseInt(dataset.powerpoints),
+    });
+
+    this.rollWandDamage(dataset, "Wand");
+  }
+
+  async castScroll(dataset) {
+    if (parseInt(dataset.current) < parseInt(dataset.powerpoints)) {
+      const wandContent = await renderTemplate(
+        "systems/gw/templates/dialogs/scroll.hbs",
+        dataset
+      );
+
+      const wanddlg = new Dialog(
+        {
+          title: "Scroll Error",
+          content: wandContent,
+          buttons: {
+            cancel: {
+              icon: "<i class='fas fa-times'></i>",
+              label: "cancel",
+            },
+          },
+        },
+        {
+          id: "scroll-dialog",
+        }
+      );
+
+      wanddlg.render(true);
+
+      return;
+    }
+    this.update({
+      "system.arcane.current":
+        parseInt(dataset.current) - parseInt(dataset.powerpoints),
+    });
+    console.log("id", this);
+    this.rollWandDamage(dataset, "Scroll");
+  }
+
+  async rollWandDamage(dataset, title) {
+    let weaponFormula = dataset.formula;
+    if (weaponFormula !== "") {
+      const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
       let rollHTML = await diceRoll.render();
-
-      rollHTML = rollHTML.replace(formula, rollInfo.rollText);
+      let actionText = title + " Damage";
+      let rollResults = "";
       const rollData = {
         rollType: actionText,
         rollHTML: rollHTML,
-        needs: needs != "" ? needs : rollInfo.globalTN,
         rollResults: rollResults,
-        poolType: rollInfo.pool,
-        total: diceRoll._total,
-        poolValue: rollInfo.current,
-        rollText: rollInfo.rollText,
       };
-
-      const usePPContent = await renderTemplate(
-        "systems/gw/templates/dialogs/ppoints.hbs",
-        rollData
-      );
-
-      const ppdlg = new Dialog({
-        title: "Do you want to use Power Points?",
-        content: usePPContent,
-        buttons: {
-          roll: {
-            label: "Confirm",
-            callback: (html) => {
-              usePoolPoints(html, rollData, diceRoll, actorData);
-            },
-          },
-          cancel: {
-            icon: "<i class='fas fa-times'></i>",
-            label: "cancel",
-            callback: (html) => sendRolltoChat(html, rollData, diceRoll),
-          },
-        },
-      });
-
-      ppdlg.render(true);
-    }
-
-    async function usePoolPoints(html, rollData, diceRoll, actorData) {
-      let poolPoints = html.find('[name="poolPoints"]')[0].value.trim();
-      let change =
-        actorData.system[rollData.poolType].current - parseInt(poolPoints);
-      let label = `system.${rollData.poolType}.current`;
-      actorData.update({ [label]: change });
-      let newTotal = rollData.total + parseInt(poolPoints);
-      if (newTotal >= rollData.needs) {
-        rollData.rollResults = "Success";
-      } else {
-        rollData.rollResults = "Failure";
-      }
-      rollData.rollHTML = rollData.rollHTML.replace(rollData.total, newTotal);
-      rollData.rollHTML = rollData.rollHTML.replace(
-        `<h4 class="dice-total">${rollData.total}</h4>`,
-        `<h4 class="dice-total">${newTotal}</h4>`
-      );
-
-      rollData.rollHTML = rollData.rollHTML.replace(
-        rollData.rollText,
-        rollData.rollText + "+" + poolPoints
-      );
-      sendRolltoChat(html, rollData, diceRoll);
-    }
-
-    async function sendRolltoChat(html, rollData, diceRoll) {
-      let cardContent = await renderTemplate(
-        "systems/gw/templates/chatcards/normalroll.hbs",
-        rollData
-      );
-
-      const chatOptions = {
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-        roll: diceRoll,
-        content: cardContent,
-        speaker: ChatMessage.getSpeaker({ actor: this }),
-      };
-      ChatMessage.create(chatOptions);
+      this.sendRolltoChat(rollHTML, rollData, diceRoll, "normalroll.hbs");
     }
   }
 
@@ -350,7 +524,6 @@ export class GWActor extends Actor {
       dataset
     );
     let title = game.i18n.localize("GW.Roll");
-    let actionText = "";
     let weaponFormula = dataset.formula;
     const dlg = new Dialog(
       {
@@ -378,12 +551,24 @@ export class GWActor extends Actor {
 
     async function rollCallback(html) {
       let powerDie = html.find('[name="powerDieCheck"]')[0].checked;
+      let CritDie = html.find('[name="critCheck"]')[0].checked;
       let rollResults = "";
       let actionText = "Damage";
 
-      if (powerDie) {
+      if (powerDie && !CritDie) {
         weaponFormula =
           weaponFormula + "+1" + actorData.system.attributes.powerDie;
+      }
+      if (powerDie && CritDie) {
+        weaponFormula =
+          weaponFormula +
+          "+" +
+          weaponFormula +
+          "+2" +
+          actorData.system.attributes.powerDie;
+      }
+      if (!powerDie && CritDie) {
+        weaponFormula = weaponFormula + "+" + weaponFormula;
       }
       const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
       let rollHTML = await diceRoll.render();
@@ -432,22 +617,29 @@ export class GWActor extends Actor {
       rollHTML: rollHTML,
       rollResults: rollResults,
     };
-    sendRolltoChat(html, rollData, diceRoll);
+    this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+  }
 
-    async function sendRolltoChat(html, rollData, diceRoll) {
-      let cardContent = await renderTemplate(
-        "systems/gw/templates/chatcards/normalroll.hbs",
-        rollData
-      );
-
-      const chatOptions = {
-        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-        roll: diceRoll,
-        content: cardContent,
-        speaker: ChatMessage.getSpeaker({ actor: this }),
-      };
-      ChatMessage.create(chatOptions);
+  async rollDestinyDie() {
+    let total = this.system.DDie;
+    let actionText = "Destiny Die";
+    let rollResults = "";
+    let rollHTML = "";
+    let html = "";
+    let diceRoll;
+    if (total > 0) {
+      diceRoll = await new Roll("1d12").evaluate({ async: true });
+      rollHTML = await diceRoll.render();
+    } else {
+      return;
     }
+    const rollData = {
+      rollType: actionText,
+      rollHTML: rollHTML,
+      rollResults: rollResults,
+    };
+    this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+    this.update({ "system.DDie": total - 1 });
   }
 
   async rollNPCAttack(dataset) {
@@ -456,5 +648,114 @@ export class GWActor extends Actor {
       dataset
     );
     let title = game.i18n.localize("GW.Roll");
+  }
+
+  async rollAbility(event) {
+    console.log(event);
+  }
+
+  async sendRolltoChat(html, rollData, diceRoll, templateName) {
+    let cardContent = await renderTemplate(
+      `systems/gw/templates/chatcards/${templateName}`,
+      rollData
+    );
+
+    const chatOptions = {
+      type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+      roll: diceRoll,
+      content: cardContent,
+      speaker: ChatMessage.getSpeaker({ actor: this }),
+    };
+    ChatMessage.create(chatOptions);
+  }
+
+  async weaponCallback(html, rollInfo) {
+    let boon = html.find('[name="boonbane"]')[0].value.trim();
+    let numberOfDice = Math.abs(boon);
+    let rollText = numberOfDice + "d12";
+    if (boon < 0) {
+      rollText = rollText + "kl";
+    }
+    if (boon > 0) {
+      rollText = rollText + "kh";
+    }
+    if (boon == 0) {
+      rollText = "1d12";
+    }
+
+    const diceRoll = await new Roll(rollText).evaluate({ async: true });
+    let rollResults = "";
+    const rollData = {
+      rollType: rollInfo.title,
+      rollHTML: await diceRoll.render(),
+      rollResults: rollResults,
+      roll: diceRoll._total,
+      rollText: rollText,
+      ...rollInfo,
+    };
+    if (diceRoll._total == 1) {
+      this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+    } else if (diceRoll._total == 12) {
+      rollData.success = true;
+      rollData.actor = this._id;
+      rollData.rollHTML = rollData.rollHTML + "<h1>CRITICAL!!</h1>";
+      this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+    } else {
+      const usePPContent = await renderTemplate(
+        "systems/gw/templates/dialogs/ppoints.hbs",
+        rollData
+      );
+
+      const ppdlg = new Dialog({
+        title: "Do you want to use Power Points?",
+        content: usePPContent,
+        buttons: {
+          roll: {
+            label: "Confirm",
+            callback: (html) => {
+              this.usePoolPoints(html, rollData, diceRoll);
+            },
+          },
+          cancel: {
+            icon: "<i class='fas fa-times'></i>",
+            label: "cancel",
+            callback: (html) =>
+              this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs"),
+          },
+        },
+      });
+      ppdlg.render(true);
+    }
+  }
+
+  async usePoolPoints(html, rollData, diceRoll) {
+    let poolPoints = html.find('[name="poolPoints"]')[0].value.trim();
+    let change = this.system[rollData.pool].current - parseInt(poolPoints);
+    let label = `system.${rollData.pool}.current`;
+    this.update({ [label]: change });
+    let newTotal = parseInt(rollData.roll) + parseInt(poolPoints);
+    if (newTotal >= rollData.target) {
+      rollData.rollResults = "Success";
+      rollData.success = true;
+      rollData.actor = this._id;
+    } else {
+      rollData.rollResults = "Failure";
+      rollData.success = false;
+    }
+    rollData.rollHTML = rollData.rollHTML.replace(rollData.roll, newTotal);
+    rollData.rollHTML = rollData.rollHTML.replace(
+      `<h4 class="dice-total">${rollData.roll}</h4>`,
+      `<h4 class="dice-total">${newTotal}</h4>`
+    );
+    rollData.rollHTML = rollData.rollHTML.replace(
+      rollData.rollText,
+      rollData.rollText + "+" + poolPoints
+    );
+
+    if (newTotal == 12) {
+      rollData.rollHTML = rollData.rollHTML + "<h1>CRITICAL!!</h1>";
+    }
+
+    this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
   }
 }

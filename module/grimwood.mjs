@@ -100,41 +100,15 @@ Hooks.once("ready", async function () {
   if (app.targets.length === 0) app.addTarget();
 });
 
-// Hooks.on("ready", () => {
-//   let players = document.getElementById("sidebar");
-//   let tnContainer = document.createElement("div");
-//   tnContainer.setAttribute("class", "tnContainer");
-//   let tnTitle = document.createElement("h3");
-//   tnTitle.setAttribute("class", "tnTitle");
-//   let tnNumber = document.createElement("button");
-//   let titleText = document.createTextNode("Target Number: ");
-//   tnTitle.appendChild(titleText);
-//   tnNumber.setAttribute("class", "tnButton");
-//   let num = game.settings.get("gw", "defaultTargetNumber");
-//   let numHTML = document.createTextNode(num);
-//   tnContainer.appendChild(tnTitle);
-//   tnContainer.appendChild(tnNumber);
-//   tnNumber.appendChild(numHTML);
-//   tnContainer.appendChild(tnNumber);
-//   players.prepend(tnContainer);
-// });
+Hooks.on("preCreateChatMessage", async (message) => {
+  console.log("preCreate", message);
+});
 
-// Hooks.on("collapseSidebar", async (sidebar, collapsed) => {
-//   if (collapsed) {
-//     $(".tnTitle").html(function (index, html) {
-//       return html.replace("Target Number: ", "TN");
-//     });
-//   } else {
-//     $(".tnTitle").html(function (index, html) {
-//       return html.replace("TN", "Target Number: ");
-//     });
-//   }
-// });
+Hooks.on("preUpdateChatMessage", (message, data) => {
+  console.log("preUpdate", message, data);
+});
 
-/* -------------------------------------------- */
-/*  Hotbar Macros                               */
-/* -------------------------------------------- */
-
+Hooks.on("renderChatMessage", async (message, html) => {});
 /**
  * Create a Macro from an Item drop.
  * Get an existing item macro if one exists, otherwise create a new one.
@@ -218,3 +192,7 @@ function rollItemMacro(itemUuid) {
     item.roll();
   });
 }
+
+async function rollActorDamage(actor) {
+  console.log("clicked");
+} 

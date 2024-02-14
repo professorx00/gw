@@ -8,10 +8,6 @@
           <label class="resource-label">Quantity</label>
           <input type="text" name="system.quantity" value="{{system.quantity}}" data-dtype="Number"/>
         </div>
-        <div class="resource">
-          <label class="resource-label">Weight</label>
-          <input type="text" name="system.weight" value="{{system.weight}}" data-dtype="Number"/>
-        </div>
       </div>
     </div>
   </header>
@@ -19,7 +15,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="abilities">Abilities</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -31,35 +27,16 @@
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
     </div>
 
-    {{!-- Attributes Tab --}}
-    <div class="tab attributes" data-group="primary" data-tab="attributes">
+    {{!-- abilities Tab --}}
+    <div class="tab attributes" data-group="primary" data-tab="abilities">
       {{!-- As you add new fields, add them in here! --}}
-      <div class="resource">
-        <label class="resource-label">Casting Cost</label>
-        <input type="text" name="system.powerPoints" value="{{system.powerPoints}}" data-dtype="Number"/>
-      </div>
-      <div class="resource">
-        <label class="resource-label">Pool</label>
-         <select name="poolType" class="poolType">
-          {{#select system.pool}}
-            <option value="">None</option>
-            <option value="arcane">Arcane</option>
-            <option value="physical">Physical</option>
-            <option value="mental">Mental</option>
-          {{/select}}  
-        </select>
-      </div>
       <div class="resource">
         <label class="resource-label">Formula</label>
         <input type="text" name="system.formula" value="{{system.formula}}" data-dtype="String"/>
       </div>
       <div class="resource">
-         <label class="resource-label">Once per Session?</label>
-        <input type="checkbox" name="session" class="session" {{checked system.session}}>
-      </div>
-      <div class="resource">
-         <label class="resource-label">Once per Scene?</label>
-        <input type="checkbox" name="scene" class="scene" {{checked system.scene}}>
+        <label class="resource-label">Pool Cost</label>
+        <input type="text" name="system.poolCost" value="{{system.poolCost}}" data-dtype="Number"/>
       </div>
     </div>
   </section>

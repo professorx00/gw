@@ -11,6 +11,7 @@
     "systems/gw/templates/actor/parts/actor-spells.html",
     "systems/gw/templates/actor/parts/actor-effects.html",
     "systems/gw/templates/actor/parts/actor-enhancements.html",
+    "systems/gw/templates/actor/parts/actor-npc-abilities.html",
 
     "systems/gw/templates/app/timer-target-container.html",
   ]);

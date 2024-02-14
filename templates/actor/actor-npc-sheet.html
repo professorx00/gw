@@ -7,15 +7,8 @@
       <div class="resources grid grid-3col">
         <h1 class="charname grid-span-2"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
       </div>
+      
       <div class="resources grid grid-3col">
-        <div class="resource flex-group-center boxed">
-          <label for="system.pool.current" class="resource-label">Pool</label>
-          <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.pool.current" value="{{system.pool.current}}" data-dtype="Number"/>
-            <span> / </span>
-            <input type="text" name="system.pool.base" value="{{system.pool.base}}" data-dtype="Number"/>
-          </div>
-        </div>
         <div class="toHit">
           <label for="system.toHit" class="resource-label">To Hit</label>
           <input type="text" name="system.toHit" class="system.toHit" value="{{system.toHit}}" data-dtype="Number"/>
@@ -35,8 +28,37 @@
         </div>
         
       </div>
-      <div class="resources grid grid-3col">
-        <button class="rollNPC" data-rolltype="arcaneNPC" data-current="{{system.pool.current}}">Pool Attack</button>
+      <div class="resources grid-span-12 grid grid-12col">
+        <div class="resource grid-span-6 flex-group-center boxed">
+          <label for="system.power.current" class="pool-point-label-arcane ">Power</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.power.current" value="{{system.power.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.power.base" value="{{system.power.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+        <!-- <div class="defense flexrow flex-center flex-between"> -->
+            <!-- <button class="power-roll rollCheck" data-rolltype="powerCheck" data-current="{{system.power.current}}" data-label="power"><span class="checkLabel">Power Check</span><i class="fa-regular fa-dice-d12"></i></button> -->
+            <!-- <div>
+              <span>Defense</span>
+              <input type="text" name="system.arcane.def" data-label="def" value="{{system.arcane.def}}"/>
+            </div> -->
+          <!-- </div> -->
+          <!-- <div>
+            <button class="rollCheck attack-button power-back" data-rolltype="powerAttack" data-current="{{system.power.current}}" >Attack</button>
+          </div> -->
+          <!-- <div>
+            <button class="rollCheck sheet-button" data-rolltype="powerCast" data-current="{{system.power.current}}" >Cast</button>
+          </div> -->
+        </div>
+        <div class="resource grid-span-6 flex-group-center boxed">
+          <label for="system.health.current" class="pool-point-label-arcane ">Health</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.health.current" value="{{system.health.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.health.base" value="{{system.health.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
+        </div>
       </div>
     </div>
     
@@ -45,9 +67,8 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
+    <a class="item" data-tab="abilities">Abilities</a>
     <a class="item" data-tab="description">Description</a>
-    <a class="item" data-tab="Feats">Feats</a>
-    <a class="item" data-tab="items">Items</a>
     <a class="item" data-tab="effects">Effects</a>
   </nav>
 
@@ -60,14 +81,9 @@
       {{editor system.biography target="system.biography" rollData=rollData button=true owner=owner editable=editable}}
     </div>
 
-    {{!-- Owned Feats Tab --}}
-    <div class="tab items" data-group="primary" data-tab="Feats">
-       {{> "systems/gw/templates/actor/parts/actor-features.html"}}
-    </div>
-
-    {{!-- Owned Items Tab --}}
-    <div class="tab items" data-group="primary" data-tab="items">
-       {{> "systems/gw/templates/actor/parts/actor-items.html"}}
+    {{!-- Owned Abilities Tab --}}
+    <div class="tab items" data-group="primary" data-tab="abilities">
+       {{> "systems/gw/templates/actor/parts/actor-npc-abilities.html"}}
     </div>
 
     {{!-- Active Effects Tab --}}

@@ -101,6 +101,8 @@ export class GWActorSheet extends ActorSheet {
     const magicalSociety = [];
     const scrolls = [];
     const wands = [];
+    const consumables = [];
+    const abilities = [];
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
@@ -131,6 +133,12 @@ export class GWActorSheet extends ActorSheet {
       if (i.type === "wand") {
         wands.push(i);
       }
+      if (i.type === "consumable") {
+        consumables.push(i);
+      }
+      if (i.type === "npc-ability") {
+        abilities.push(i);
+      }
       // Append to features.
       else if (i.type === "feat") {
         feats.push(i);
@@ -149,7 +157,9 @@ export class GWActorSheet extends ActorSheet {
     context.otherType = type != "vehicle" ? true : false;
     context.scrolls = scrolls;
     context.wands = wands;
+    context.consumables = consumables;
     context.isGM = isGM;
+    context.abilities = abilities;
   }
 
   /* -------------------------------------------- */
@@ -200,6 +210,7 @@ export class GWActorSheet extends ActorSheet {
 
     html.find(".rollCheck").click(this._onRoll.bind(this));
     html.find(".rollDamage").click(this._onRollDamage.bind(this));
+    html.find(".rollWeaponAttack").click(this._rollWeaponAttack.bind(this));
 
     html.find(".powerDie").click(this._onPowerDieSelect.bind(this));
     html.find(".initDie").click(this._onInitSelect.bind(this));
@@ -209,10 +220,16 @@ export class GWActorSheet extends ActorSheet {
     html.find(".destinyDiePlus").click(this._addDestinyDie.bind(this));
     html.find(".destinyDieSave").click(this._saveDestinyDie.bind(this));
     html.find(".destinyDieReset").click(this._resetDestinyDie.bind(this));
+    html.find(".destinyDieroll").click(this._rollDestinyDie.bind(this));
+
     html.find(".resetPool").click(this._resetPool.bind(this));
     html.find(".shapeShift").click(this._handleShapeShift.bind(this));
     html.find(".hasBoon").click(this._changeBoon.bind(this));
+    html.find(".equipped").click(this._changeEquip.bind(this));
     html.find(".rollInit").click(this._rollInit.bind(this));
+    html.find(".abilityRoll").click(this._rollAbility.bind(this));
+
+    html.find(".clickDesc").click(this._handleDescription.bind(this));
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -288,16 +305,48 @@ export class GWActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
-
-    await this.actor.doRoll(dataset, this.actor);
+    console.log(dataset);
+    await this.actor.doRoll(dataset);
   }
 
   async _onRollDamage(event) {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+    //Roll the Attack
+    // await this.actor.doRoll(dataset, this.actor);
+    //Take Attack Results
 
+    //Roll the Damage
+
+    // Report Everything to chat
     await this.actor.rollDamage(dataset, this.actor);
+  }
+
+  async _rollWeaponAttack(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    let pooltype = dataset.powertype.toLowerCase();
+
+    dataset.current = this.actor.system[pooltype].current;
+    dataset.hasBane = dataset.current <= 5;
+    console.log(pooltype);
+    switch (pooltype) {
+      case "arcane":
+        dataset.rolltype = "AAttack";
+        break;
+      case "physical":
+        dataset.rolltype = "PAttack";
+        break;
+      case "mental":
+        dataset.rolltype = "MAttack";
+        break;
+      default:
+        dataset.rolltype = "PAttack";
+        break;
+    }
+    await this.actor.doRoll(dataset);
   }
 
   async _onRollPowerDie(event) {
@@ -358,11 +407,11 @@ export class GWActorSheet extends ActorSheet {
     let newBase;
     let newCurrent;
     if (!this.actor.system.shapeshift) {
-      newBase = this.actor.system.physical.base + 2;
-      newCurrent = this.actor.system.physical.current + 2;
+      newBase = this.actor.system.physical.base + 3;
+      newCurrent = this.actor.system.physical.current + 3;
     } else {
-      newBase = this.actor.system.physical.base - 2;
-      newCurrent = this.actor.system.physical.current - 2;
+      newBase = this.actor.system.physical.base - 3;
+      newCurrent = this.actor.system.physical.current - 3;
     }
     this.actor.update({
       "system.physical.base": newBase,
@@ -383,7 +432,37 @@ export class GWActorSheet extends ActorSheet {
     });
   }
 
+  async _changeEquip(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const id = dataset.itemId;
+
+    this.actor.items.forEach((item) => {
+      if (item._id == id) {
+        item.update({ "system.equipped": !item.system.equipped });
+      }
+    });
+  }
+
   async _rollInit(event) {
     this.actor.rollInitiative();
+  }
+
+  async _rollDestinyDie(event) {
+    this.actor.rollDestinyDie();
+  }
+  async _rollAbility(event) {
+    this.actor.rollAbility(event);
+  }
+  async _handleDescription(event) {
+    console.log("Dave");
+    const element = event.currentTarget;
+    let name = element.dataset.item + "_description";
+    const el = document.getElementById(name);
+    if (el.classList.contains("hidden")) {
+      el.classList.remove("hidden");
+    } else {
+      el.classList.add("hidden");
+    }
   }
 }

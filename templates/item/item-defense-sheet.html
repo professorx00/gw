@@ -43,8 +43,15 @@
         <input type="text" name="system.type" value="{{system.type}}" data-dtype="String"/>
       </div>
       <div class="resource">
-        <label class="resource-label">Pool Type</label>
-        <input type="text" name="system.pool" value="{{system.pool}}" data-dtype="String"/>
+        <label class="resource-label">Pool</label>
+         <select name="poolType" class="poolType">
+          {{#select system.pool}}
+            <option value="">None</option>
+            <option value="arcane">Arcane</option>
+            <option value="physical">Physical</option>
+            <option value="mental">Mental</option>
+          {{/select}}  
+        </select>
       </div>
       <div class="resource">
         <label class="resource-label">Style</label>
