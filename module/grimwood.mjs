@@ -81,6 +81,18 @@ Handlebars.registerHelper("isBane", function (str) {
   return str == "true";
 });
 
+Handlebars.registerHelper("isArcane", function (str) {
+  return str.includes("arcane") || str.includes("Arcane");
+});
+
+Handlebars.registerHelper("isPhysical", function (str) {
+  return str.includes("physical") || str.includes("Physical");
+});
+
+Handlebars.registerHelper("isMental", function (str) {
+  return str.includes("mental") || str.includes("Mental");
+});
+
 Handlebars.registerHelper("targetNumber", function (str) {
   let number = parseInt(str);
   console.log("TN ", number);
@@ -107,6 +119,8 @@ Hooks.on("preCreateChatMessage", async (message) => {
 Hooks.on("preUpdateChatMessage", (message, data) => {
   console.log("preUpdate", message, data);
 });
+
+Hooks.on("dropActorSheetData", async (actor, actorsheet, data) => {});
 
 Hooks.on("renderChatMessage", async (message, html) => {});
 /**

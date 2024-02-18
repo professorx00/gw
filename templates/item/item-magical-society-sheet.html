@@ -11,7 +11,8 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
-    <!-- <a class="item" data-tab="attributes">Attributes</a> -->
+    <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -22,9 +23,25 @@
       {{editor system.description target="system.description" rollData=rollData button=true owner=owner editable=editable}}
     </div>
 
-    <!-- {{!-- Attributes Tab --}}
+    {{!-- Attributes Tab --}}
     <div class="tab attributes" data-group="primary" data-tab="attributes">
       {{!-- As you add new fields, add them in here! --}}
-    </div> -->
+       <div class="resource">
+        <label class="resource-label">Pool</label>
+         <select name="poolType" class="poolType">
+          {{#select system.pool}}
+            <option value="">None</option>
+            <option value="arcane">Arcane</option>
+            <option value="physical">Physical</option>
+            <option value="mental">Mental</option>
+          {{/select}}  
+        </select>
+      </div>
+    </div>
+
+         {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/gw/templates/item/parts/item-effects.html"}}
+    </div>
   </section>
 </form>

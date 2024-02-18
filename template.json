@@ -33,10 +33,10 @@
       "attributes": {
         "level": {
           "value": 1
-        },
-        "species": "",
-        "class": ""
+        }
       },
+      "species": "",
+      "class": "",
       "banes": 0
     },
     "npc": {
@@ -80,7 +80,9 @@
       "vehicle-parts",
       "fighting-stances",
       "magical-society",
-      "npc-ability"
+      "npc-ability",
+      "classes",
+      "species"
     ],
     "templates": {
       "base": {
@@ -101,9 +103,14 @@
       "weight": 0,
       "formula": "1d4",
       "range": "Close",
-      "type": "Light",
+      "lmh": "Light",
+      "isRangedWeapon": false,
       "hasBoon": false,
-      "pool": "physical"
+      "pool": "physical",
+      "clips": {
+        "current": 1,
+        "base": 1
+      }
     },
     "defense": {
       "templates": ["base"],
@@ -111,13 +118,13 @@
       "weight": 0,
       "bonus": 0,
       "style": "Armor",
-      "type": "Light",
+      "lmh": "Light",
       "pool": "physical"
     },
     "feat": {
       "templates": ["base"],
       "position": "side",
-      "type": "",
+      "source": "",
       "pool": "",
       "formula": "",
       "passive": true
@@ -130,7 +137,8 @@
       "templates": ["base"]
     },
     "magical-society": {
-      "templates": ["base"]
+      "templates": ["base"],
+      "pool": "arcane"
     },
     "scroll": {
       "templates": ["base"],
@@ -146,7 +154,8 @@
       "weight": 0,
       "powerPoints": 1,
       "pool": "arcane",
-      "formula": ""
+      "formula": "",
+      "hasBoon": false
     },
     "consumable": {
       "templates": ["base"],
@@ -159,6 +168,12 @@
       "templates": ["base"],
       "poolCost": 0,
       "formula": ""
+    },
+    "classes": {
+      "templates": ["base"]
+    },
+    "species": {
+      "templates": ["base"]
     }
   }
 }

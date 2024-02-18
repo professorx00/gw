@@ -20,6 +20,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
     <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -40,7 +41,13 @@
       </div>
       <div class="resource">
         <label class="resource-label">Type</label>
-        <input type="text" name="system.type" value="{{system.type}}" data-dtype="String"/>
+         <select name="lmhType" class="lmhType">
+          {{#select system.lmh}}
+            <option value="light">Light</option>
+            <option value="medium">Medium</option>
+            <option value="heavy">Heavy</option>
+          {{/select}}  
+        </select>
       </div>
       <div class="resource">
         <label class="resource-label">Pool</label>
@@ -57,6 +64,11 @@
         <label class="resource-label">Style</label>
         <input type="text" name="system.style" value="{{system.style}}" data-dtype="String"/>
       </div>
+    </div>
+
+     {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/gw/templates/item/parts/item-effects.html"}}
     </div>
   </section>
 </form>

@@ -19,6 +19,7 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -38,5 +39,10 @@
         <input type="text" name="system.formula" value="{{system.formula}}" data-dtype="String"/>
       </div>
     </div> -->
+
+         {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/gw/templates/item/parts/item-effects.html"}}
+    </div>
   </section>
 </form>

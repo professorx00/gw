@@ -20,6 +20,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
     <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -40,11 +41,25 @@
       </div>
       <div class="resource">
         <label class="resource-label">Range</label>
-        <input type="text" name="system.range" value="{{system.range}}" data-dtype="String"/>
+         <select name="rangeSelect" class="rangeSelect">
+          {{#select system.range}}
+            <option value="close">Close</option>
+            <option value="near">Near</option>
+            <option value="far">Far</option>
+            <option value="extreme">Extreme</option>
+          {{/select}}  
+        </select>
       </div>
-      <div class="resource">
+     <div class="resource">
         <label class="resource-label">Type</label>
-        <input type="text" name="system.type" value="{{system.type}}" data-dtype="String"/>
+         <select name="lmhType" class="lmhType">
+          {{#select system.lmh}}
+            <option value="light">Light</option>
+            <option value="medium">Medium</option>
+            <option value="heavy">Heavy</option>
+            <option value="ultimate">Ultimate</option>
+          {{/select}}  
+        </select>
       </div>
       <div class="resource">
         <label class="resource-label">Pool</label>
@@ -57,16 +72,34 @@
           {{/select}}  
         </select>
       </div>
-      <label class="resource-label">Has Boon</label>
-      <input type="checkbox" name="hasBoon" class="hasBoon" {{checked system.hasBoon}}>
-    </div>
-    <div class="resource">
-         <label class="resource-label">Once per Session?</label>
+      <div class="resource">
+        <label class="resource-label">Ranged Weapon</label>
+          <input type="checkbox" name="isRanged" class="isRanged" {{checked system.isRangedWeapon}}>
+      </div>
+      {{#if system.isRangedWeapon}}
+      <div class="resource">
+        <label class="resource-label">Clip Size</label>
+        <div class="clips">
+         <input type="text" name="system.clips.base" value="{{system.clips.base}}" data-dtype="Number"/>
+        </div>
+      </div>
+      {{/if}}
+      <div class="resource">
+        <label class="resource-label">Has Boon</label>
+        <input type="checkbox" name="hasBoon" class="hasBoon" {{checked system.hasBoon}}>
+      </div>
+      <div class="resource">
+        <label class="resource-label">Once per Session?</label>
         <input type="checkbox" name="session" class="session" {{checked system.session}}>
       </div>
       <div class="resource">
          <label class="resource-label">Once per Scene?</label>
         <input type="checkbox" name="scene" class="scene" {{checked system.scene}}>
       </div>
+    </div>
+               {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/gw/templates/item/parts/item-effects.html"}}
+    </div>
   </section>
 </form>

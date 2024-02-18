@@ -10,6 +10,7 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
     <a class="item" data-tab="attributes">Attributes</a>
+    <a class="item" data-tab="effects">Effects</a>
   </nav>
 
   {{!-- Sheet Body --}}
@@ -46,6 +47,11 @@
          <label class="resource-label">Once per Scene?</label>
         <input type="checkbox" name="scene" class="scene" {{checked system.scene}}>
       </div>
+    </div>
+
+         {{!-- Active Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{> "systems/gw/templates/item/parts/item-effects.html"}}
     </div>
   </section>
 

@@ -14,5 +14,6 @@
     "systems/gw/templates/actor/parts/actor-npc-abilities.html",
 
     "systems/gw/templates/app/timer-target-container.html",
+    "systems/gw/templates/item/parts/item-effects.html",
   ]);
 };

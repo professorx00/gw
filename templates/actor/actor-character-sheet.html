@@ -31,18 +31,21 @@
       </div>
       {{/if}}
     </div>
-
     <div class="grid grid-12col">
       <h1 class="charname grid-span-12"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
       <div class="grid-span-6 grid grid-6col">
-          <label for="system.attributes.class" class="resource-label grid-span-1">Class</label>
-          <input type="text" name="system.attributes.class" value="{{system.attributes.class}}" class="grid-span-5" />
+          <label for="system.class" class="resource-label grid-span-1">Class</label>
+          <div class="flexrow grid-span-5">
+            <input type="text" name="system.class" value="{{system.class}}" class="grid-span-5" />
+            <button class="clearClass headerButton" data-id="{{classId}}"><i class="fa-solid fa-trash"></i></button>
+          </div>
       </div>
       <div class="grid-span-6 grid grid-6col">
-          <label for="system.attributes.species" class="resource-label grid-span-1">Species</label>
+          <label for="system.species" class="resource-label grid-span-1">Species</label>
           <div class="flexrow grid-span-5">
-            <input type="text" name="system.attributes.species" value="{{system.attributes.species}}" />
-            {{#if (isWere system.attributes.species)}}<button class="shapeShift"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
+            <input type="text" name="system.species" value="{{system.species}}" />
+            <button class="clearSpecies headerButton" data-id="{{speciesId}}"><i class="fa-solid fa-trash"></i></button>
+            {{#if (isWere system.species)}}<button class="shapeShift headerButton"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
           </div>
       </div>
       <div class="grid-span-2 grid grid-2col">
@@ -80,10 +83,10 @@
           <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
-            <button class="arcane-roll rollCheck" data-roll-type="ACheck" data-powertype="arcane" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <button class="arcane-roll rollCheck"  data-roll-type="cast"  data-powertype="arcane" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
             <div>
               <span>Defense</span>
-              <input type="text" name="system.arcane.def" data-label="def" value="{{system.arcane.def}}"/>
+              <input type="text" name="system.arcane.def" data-label="def" value="{{system.arcane.def}}" data-dtype="Number"/>
             </div>
           </div>
           <div>
@@ -102,14 +105,14 @@
             <button class="resetPool" data-pool="physical"><i class="fa-solid fa-repeat"></i></button>
           </div>
           <div class="defense flexrow flex-center flex-between">
-            <button class="physical-roll rollCheck" data-roll-type="PCheck" data-powertype="physical" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <button class="physical-roll rollCheck"  data-roll-type="cast"  data-powertype="physical" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
             <div>
               <span>Defense</span>
-              <input type="text" name="system.physical.def" data-label="def" value="{{system.physical.def}}"/>
+              <input type="text" name="system.physical.def" data-label="def" value="{{system.physical.def}}" data-dtype="Number"/>
             </div>
           </div>
            <div>
-            <button class="rollCheck attack-button physical-back" data-roll-type="attack" data-powertype="physical" data-current="{{system.physical.current}}">Attack</button>
+            <button class="rollCheck attack-button physical-back"  data-roll-type="attack" data-powertype="physical" data-current="{{system.physical.current}}">Attack</button>
           </div>
           <div>
             <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="physical" data-current="{{system.physical.current}}">Cast</button>
@@ -124,10 +127,10 @@
           <button class="resetPool" data-pool="mental"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
-            <button class="mental-roll rollCheck" data-roll-type="MCheck" data-current="{{system.mental.current}}" data-powertype="mental" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <button class="mental-roll rollCheck"  data-roll-type="cast" data-powertype="mental" data-current="{{system.mental.current}}" data-powertype="mental" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
             <div>
               <span>Defense</span>
-              <input type="text" name="system.mental.def" data-label="def" value="{{system.mental.def}}"/>
+              <input type="text" name="system.mental.def" data-label="def" value="{{system.mental.def}}" data-dtype="Number"/>
             </div>
           </div>
            <div>
@@ -160,7 +163,7 @@
         {{!-- For the main features list, span the right two columns --}}
         <section class="main grid-span-3">
           {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
-          {{> "systems/gw/templates/actor/parts/actor-features.html"}}
+          {{> "systems/gw/templates/actor/parts/actor-features.html" }}
         </section>
 
       </section>

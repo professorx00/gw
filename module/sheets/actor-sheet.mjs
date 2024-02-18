@@ -47,16 +47,15 @@ export class GWActorSheet extends ActorSheet {
 
     // Prepare character data and items.
     if (actorData.type == "character") {
-      this._prepareItems(context, "character");
-      this._prepareCharacterData(context);
+      this._prepareItems(context, "character", actorData);
     }
 
     // Prepare NPC data and items.
     if (actorData.type == "npc") {
-      this._prepareItems(context, "npc");
+      this._prepareItems(context, "npc", actorData);
     }
     if (actorData.type == "vehicle") {
-      this._prepareItems(context, "vehicle");
+      this._prepareItems(context, "vehicle", actorData);
     }
 
     // Add roll data for TinyMCE editors.
@@ -66,17 +65,6 @@ export class GWActorSheet extends ActorSheet {
     context.effects = prepareActiveEffectCategories(this.actor.effects);
 
     return context;
-  }
-
-  /**
-   * Organize and classify Items for Character sheets.
-   *
-   * @param {Object} actorData The actor to prepare.
-   *
-   * @return {undefined}
-   */
-  _prepareCharacterData(context) {
-    // Handle ability scores.
   }
 
   /**
@@ -100,6 +88,12 @@ export class GWActorSheet extends ActorSheet {
     const wands = [];
     const consumables = [];
     const abilities = [];
+    const classes = [];
+    const species = [];
+    const arcaneCurrent = context.system.arcane.current;
+    const physicalCurrent = context.system.physical.current;
+    const mentalCurrent = context.system.mental.current;
+
     // Iterate through items, allocating to containers
     for (let i of context.items) {
       i.img = i.img || DEFAULT_TOKEN;
@@ -136,12 +130,30 @@ export class GWActorSheet extends ActorSheet {
       if (i.type === "npc-ability") {
         abilities.push(i);
       }
+      if (i.type === "classes") {
+        if (classes.length <= 0) {
+          classes.push(i);
+        }
+      }
+      if (i.type === "species") {
+        if (species.length <= 0) {
+          species.push(i);
+        }
+      }
       // Append to features.
       else if (i.type === "feat") {
         feats.push(i);
       }
     }
 
+    if (classes.length > 0) {
+      context.system.class = classes[0].name;
+      context.classId = classes[0]._id;
+    }
+    if (species.length > 0) {
+      context.system.species = species[0].name;
+      context.speciesId = species[0]._id;
+    }
     // Assign and return
     context.gear = gear;
     context.weapons = weapons;
@@ -157,6 +169,9 @@ export class GWActorSheet extends ActorSheet {
     context.consumables = consumables;
     context.isGM = isGM;
     context.abilities = abilities;
+    context.arcane = arcaneCurrent;
+    context.physical = physicalCurrent;
+    context.mental = mentalCurrent;
   }
 
   /* -------------------------------------------- */
@@ -221,11 +236,13 @@ export class GWActorSheet extends ActorSheet {
 
     html.find(".resetPool").click(this._resetPool.bind(this));
     html.find(".shapeShift").click(this._handleShapeShift.bind(this));
+    html.find(".clearClass").click(this._handleClearClass.bind(this));
+    html.find(".clearSpecies").click(this._handleClearSpecies.bind(this));
     html.find(".hasBoon").click(this._changeBoon.bind(this));
     html.find(".equipped").click(this._changeEquip.bind(this));
     html.find(".rollInit").click(this._rollInit.bind(this));
     html.find(".abilityRoll").click(this._rollAbility.bind(this));
-
+    html.find(".reload").click(this._reload.bind(this));
     html.find(".clickDesc").click(this._handleDescription.bind(this));
 
     // Drag events for macros.
@@ -266,38 +283,6 @@ export class GWActorSheet extends ActorSheet {
     return await Item.create(itemData, { parent: this.actor });
   }
 
-  /**
-   * Handle clickable rolls.
-   * @param {Event} event   The originating click event
-   * @private
-   */
-  // _onRoll(event) {
-  //   event.preventDefault();
-  //   const element = event.currentTarget;
-  //   const dataset = element.dataset;
-
-  //   // Handle item rolls.
-  //   if (dataset.rollType) {
-  //     if (dataset.rollType == "item") {
-  //       const itemId = element.closest(".item").dataset.itemId;
-  //       const item = this.actor.items.get(itemId);
-  //       if (item) return item.roll();
-  //     }
-  //   }
-
-  //   // Handle rolls that supply the formula directly.
-  //   if (dataset.roll) {
-  //     let label = dataset.label ? `[ability] ${dataset.label}` : "";
-  //     let roll = new Roll(dataset.roll, this.actor.getRollData());
-  //     roll.toMessage({
-  //       speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-  //       flavor: label,
-  //       rollMode: game.settings.get("core", "rollMode"),
-  //     });
-  //     return roll;
-  //   }
-  // }
-
   async _onRoll(event) {
     event.preventDefault();
     const element = event.currentTarget;
@@ -310,13 +295,6 @@ export class GWActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
-    //Roll the Attack
-    // await this.actor.doRoll(dataset, this.actor);
-    //Take Attack Results
-
-    //Roll the Damage
-
-    // Report Everything to chat
     await this.actor.rollDamage(dataset, this.actor);
   }
 
@@ -324,25 +302,18 @@ export class GWActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
+    const id = dataset.itemId;
+    const isRanged = dataset.isranged;
     let pooltype = dataset.powertype.toLowerCase();
-
-    dataset.current = this.actor.system[pooltype].current;
-    dataset.hasBane = dataset.current <= 5;
-    console.log(pooltype);
-    switch (pooltype) {
-      case "arcane":
-        dataset.rolltype = "AAttack";
-        break;
-      case "physical":
-        dataset.rolltype = "PAttack";
-        break;
-      case "mental":
-        dataset.rolltype = "MAttack";
-        break;
-      default:
-        dataset.rolltype = "PAttack";
-        break;
+    let noAmmo = false;
+    if (isRanged == "true") {
+      noAmmo = await this.removeClip(id);
     }
+    if (noAmmo) {
+      await this.actor.noAmmo();
+      return;
+    }
+    dataset.current = this.actor.system[pooltype].current;
     await this.actor.doRoll(dataset);
   }
 
@@ -422,11 +393,30 @@ export class GWActorSheet extends ActorSheet {
     const dataset = element.dataset;
     const id = dataset.itemId;
 
-    this.actor.items.forEach((item) => {
-      if (item._id == id) {
-        item.update({ "system.hasBoon": !item.system.hasBoon });
-      }
-    });
+    let item = this.actor.items.get(id);
+    console.log(item);
+    item.update({ "system.hasBoon": !item.system.hasBoon });
+  }
+
+  async _reload(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const id = dataset.itemId;
+
+    let item = this.actor.items.get(id);
+    console.log(item);
+    item.update({ "system.clips.current": item.system.clips.base });
+  }
+  async removeClip(id) {
+    let item = this.actor.items.get(id);
+    if (item.system.clips.current > 0) {
+      await item.update({
+        "system.clips.current": item.system.clips.current - 1,
+      });
+      return false;
+    } else {
+      return true;
+    }
   }
 
   async _changeEquip(event) {
@@ -462,4 +452,16 @@ export class GWActorSheet extends ActorSheet {
       el.classList.add("hidden");
     }
   }
+
+  async _handleClearClass(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    this.actor.clearClass(dataset);
+  }
+  async _handleClearSpecies(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    this.actor.clearSpecies(dataset);
+  }
 }
+

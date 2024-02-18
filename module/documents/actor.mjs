@@ -46,12 +46,6 @@ export class GWActor extends Actor {
 
     // Make modifications to data here. For example:
     const systemData = actorData.system;
-
-    // Loop through ability scores, and add their modifiers to our sheet output.
-    for (let [key, ability] of Object.entries(systemData.abilities)) {
-      // Calculate the modifier using d20 rules.
-      ability.mod = Math.floor((ability.value - 10) / 2);
-    }
   }
 
   /**
@@ -84,13 +78,13 @@ export class GWActor extends Actor {
   _getCharacterRollData(data) {
     if (this.type !== "character") return;
 
-    // Copy the ability scores to the top level, so that rolls can use
-    // formulas like `@str.mod + 4`.
-    if (data.abilities) {
-      for (let [k, v] of Object.entries(data.abilities)) {
-        data[k] = foundry.utils.deepClone(v);
-      }
-    }
+    // // Copy the ability scores to the top level, so that rolls can use
+    // // formulas like `@str.mod + 4`.
+    // if (data.abilities) {
+    //   for (let [k, v] of Object.entries(data.abilities)) {
+    //     data[k] = foundry.utils.deepClone(v);
+    //   }
+    // }
 
     // Add level for easier access, or fall back to 0.
     if (data.attributes.level) {
@@ -107,245 +101,9 @@ export class GWActor extends Actor {
     // Process additional NPC data here.
   }
 
-  // async doRoll(dataset, actorData) {
-  //   let title = game.i18n.localize("GW.Roll");
-  //   let rollInfo = {};
-  //   rollInfo.globalTN = game.settings.get("gw", "targets")[0].value;
-  //   let actionText = "";
-  //   let current = dataset.current;
-  //   rollInfo.targets = game.users.current.targets;
-  //   let hasBane = current <= 5;
-  //   rollInfo.current = dataset.current;
-  //   rollInfo.hasBane = hasBane;
-  //   dataset.hasBane = hasBane;
-  //   const dlgContent = await renderTemplate(
-  //     "systems/gw/templates/dialogs/pcrolls.hbs",
-  //     dataset
-  //   );
-
-  //   switch (dataset.rolltype) {
-  //     case "PCheck":
-  //       title = game.i18n.localize("GW.PCheck");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "physical";
-
-  //       break;
-  //     case "ACheck":
-  //       title = game.i18n.localize("GW.ACheck");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "arcane";
-
-  //       break;
-  //     case "MCheck":
-  //       title = game.i18n.localize("GW.MCheck");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "mental";
-
-  //       break;
-  //     case "AAttack":
-  //       title = game.i18n.localize("GW.AAttack");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "arcane";
-  //       break;
-  //     case "PAttack":
-  //       title = game.i18n.localize("GW.PAttack");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "physical";
-  //       break;
-  //     case "MAttack":
-  //       title = game.i18n.localize("GW.MAttack");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "mental";
-  //       break;
-  //     case "ACast":
-  //       title = game.i18n.localize("GW.ACast");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "arcane";
-  //       break;
-  //     case "PCast":
-  //       title = game.i18n.localize("GW.PCast");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "physical";
-  //       break;
-  //     case "MCast":
-  //       title = game.i18n.localize("GW.MCast");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "mental";
-  //       break;
-  //     case "arcaneNPC":
-  //       title = game.i18n.localize("GW.NPCAttack");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "pool";
-  //       break;
-  //     case "physicalNPC":
-  //       title = game.i18n.localize("GW.NPCAttack");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "physical";
-  //       break;
-  //     case "mentalNPC":
-  //       title = game.i18n.localize("GW.NPCAttack");
-  //       actionText = title + " for " + this.name;
-  //       rollInfo.pool = "mental";
-  //       break;
-  //   }
-
-  //   const dlg = new Dialog(
-  //     {
-  //       title: title,
-  //       content: dlgContent,
-  //       buttons: {
-  //         roll: {
-  //           icon: "<i class='fas fa-dice-d12'></i>",
-  //           label: "Roll",
-  //           callback: (html) => rollCallback(html, rollInfo),
-  //         },
-  //         cancel: {
-  //           icon: "<i class='fas fa-times'></i>",
-  //           label: "cancel",
-  //         },
-  //       },
-  //       default: "roll",
-  //     },
-  //     {
-  //       id: "check-dialog",
-  //     }
-  //   );
-
-  //   dlg.render(true);
-
-  //   async function rollCallback(html, rollInfo) {
-  //     let numDice = 1;
-  //     let boon = html.find('[name="boonbane"]')[0].value.trim();
-  //     let needs = "";
-  //     let targets = [];
-
-  //     let target = rollInfo.targets;
-  //     if (target.size > 0) {
-  //       target.forEach((toke) => {
-  //         targets.push(toke.document.actor);
-  //       });
-  //       targets = targets.sort((a, b) => {
-  //         if (a.system.toHit < b.system.toHit) {
-  //           return 1;
-  //         } else {
-  //           return -1;
-  //         }
-  //       });
-  //       needs = targets[0].system.toHit.toString();
-  //     }
-  //     let modifier = "";
-  //     rollInfo.rollText = "1d12";
-  //     let rollResults = "";
-  //     if (boon != "") {
-  //       boon = Number.parseInt(boon);
-  //       numDice += Math.abs(boon);
-
-  //       if (boon < 0) {
-  //         rollInfo.rollText =
-  //           numDice +
-  //           "d12 " +
-  //           game.i18n.localize("GW.with") +
-  //           " " +
-  //           game.i18n.localize("GW.Bane");
-  //         modifier = "kl";
-  //       } else if (boon > 0) {
-  //         rollInfo.rollText =
-  //           numDice +
-  //           "d12 " +
-  //           game.i18n.localize("GW.with") +
-  //           " " +
-  //           game.i18n.localize("GW.Boon");
-  //         modifier = "kh";
-  //       }
-  //     }
-
-  //     const formula = numDice + "d12" + modifier;
-  //     const diceRoll = await new Roll(formula).evaluate({ async: true });
-  //     let rollHTML = await diceRoll.render();
-
-  //     rollHTML = rollHTML.replace(formula, rollInfo.rollText);
-  //     const rollData = {
-  //       rollType: actionText,
-  //       rollHTML: rollHTML,
-  //       needs: needs != "" ? needs : rollInfo.globalTN,
-  //       rollResults: rollResults,
-  //       poolType: rollInfo.pool,
-  //       total: diceRoll._total,
-  //       poolValue: rollInfo.current,
-  //       rollText: rollInfo.rollText,
-  //     };
-
-  //     const usePPContent = await renderTemplate(
-  //       "systems/gw/templates/dialogs/ppoints.hbs",
-  //       rollData
-  //     );
-
-  //     const ppdlg = new Dialog({
-  //       title: "Do you want to use Power Points?",
-  //       content: usePPContent,
-  //       buttons: {
-  //         roll: {
-  //           label: "Confirm",
-  //           callback: (html) => {
-  //             usePoolPoints(html, rollData, diceRoll, actorData);
-  //           },
-  //         },
-  //         cancel: {
-  //           icon: "<i class='fas fa-times'></i>",
-  //           label: "cancel",
-  //           callback: (html) => sendRolltoChat(html, rollData, diceRoll),
-  //         },
-  //       },
-  //     });
-
-  //     ppdlg.render(true);
-  //   }
-
-  //   async function usePoolPoints(html, rollData, diceRoll, actorData) {
-  //     let poolPoints = html.find('[name="poolPoints"]')[0].value.trim();
-  //     let change =
-  //       actorData.system[rollData.poolType].current - parseInt(poolPoints);
-  //     let label = `system.${rollData.poolType}.current`;
-  //     actorData.update({ [label]: change });
-  //     let newTotal = rollData.total + parseInt(poolPoints);
-  //     if (newTotal >= rollData.needs) {
-  //       rollData.rollResults = "Success";
-  //     } else {
-  //       rollData.rollResults = "Failure";
-  //     }
-  //     rollData.rollHTML = rollData.rollHTML.replace(rollData.total, newTotal);
-  //     rollData.rollHTML = rollData.rollHTML.replace(
-  //       `<h4 class="dice-total">${rollData.total}</h4>`,
-  //       `<h4 class="dice-total">${newTotal}</h4>`
-  //     );
-
-  //     rollData.rollHTML = rollData.rollHTML.replace(
-  //       rollData.rollText,
-  //       rollData.rollText + "+" + poolPoints
-  //     );
-  //     sendRolltoChat(html, rollData, diceRoll);
-  //   }
-
-  //   async function sendRolltoChat(html, rollData, diceRoll) {
-  //     let cardContent = await renderTemplate(
-  //       "systems/gw/templates/chatcards/normalroll.hbs",
-  //       rollData
-  //     );
-
-  //     const chatOptions = {
-  //       type: CONST.CHAT_MESSAGE_TYPES.ROLL,
-  //       roll: diceRoll,
-  //       content: cardContent,
-  //       speaker: ChatMessage.getSpeaker({ actor: this }),
-  //     };
-  //     ChatMessage.create(chatOptions);
-  //   }
-  // }
-
   async doRoll(dataset) {
     let rolltype = dataset.rollType;
     let pool = dataset.powertype;
-    console.log("rolltype", rolltype);
     switch (rolltype) {
       case "weapon":
         dataset.title = "Weapon Attack";
@@ -359,11 +117,14 @@ export class GWActor extends Actor {
       case "cast":
         this.rolling(dataset);
         break;
-      case "castWand":
+      case "Cast Wand":
         this.castWand(dataset);
         break;
-      case "castScroll":
+      case "Cast Scroll":
         this.castScroll(dataset);
+        break;
+      case "NPC":
+        this.rolling(dataset);
         break;
     }
   }
@@ -382,7 +143,11 @@ export class GWActor extends Actor {
     let pool = dataset.powertype;
     let current = dataset.current;
     let hasBane = 0;
-    console.log(target);
+    let hasBoon = 0;
+    if (dataset.hasboon == "true") {
+      hasBoon = hasBoon + 1;
+    }
+
     if (this.system.arcane.current <= 0) {
       hasBane = hasBane + 1;
     }
@@ -392,11 +157,13 @@ export class GWActor extends Actor {
     if (this.system.mental.current <= 0) {
       hasBane = hasBane + 1;
     }
+    let boonsBanes = hasBane * -1 + hasBoon;
+    console.log("boonBanes", hasBane, hasBoon, boonsBanes);
     let rollInfo = {
       ...dataset,
       target: target,
       pool: pool,
-      banes: hasBane * -1,
+      boonsBanes: boonsBanes,
       current: current,
     };
 
@@ -430,9 +197,28 @@ export class GWActor extends Actor {
     weaponDlg.render(true);
   }
 
-  async castWand(dataset) {
-    console.log(dataset);
+  async noAmmo() {
+    let rollInfo = {};
+    const weaponRollContent = await renderTemplate(
+      "systems/gw/templates/dialogs/noAmmo.hbs",
+      rollInfo
+    );
 
+    const weaponDlg = new Dialog({
+      title: "No Ammo",
+      content: weaponRollContent,
+      buttons: {
+        cancel: {
+          icon: "<i class='fas fa-times'></i>",
+          label: "cancel",
+        },
+      },
+      default: "cancel",
+    });
+
+    weaponDlg.render(true);
+  }
+  async castWand(dataset) {
     if (parseInt(dataset.current) < parseInt(dataset.powerpoints)) {
       const wandContent = await renderTemplate(
         "systems/gw/templates/dialogs/wand.hbs",
@@ -458,13 +244,16 @@ export class GWActor extends Actor {
       wanddlg.render(true);
 
       return;
-    }
-    this.update({
-      "system.arcane.current":
-        parseInt(dataset.current) - parseInt(dataset.powerpoints),
-    });
+    } else {
+      const forumla = dataset.formula;
 
-    this.rollWandDamage(dataset, "Wand");
+      this.update({
+        "system.arcane.current":
+          parseInt(dataset.current) - parseInt(dataset.powerpoints),
+      });
+    }
+    this.rolling(dataset);
+    // this.rollWandDamage(dataset, "Wand");
   }
 
   async castScroll(dataset) {
@@ -486,37 +275,53 @@ export class GWActor extends Actor {
           },
         },
         {
-          id: "scroll-dialog",
+          id: "wand-dialog",
         }
       );
 
       wanddlg.render(true);
 
       return;
+    } else {
+      const forumla = dataset.formula;
+
+      this.update({
+        "system.arcane.current":
+          parseInt(dataset.current) - parseInt(dataset.powerpoints),
+      });
     }
-    this.update({
-      "system.arcane.current":
-        parseInt(dataset.current) - parseInt(dataset.powerpoints),
-    });
-    console.log("id", this);
-    this.rollWandDamage(dataset, "Scroll");
+    this.rolling(dataset);
+    // this.rollWandDamage(dataset, "Wand");
   }
 
-  async rollWandDamage(dataset, title) {
-    let weaponFormula = dataset.formula;
-    if (weaponFormula !== "") {
-      const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
-      let rollHTML = await diceRoll.render();
-      let actionText = title + " Damage";
-      let rollResults = "";
-      const rollData = {
-        rollType: actionText,
-        rollHTML: rollHTML,
-        rollResults: rollResults,
-      };
-      this.sendRolltoChat(rollHTML, rollData, diceRoll, "normalroll.hbs");
-    }
-  }
+  // async rollWandDamage(dataset, title) {
+  //   let weaponFormula = dataset.formula;
+  //   console.log("Roll Weapon Damage");
+  //   if (weaponFormula !== "") {
+  //     const wandAttack = await newRoll("1d12").evaluate({ async: true });
+  //      let globalTN = game.settings.get("gw", "targets")[0].value;
+  //      let targetTN = 0;
+  //      let actorTargets = game.users.current.targets;
+  //      actorTargets.forEach((target) => {
+  //        const actor = game.actors.get(target.document.actorId);
+  //        if (targetTN < parseInt(actor.system.toHit)) {
+  //          targetTN = parseInt(actor.system.toHit);
+  //        }
+  //      });
+  //      let target = targetTN > 0 ? targetTN : globalTN;
+
+  //     // const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
+  //     // let rollHTML = await diceRoll.render();
+  //     // let actionText = title + " Damage";
+  //     // let rollResults = "";
+  //     // const rollData = {
+  //     //   rollType: actionText,
+  //     //   rollHTML: rollHTML,
+  //     //   rollResults: rollResults,
+  //     // };
+  //     // this.sendRolltoChat(rollHTML, rollData, diceRoll, "normalroll.hbs");
+  //   }
+  // }
 
   async rollDamage(dataset, actorData) {
     const dlgContent = await renderTemplate(
@@ -642,14 +447,6 @@ export class GWActor extends Actor {
     this.update({ "system.DDie": total - 1 });
   }
 
-  async rollNPCAttack(dataset) {
-    const dlgContent = await renderTemplate(
-      "systems/gw/templates/dialogs/damageRolls.hbs",
-      dataset
-    );
-    let title = game.i18n.localize("GW.Roll");
-  }
-
   async rollAbility(event) {
     console.log(event);
   }
@@ -757,5 +554,23 @@ export class GWActor extends Actor {
     }
 
     this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+  }
+
+  async clearClass(dataset, actorData) {
+    console.log(dataset);
+    let doc = this.items.get(dataset.id);
+    if (doc) {
+      doc.delete();
+    }
+    this.update({ "system.class": "" });
+  }
+
+  async clearSpecies(dataset, actorData) {
+    this.system.species = "";
+    let doc = this.items.get(dataset.id);
+    if (doc) {
+      doc.delete();
+    }
+    this.update({ "system.species": "" });
   }
 }
