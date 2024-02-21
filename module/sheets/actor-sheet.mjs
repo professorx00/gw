@@ -130,7 +130,7 @@ export class GWActorSheet extends ActorSheet {
       if (i.type === "npc-ability") {
         abilities.push(i);
       }
-      if (i.type === "classes") {
+      if (i.type === "class") {
         if (classes.length <= 0) {
           classes.push(i);
         }
@@ -145,7 +145,7 @@ export class GWActorSheet extends ActorSheet {
         feats.push(i);
       }
     }
-
+    console.log(classes);
     if (classes.length > 0) {
       context.system.class = classes[0].name;
       context.classId = classes[0]._id;
@@ -323,7 +323,7 @@ export class GWActorSheet extends ActorSheet {
     let targets = game.settings.get("gw", "targets");
     console.log(targets);
 
-    this.actor._rollPowerDie(dataset);
+    await this.actor._rollPowerDie(dataset);
   }
 
   async _onPowerDieSelect(event) {
@@ -347,18 +347,18 @@ export class GWActorSheet extends ActorSheet {
   async _removeDestinyDie() {
     const DDieCurrent = this.actor.system.DDie;
     const newDDie = DDieCurrent - 1 > 0 ? DDieCurrent - 1 : 0;
-    this.actor.update({ "system.DDie": newDDie });
+    await this.actor.update({ "system.DDie": newDDie });
   }
   async _addDestinyDie() {
     const DDieCurrent = this.actor.system.DDie;
     const newDDie = DDieCurrent + 1 > 0 ? DDieCurrent + 1 : 0;
-    this.actor.update({ "system.DDie": newDDie });
+    await this.actor.update({ "system.DDie": newDDie });
   }
   async _saveDestinyDie() {
-    this.actor.update({ "system.startingDDie": this.actor.system.DDie });
+    await this.actor.update({ "system.startingDDie": this.actor.system.DDie });
   }
   async _resetDestinyDie() {
-    this.actor.update({ "system.DDie": this.actor.system.startingDDie });
+    await this.actor.update({ "system.DDie": this.actor.system.startingDDie });
   }
 
   async _resetPool(event) {
@@ -366,7 +366,7 @@ export class GWActorSheet extends ActorSheet {
     const dataset = element.dataset;
     let pool = dataset.pool;
     let systemPoolCurrent = `system.${pool}.current`;
-    this.actor.update({ [systemPoolCurrent]: this.actor.system[pool].base });
+    await this.actor.update({ [systemPoolCurrent]: this.actor.system[pool].base });
   }
 
   async _handleShapeShift(event) {
@@ -381,7 +381,7 @@ export class GWActorSheet extends ActorSheet {
       newBase = this.actor.system.physical.base - 3;
       newCurrent = this.actor.system.physical.current - 3;
     }
-    this.actor.update({
+    await this.actor.update({
       "system.physical.base": newBase,
       "system.physical.current": newCurrent,
       "system.shapeshift": !this.actor.system.shapeshift,
@@ -395,7 +395,7 @@ export class GWActorSheet extends ActorSheet {
 
     let item = this.actor.items.get(id);
     console.log(item);
-    item.update({ "system.hasBoon": !item.system.hasBoon });
+    await item.update({ "system.hasBoon": !item.system.hasBoon });
   }
 
   async _reload(event) {
@@ -405,7 +405,7 @@ export class GWActorSheet extends ActorSheet {
 
     let item = this.actor.items.get(id);
     console.log(item);
-    item.update({ "system.clips.current": item.system.clips.base });
+    await item.update({ "system.clips.current": item.system.clips.base });
   }
   async removeClip(id) {
     let item = this.actor.items.get(id);
@@ -424,22 +424,22 @@ export class GWActorSheet extends ActorSheet {
     const dataset = element.dataset;
     const id = dataset.itemId;
 
-    this.actor.items.forEach((item) => {
+    this.actor.items.forEach(async (item) => {
       if (item._id == id) {
-        item.update({ "system.equipped": !item.system.equipped });
+        await item.update({ "system.equipped": !item.system.equipped });
       }
     });
   }
 
   async _rollInit(event) {
-    this.actor.rollInitiative();
+    await this.actor.rollInitiative();
   }
 
   async _rollDestinyDie(event) {
-    this.actor.rollDestinyDie();
+    await this.actor.rollDestinyDie();
   }
   async _rollAbility(event) {
-    this.actor.rollAbility(event);
+    await this.actor.rollAbility(event);
   }
   async _handleDescription(event) {
     console.log("Dave");
@@ -456,12 +456,12 @@ export class GWActorSheet extends ActorSheet {
   async _handleClearClass(event) {
     const element = event.currentTarget;
     const dataset = element.dataset;
-    this.actor.clearClass(dataset);
+    await this.actor.clearClass(dataset);
   }
   async _handleClearSpecies(event) {
     const element = event.currentTarget;
     const dataset = element.dataset;
-    this.actor.clearSpecies(dataset);
+    await this.actor.clearSpecies(dataset);
   }
 }
 

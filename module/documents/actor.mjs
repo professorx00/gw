@@ -294,35 +294,6 @@ export class GWActor extends Actor {
     // this.rollWandDamage(dataset, "Wand");
   }
 
-  // async rollWandDamage(dataset, title) {
-  //   let weaponFormula = dataset.formula;
-  //   console.log("Roll Weapon Damage");
-  //   if (weaponFormula !== "") {
-  //     const wandAttack = await newRoll("1d12").evaluate({ async: true });
-  //      let globalTN = game.settings.get("gw", "targets")[0].value;
-  //      let targetTN = 0;
-  //      let actorTargets = game.users.current.targets;
-  //      actorTargets.forEach((target) => {
-  //        const actor = game.actors.get(target.document.actorId);
-  //        if (targetTN < parseInt(actor.system.toHit)) {
-  //          targetTN = parseInt(actor.system.toHit);
-  //        }
-  //      });
-  //      let target = targetTN > 0 ? targetTN : globalTN;
-
-  //     // const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
-  //     // let rollHTML = await diceRoll.render();
-  //     // let actionText = title + " Damage";
-  //     // let rollResults = "";
-  //     // const rollData = {
-  //     //   rollType: actionText,
-  //     //   rollHTML: rollHTML,
-  //     //   rollResults: rollResults,
-  //     // };
-  //     // this.sendRolltoChat(rollHTML, rollData, diceRoll, "normalroll.hbs");
-  //   }
-  // }
-
   async rollDamage(dataset, actorData) {
     const dlgContent = await renderTemplate(
       "systems/gw/templates/dialogs/damageRolls.hbs",
@@ -401,12 +372,12 @@ export class GWActor extends Actor {
     }
   }
 
-  _updatePowerDie(value) {
-    this.update({ "system.attributes.powerDie": value });
+  async _updatePowerDie(value) {
+    await this.update({ "system.attributes.powerDie": value });
   }
-  _updateInitDie(value) {
+  async _updateInitDie(value) {
     console.log("init Value", value);
-    this.update({ "system.init": value });
+    await this.update({ "system.init": value });
   }
 
   async _rollPowerDie(dataset, actorData) {
@@ -557,12 +528,11 @@ export class GWActor extends Actor {
   }
 
   async clearClass(dataset, actorData) {
-    console.log(dataset);
     let doc = this.items.get(dataset.id);
     if (doc) {
       doc.delete();
     }
-    this.update({ "system.class": "" });
+    await this.update({ "system.class": "" });
   }
 
   async clearSpecies(dataset, actorData) {
@@ -571,6 +541,6 @@ export class GWActor extends Actor {
     if (doc) {
       doc.delete();
     }
-    this.update({ "system.species": "" });
+    await this.update({ "system.species": "" });
   }
 }

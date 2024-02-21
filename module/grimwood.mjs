@@ -74,7 +74,11 @@ Handlebars.registerHelper("toLowerCase", function (str) {
 });
 
 Handlebars.registerHelper("isWere", function (str) {
-  return str.includes("were") || str.includes("Were");
+  if (str && str !== "") {
+    return str.includes("were") || str.includes("Were");
+  } else {
+    return false;
+  }
 });
 
 Handlebars.registerHelper("isBane", function (str) {
@@ -82,15 +86,27 @@ Handlebars.registerHelper("isBane", function (str) {
 });
 
 Handlebars.registerHelper("isArcane", function (str) {
-  return str.includes("arcane") || str.includes("Arcane");
+  if (str && str !== "") {
+    return str.includes("arcane") || str.includes("Arcane");
+  } else {
+    return false;
+  }
 });
 
 Handlebars.registerHelper("isPhysical", function (str) {
-  return str.includes("physical") || str.includes("Physical");
+  if (str && str !== "") {
+    return str.includes("physical") || str.includes("Physical");
+  } else {
+    return false;
+  }
 });
 
 Handlebars.registerHelper("isMental", function (str) {
-  return str.includes("mental") || str.includes("Mental");
+  if (str && str !== "") {
+    return str.includes("mental") || str.includes("Mental");
+  } else {
+    return false;
+  }
 });
 
 Handlebars.registerHelper("targetNumber", function (str) {

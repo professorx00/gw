@@ -134,7 +134,8 @@
       "quantity": 1
     },
     "fighting-stances": {
-      "templates": ["base"]
+      "templates": ["base"],
+      "active": false
     },
     "magical-society": {
       "templates": ["base"],

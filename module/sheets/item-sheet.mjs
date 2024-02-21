@@ -81,37 +81,37 @@ export class BoilerplateItemSheet extends ItemSheet {
   }
 
   async _hasBoon() {
-    this.object.update({ "system.hasBoon": !this.object.system.hasBoon });
+    await this.object.update({ "system.hasBoon": !this.object.system.hasBoon });
   }
 
   async _isRanged() {
-    this.object.update({
+    await this.object.update({
       "system.isRangedWeapon": !this.object.system.isRangedWeapon,
     });
   }
 
   async _oncePerScene() {
-    this.object.update({ "system.scene": !this.object.system.scene });
+    await this.object.update({ "system.scene": !this.object.system.scene });
   }
 
   async _oncePerSession() {
-    this.object.update({ "system.session": !this.object.system.session });
+    await this.object.update({ "system.session": !this.object.system.session });
   }
 
   async _poolTypeSelect(event) {
     const element = event.currentTarget;
     const value = element.value;
-    this.object.update({ "system.pool": value });
+    await this.object.update({ "system.pool": value });
   }
 
   async _lhmTypeSelect(event) {
     const element = event.currentTarget;
     const value = element.value;
-    this.object.update({ "system.lmh": value });
+    await this.object.update({ "system.lmh": value });
   }
   async _rangeSelect(event) {
     const element = event.currentTarget;
     const value = element.value;
-    this.object.update({ "system.range": value });
+    await this.object.update({ "system.range": value });
   }
 }
