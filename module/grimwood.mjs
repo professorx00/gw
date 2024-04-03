@@ -129,7 +129,7 @@ Hooks.once("ready", async function () {
 });
 
 Hooks.on("preCreateChatMessage", async (message) => {
-  console.log("preCreate", message);
+  // console.log("preCreate", message);
 });
 
 Hooks.on("preUpdateChatMessage", (message, data) => {

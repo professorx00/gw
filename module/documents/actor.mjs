@@ -158,7 +158,6 @@ export class GWActor extends Actor {
       hasBane = hasBane + 1;
     }
     let boonsBanes = hasBane * -1 + hasBoon;
-    console.log("boonBanes", hasBane, hasBoon, boonsBanes);
     let rollInfo = {
       ...dataset,
       target: target,
@@ -439,7 +438,7 @@ export class GWActor extends Actor {
 
   async weaponCallback(html, rollInfo) {
     let boon = html.find('[name="boonbane"]')[0].value.trim();
-    let numberOfDice = Math.abs(boon);
+    let numberOfDice = Math.abs(boon)+1;
     let rollText = numberOfDice + "d12";
     if (boon < 0) {
       rollText = rollText + "kl";
@@ -450,7 +449,6 @@ export class GWActor extends Actor {
     if (boon == 0) {
       rollText = "1d12";
     }
-
     const diceRoll = await new Roll(rollText).evaluate({ async: true });
     let rollResults = "";
     const rollData = {
