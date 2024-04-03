@@ -299,7 +299,7 @@ export class GWActor extends Actor {
       dataset
     );
     let title = game.i18n.localize("GW.Roll");
-    let weaponFormula = dataset.formula;
+    let weaponFormula = dataset.formula + actorData.damageBonus;
     const dlg = new Dialog(
       {
         title: title,

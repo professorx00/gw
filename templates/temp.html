@@ -1,0 +1,112 @@
+<div class="profile">
+
+    <div class="statHolder">
+      <div class="stat1">
+        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>  
+      </div>
+      <div class="stat2">
+        <label for="system.class" class="resource-label grid-span-1">Class</label>
+        <div class="flexrow">
+          <input type="text" name="system.class" value="{{system.class}}" class="" />
+          <button class="clearClass headerButton" data-id="{{classId}}"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+      <div class="stat3">
+          <label for="system.species" class="resource-label grid-span-1">Species</label>
+          <div class="flexrow ">
+            <input type="text" name="system.species" value="{{system.species}}" />
+            <button class="clearSpecies headerButton" data-id="{{speciesId}}"><i class="fa-solid fa-trash"></i></button>
+            {{#if (isWere system.species)}}<button class="shapeShift headerButton"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
+          </div>
+      </div>
+      <label for="system.attributes.level.value" class="resource-label grid-span-1">Level</label>
+      <input type="text" name="system.attributes.level.value" value="{{system.attributes.level.value}}" data-dtype="Number" class="grid-span-2"/>
+
+      <label for="system.movement" class="resource-label grid-span-1">Movement</label>
+      <input type="text" name="system.movement" value="{{system.movement}}" class="grid-span-3" data-dtype="Number" />
+
+
+      <label for="system.toHit" class="resource-label grid-span-1">To Hit</label>
+      <input type="text" name="system.toHit" value="{{system.toHit}}" class="grid-span-2" />
+
+      <label for="system.init" class="resource-label grid-span-1">Initiative</label>
+      <select name="init" class="initDie grid-span-3 center-content-row">
+        {{#select system.init}}
+          <option value="d4">d4</option>
+          <option value="d6">d6</option>
+          <option value="d8">d8</option>
+          <option value="d10">d10</option>
+          <option value="d12">d12</option>
+        {{/select}}  
+      </select>
+      <button class="rollInit grid-span-1 center-content-row"><i class="fa-regular fa-dice-d12"></i></button>
+
+      <div class="stat8">
+        <div class="resource grid-span-4 flex-group-center boxed">
+          <label for="system.arcane.current" class="pool-point-label-arcane ">Arcane</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.arcane.current" value="{{system.arcane.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.arcane.base" value="{{system.arcane.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+        <div class="defense flexrow flex-center flex-between">
+            <button class="arcane-roll rollCheck"  data-roll-type="cast"  data-powertype="arcane" data-current="{{system.arcane.current}}" data-label="arcane"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <div>
+              <span>Defense</span>
+              <input type="text" name="system.arcane.def" data-label="def" value="{{system.arcane.def}}" data-dtype="Number"/>
+            </div>
+          </div>
+          <div>
+            <button class="rollCheck attack-button arcane-back" data-roll-type="attack" data-powertype="arcane" data-current="{{system.arcane.current}}" >Attack</button>
+          </div>
+          <div>
+            <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="arcane" data-current="{{system.arcane.current}}" >Cast</button>
+          </div>
+        </div>
+        <div class="resource grid-span-4 flex-group-center boxed">
+          <label for="system.physical.current" class="pool-point-label-physical ">Physical</label>
+          <div class="resource-content flexrow flex-center flex-between">
+            <input type="text" name="system.physical.current" value="{{system.physical.current}}" data-dtype="Number"/>
+            <span> / </span>
+            <input type="text" name="system.physical.base" value="{{system.physical.base}}" data-dtype="Number"/>
+            <button class="resetPool" data-pool="physical"><i class="fa-solid fa-repeat"></i></button>
+          </div>
+          <div class="defense flexrow flex-center flex-between">
+            <button class="physical-roll rollCheck"  data-roll-type="cast"  data-powertype="physical" data-current="{{system.physical.current}}" data-label="physical"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <div>
+              <span>Defense</span>
+              <input type="text" name="system.physical.def" data-label="def" value="{{system.physical.def}}" data-dtype="Number"/>
+            </div>
+          </div>
+           <div>
+            <button class="rollCheck attack-button physical-back"  data-roll-type="attack" data-powertype="physical" data-current="{{system.physical.current}}">Attack</button>
+          </div>
+          <div>
+            <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="physical" data-current="{{system.physical.current}}">Cast</button>
+          </div>
+        </div>
+        <div class="resource grid-span-4 flex-group-center  boxed">
+          <label for="system.mental.current" class="pool-point-label-mental ">Mental</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.mental.current" value="{{system.mental.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.mental.base" value="{{system.mental.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="mental"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+        <div class="defense flexrow flex-center flex-between">
+            <button class="mental-roll rollCheck"  data-roll-type="cast" data-powertype="mental" data-current="{{system.mental.current}}" data-powertype="mental" data-label="mental"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+            <div>
+              <span>Defense</span>
+              <input type="text" name="system.mental.def" data-label="def" value="{{system.mental.def}}" data-dtype="Number"/>
+            </div>
+          </div>
+           <div>
+            <button class="rollCheck attack-button mental-back" data-roll-type="attack" data-powertype="mental"  data-current="{{system.mental.current}}">Attack</button>
+          </div>
+          <div>
+            <button class="rollCheck sheet-button" data-roll-type="cast" data-powertype="mental"  data-current="{{system.mental.current}}">Cast</button>
+          </div>
+        </div>
+      </div>
+    </div>

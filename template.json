@@ -30,6 +30,7 @@
     },
     "character": {
       "templates": ["base"],
+      "damageBonus": 0,
       "attributes": {
         "level": {
           "value": 1

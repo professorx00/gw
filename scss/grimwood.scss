@@ -240,3 +240,91 @@
   text-align: center;
   width: 50%;
 }
+.movement{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+  background-color: #76c02f;
+}
+.stats{
+  display: flex;
+  flex-direction: column;
+}
+
+.bg-red{
+  background-color: #C02F2F;
+}
+
+.justify-left{
+  justify-content: left;
+  align-items: center;
+}
+.movementInput{
+  width: 3em;
+  background-color: #d39d9d;
+  color:#76c02f
+}
+
+.ProfileSide{
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  min-width: 25%;
+  max-width: 25%;
+}
+
+.StatSide{
+  display: flex;
+  flex-direction: column;
+  justify-content:flex-start;
+  padding: 0.5rem;
+}
+
+.powerDieLabel{
+  min-width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.statName{
+  padding: 1rem;
+}
+.statClassAndSpecies{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 100%;
+  padding: 1rem;
+}
+
+.statClass{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.statSpecies{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.statMain{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  min-width: 100%;
+  align-items: center;
+  padding: 1rem;
+}
+.statIntiative{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.statPoolPoints{
+  display: flex;
+  flex-direction: row;
+   margin: 1rem;
+}

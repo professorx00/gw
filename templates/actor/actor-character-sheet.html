@@ -2,10 +2,10 @@
 
   {{!-- Sheet Header --}}
   <header class="sheet-header">
-    <div class="profile">
-      <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    <div class="ProfileSide">
+       <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
       <div class="flex-center flex-group-center ">
-        <label for="system.attributes.powerDie" class="resource-label">Power Die</label>
+        <label for="system.attributes.powerDie" class="powerDieLabel">Power Die</label>
         {{system.attributes.powerDie}}
         <select name="powerDie" class="powerDie">
           {{#select system.attributes.powerDie}}
@@ -31,49 +31,60 @@
       </div>
       {{/if}}
     </div>
-    <div class="grid grid-12col">
-      <h1 class="charname grid-span-12"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
-      <div class="grid-span-6 grid grid-6col">
-          <label for="system.class" class="resource-label grid-span-1">Class</label>
-          <div class="flexrow grid-span-5">
-            <input type="text" name="system.class" value="{{system.class}}" class="grid-span-5" />
-            <button class="clearClass headerButton" data-id="{{classId}}"><i class="fa-solid fa-trash"></i></button>
+    <div class="StatSide">
+      <div class="statName">
+        <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>  
+      </div>
+      <div class="statClassAndSpecies">
+          <div class="statClass">
+            <label for="system.class" class="resource-label">Class</label>
+            <div class="flexrow">
+              <input type="text" name="system.class" value="{{system.class}}" class="" />
+              <button class="clearClass headerButton" data-id="{{classId}}"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+          <div class="statSpecies">
+             <label for="system.species" class="resource-label">Species</label>
+              <div class="flexrow ">
+                <input type="text" name="system.species" value="{{system.species}}" />
+                <button class="clearSpecies headerButton" data-id="{{speciesId}}"><i class="fa-solid fa-trash"></i></button>
+                {{#if (isWere system.species)}}<button class="shapeShift headerButton"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
+              </div>
+          </div>
+          <div class="statIntiative">
+            <label for="system.init" class="resource-label grid-span-1">Initiative</label>
+            <select name="init" class="initDie grid-span-3 center-content-row">
+              {{#select system.init}}
+                <option value="d4">d4</option>
+                <option value="d6">d6</option>
+                <option value="d8">d8</option>
+                <option value="d10">d10</option>
+                <option value="d12">d12</option>
+              {{/select}}  
+            </select>
+            <button class="rollInit grid-span-1 center-content-row"><i class="fa-regular fa-dice-d12"></i></button>
           </div>
       </div>
-      <div class="grid-span-6 grid grid-6col">
-          <label for="system.species" class="resource-label grid-span-1">Species</label>
-          <div class="flexrow grid-span-5">
-            <input type="text" name="system.species" value="{{system.species}}" />
-            <button class="clearSpecies headerButton" data-id="{{speciesId}}"><i class="fa-solid fa-trash"></i></button>
-            {{#if (isWere system.species)}}<button class="shapeShift headerButton"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
-          </div>
+      <div class="statMain">
+        <div class="statLevel">
+           <label for="system.attributes.level.value" class="resource-label">Level</label>
+          <input type="text" name="system.attributes.level.value" value="{{system.attributes.level.value}}" data-dtype="Number" class="grid-span-2"/>
+        </div>
+        <div class="statMovement">
+          <label for="system.movement" class="resource-label">Movement</label>
+          <input type="text" name="system.movement" value="{{system.movement}}" data-dtype="Number" />
+        </div>
+        <div class="statDamage">
+          <label for="system.damageBonus" class="resource-label ">Damage Bonus</label>
+          <input type="text" name="system.damageBonus" value="{{system.damageBonus}}"  />
+        </div>
+        <div class="statToHit">
+          <label for="system.toHit" class="resource-label ">To Hit</label>
+          <input type="text" name="system.toHit" value="{{system.toHit}}"  />
+        </div>
       </div>
-      <div class="grid-span-2 grid grid-2col">
-          <label for="system.attributes.level.value" class="resource-label grid-span-1 center-content-row">Level</label>
-        <input type="text" name="system.attributes.level.value" value="{{system.attributes.level.value}}" data-dtype="Number" class="grid-span-1 center-content-row"/>
-      </div>
-      <div class="grid-span-3 grid grid-3col">
-          <label for="system.movement" class="resource-label grid-span-2 center-content-row">Movement</label>
-          <input type="text" name="system.movement" value="{{system.movement}}" class="grid-span-1 center-content-row" data-dtype="Number" />
-      </div>
-      <div class="grid-span-2 grid grid-2col">
-          <label for="system.toHit" class="resource-label grid-span-1 center-content-row">To Hit</label>
-          <input type="text" name="system.toHit" value="{{system.toHit}}" class="grid-span-1 center-content-row" />
-      </div>
-      <div class="grid-span-5 grid grid-5col">
-          <label for="system.init" class="resource-label grid-span-1 center-content-row">Initiative</label>
-          <select name="init" class="initDie grid-span-3 center-content-row">
-            {{#select system.init}}
-              <option value="d4">d4</option>
-              <option value="d6">d6</option>
-              <option value="d8">d8</option>
-              <option value="d10">d10</option>
-              <option value="d12">d12</option>
-            {{/select}}  
-          </select>
-          <button class="rollInit grid-span-1 center-content-row"><i class="fa-regular fa-dice-d12"></i></button>
-      </div>
-      <div class="resources grid-span-12 grid grid-12col">
+      
+      <div class="statPoolPoints">
         <div class="resource grid-span-4 flex-group-center boxed">
           <label for="system.arcane.current" class="pool-point-label-arcane ">Arcane</label>
           <div class="resource-content flexrow flex-center flex-between">
