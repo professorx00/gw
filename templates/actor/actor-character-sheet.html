@@ -5,10 +5,10 @@
     <div class="ProfileSide">
        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
       <div class="flex-center flex-group-center ">
-        <label for="system.attributes.powerDie" class="powerDieLabel">Power Die</label>
-        {{system.attributes.powerDie}}
+        <label for="system.powerDie" class="powerDieLabel">Power Die</label>
+        {{system.powerDie}}
         <select name="powerDie" class="powerDie">
-          {{#select system.attributes.powerDie}}
+          {{#select system.powerDie}}
             <option value="d4">d4</option>
             <option value="d6">d6</option>
             <option value="d8">d8</option>
@@ -16,7 +16,7 @@
             <option value="d12">d12</option>
           {{/select}}  
         </select>
-        <button class="rollPowerDie" data-roll-type="PowerDie" data-powerDie="{{system.attributes.powerDie}}">Roll Power Die <i class="fa-regular fa-dice-d12"></i></button>
+        <button class="rollPowerDie" data-roll-type="PowerDie" data-powerDie="{{system.powerDie}}">Roll Power Die <i class="fa-regular fa-dice-d12"></i></button>
       </div>
       <div class="flexrow flex-center flex-group-center"><h3>Destiny Die</h3></div>
       <div class="flexrow flex-center flex-group-center">
@@ -50,19 +50,6 @@
                 <button class="clearSpecies headerButton" data-id="{{speciesId}}"><i class="fa-solid fa-trash"></i></button>
                 {{#if (isWere system.species)}}<button class="shapeShift headerButton"><i class="fa-brands fa-wolf-pack-battalion"></i></button>{{/if}}   
               </div>
-          </div>
-          <div class="statIntiative">
-            <label for="system.init" class="resource-label grid-span-1">Initiative</label>
-            <select name="init" class="initDie grid-span-3 center-content-row">
-              {{#select system.init}}
-                <option value="d4">d4</option>
-                <option value="d6">d6</option>
-                <option value="d8">d8</option>
-                <option value="d10">d10</option>
-                <option value="d12">d12</option>
-              {{/select}}  
-            </select>
-            <button class="rollInit grid-span-1 center-content-row"><i class="fa-regular fa-dice-d12"></i></button>
           </div>
       </div>
       <div class="statMain">

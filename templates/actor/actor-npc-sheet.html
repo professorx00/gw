@@ -8,16 +8,16 @@
         <h1 class="charname grid-span-2"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
       </div>
       
-      <div class="resources grid grid-3col">
+      <div class="resources grid grid-4col">
         <div class="toHit">
-          <label for="system.toHit" class="resource-label">To Hit</label>
+          <label for="system.toHit" class="resource-label">TN</label>
           <input type="text" name="system.toHit" class="system.toHit" value="{{system.toHit}}" data-dtype="Number"/>
         </div>
-        <div class="">
-            <label for="system.init" class="resource-label">Initiative</label>
-            {{system.init}}
-             <select name="init" class="initDie">
-          {{#select system.init}}
+        <div class="powerDieContainer">
+            <label for="system.powerDie" class="resource-label">Power Die</label>
+            {{system.powerDie}}
+             <select name="powerDie" class="powerDie">
+          {{#select system.powerDie}}
             <option value="d4">d4</option>
             <option value="d6">d6</option>
             <option value="d8">d8</option>
@@ -26,7 +26,26 @@
           {{/select}}  
         </select>
         </div>
+        <div class="movementContainer">
+          <label for="system.movement" class="resource-label">Movement</label>
+          <input type="text" name="system.movement" class="system.movement" value="{{system.movement}}" data-dtype="Number"/>
+        </div>
+        <div class="numAttackContainer">
+          <label for="system.numAttacks" class="resource-label">Number of Attacks</label>
+          <input type="text" name="system.numAttacks" class="system.numAttacks" value="{{system.numAttacks}}" data-dtype="Number"/>
+        </div>
         
+      </div>
+      <div class="resource grid-span-12 grid grid-12col">
+        <div class="grid-span-3">
+            <button class="rollCheck attack-button arcane-back" data-roll-type="NPC" data-powertype="power" data-current="{{system.power.current}}" >Attack</button>
+        </div>
+        <div class="grid-span-3">
+            <button class="rollCheck sheet-button" data-roll-type="NPC" data-powertype="power" data-current="{{system.power.current}}" >Cast</button>
+        </div>
+        <div class="grid-span-3">
+           <button class="arcane-roll rollCheck"  data-roll-type="NPC"  data-powertype="power" data-current="{{system.power.current}}" data-label="power"><span class="checkLabel">Check</span><i class="fa-regular fa-dice-d12"></i></button>
+        </div>
       </div>
       <div class="resources grid-span-12 grid grid-12col">
         <div class="resource grid-span-6 flex-group-center boxed">

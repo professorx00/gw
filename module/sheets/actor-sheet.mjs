@@ -375,11 +375,11 @@ export class GWActorSheet extends ActorSheet {
     let newBase;
     let newCurrent;
     if (!this.actor.system.shapeshift) {
-      newBase = this.actor.system.physical.base + 3;
-      newCurrent = this.actor.system.physical.current + 3;
+      newBase = this.actor.system.physical.base + 2;
+      newCurrent = this.actor.system.physical.current + 2;
     } else {
-      newBase = this.actor.system.physical.base - 3;
-      newCurrent = this.actor.system.physical.current - 3;
+      newBase = this.actor.system.physical.base - 2;
+      newCurrent = this.actor.system.physical.current - 2;
     }
     await this.actor.update({
       "system.physical.base": newBase,

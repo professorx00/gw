@@ -1,15 +1,15 @@
 export default class GWCombatant extends Combatant {
   _getInitiativeFormula = function () {
-    console.log(this.actor);
-    return `1d12+1${this.actor.system.init}`;
+    let num = Math.random()
+    return `1d13+${this.actor.system.movement}+${num}`;
   };
 
   _onCreate(data, options, userId) {
     super._onCreate(data, options, userId);
 
-    // if (this.isOwner) {
-    //   this.rollInitiative();
-    // }
+    if (this.isOwner) {
+      this.rollInitiative();
+    }
   }
   _rollInitiative(formula) {
     console.log(formula);

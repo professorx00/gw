@@ -7,23 +7,24 @@
         "biography": "",
         "DDie": 1,
         "StartingDDie": 1,
-        "movement": 30,
+        "movement": 3,
         "powerDie": "d4",
         "shapeshift": false,
+        "numAttacks": 1,
         "init": "d4",
         "arcane": {
-          "base": 8,
-          "current": 8,
+          "base": 2,
+          "current": 2,
           "def": 0
         },
         "physical": {
-          "base": 8,
-          "current": 8,
+          "base": 2,
+          "current": 2,
           "def": 0
         },
         "mental": {
-          "base": 8,
-          "current": 8,
+          "base": 2,
+          "current": 2,
           "def": 0
         }
       }
@@ -51,21 +52,20 @@
         "current": 10
       },
       "weakness": [],
-      "resistance": [],
-      "toHit": 7
+      "resistance": []
     },
     "vehicle": {
       "biography": "",
       "toHit": 8,
-      "actionPoints": 10,
-      "movement": 3,
-      "passengers": 4,
-      "turningRadius": 2,
+      "movement": 2,
       "init": 1,
-      "pools": {
-        "current": 10,
-        "base": 10,
-        "def": 0
+      "armor": {
+        "current": 0,
+        "base": 0
+      },
+      "vpool": {
+        "current": 0,
+        "base": 0
       }
     }
   },
