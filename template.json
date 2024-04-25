@@ -77,6 +77,7 @@
       "defense",
       "consumable",
       "feat",
+      "flaws",
       "item",
       "vehicle-parts",
       "fighting-stances",
@@ -123,6 +124,14 @@
       "pool": "physical"
     },
     "feat": {
+      "templates": ["base"],
+      "position": "side",
+      "source": "",
+      "pool": "",
+      "formula": "",
+      "passive": true
+    },
+    "flaws": {
       "templates": ["base"],
       "position": "side",
       "source": "",

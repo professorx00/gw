@@ -55,6 +55,7 @@ export class GWActorSheet extends ActorSheet {
       this._prepareItems(context, "npc", actorData);
     }
     if (actorData.type == "vehicle") {
+  
       this._prepareItems(context, "vehicle", actorData);
     }
 
@@ -90,9 +91,15 @@ export class GWActorSheet extends ActorSheet {
     const abilities = [];
     const classes = [];
     const species = [];
-    const arcaneCurrent = context.system.arcane.current;
-    const physicalCurrent = context.system.physical.current;
-    const mentalCurrent = context.system.mental.current;
+    let arcaneCurrent;
+    let physicalCurrent;
+    let mentalCurrent;
+    const flaws = [];
+    if (type != "vehicle") {
+      arcaneCurrent = context.system.arcane.current;
+      physicalCurrent = context.system.physical.current;
+      mentalCurrent = context.system.mental.current;
+    }
 
     // Iterate through items, allocating to containers
     for (let i of context.items) {
@@ -135,6 +142,12 @@ export class GWActorSheet extends ActorSheet {
           classes.push(i);
         }
       }
+      if (i.type === "flaws") {
+        if (flaws.length <= 0) {
+          console.log("we have a flaw we have a flaw see no one cares");
+          flaws.push(i);
+        }
+      }
       if (i.type === "species") {
         if (species.length <= 0) {
           species.push(i);
@@ -145,7 +158,6 @@ export class GWActorSheet extends ActorSheet {
         feats.push(i);
       }
     }
-    console.log(classes);
     if (classes.length > 0) {
       context.system.class = classes[0].name;
       context.classId = classes[0]._id;
@@ -172,6 +184,7 @@ export class GWActorSheet extends ActorSheet {
     context.arcane = arcaneCurrent;
     context.physical = physicalCurrent;
     context.mental = mentalCurrent;
+    context.flaws = flaws;
   }
 
   /* -------------------------------------------- */
@@ -446,6 +459,7 @@ export class GWActorSheet extends ActorSheet {
     const element = event.currentTarget;
     let name = element.dataset.item + "_description";
     const el = document.getElementById(name);
+    console.log(el)
     if (el.classList.contains("hidden")) {
       el.classList.remove("hidden");
     } else {
