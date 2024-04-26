@@ -7,6 +7,7 @@
     <div class="item-formula">Boon</div>
     <div class="item-formula">Damage</div>
     <div class="item-formula">Range</div>
+    <div class="item-formula">Critical</div>
     <div class="item-formula">Clip</div>
     <div class="item-formula">Equipped</div>
     <div class="item-controls">
@@ -17,7 +18,7 @@
     <li class="item flexrow" data-item-id="{{item._id}}">
       <div class="item-name">
         <div class="item-image">
-          <a class="rollWeaponAttack" data-powertype="{{item.system.pool}}" data-roll-type="weapon" data-hasBoon="{{item.system.hasBoon}}" data-isranged="{{item.system.isRangedWeapon}}" data-item-id="{{item._id}}" data-formula="{{item.system.formula}}"><img src="systems/gw/assets/weapon.png" title="{{item.name}}" width="24" height="24"/></a> <!--Attack-->
+          <a class="rollWeaponAttack" data-powertype="{{item.system.pool}}" data-roll-type="weapon" data-hasBoon="{{item.system.hasBoon}}" data-crit="{{item.system.crit}}" data-isranged="{{item.system.isRangedWeapon}}" data-item-id="{{item._id}}" data-formula="{{item.system.formula}}"><img src="systems/gw/assets/weapon.png" title="{{item.name}}" width="24" height="24"/></a> <!--Attack-->
         </div>
         <div class="item-image">
           <a class="rollDamage" data-power-type="{{item.system.pool}}" data-roll-type="weapon" data-formula="{{item.system.formula}}"><img src="systems/gw/assets/explosion.png" title="{{item.name}}" width="24" height="24"/></a> <!--Damage-->
@@ -31,6 +32,7 @@
         {{item.system.formula}}
       </div>
       <div class="item-formula item-prop">{{item.system.range}}</div>
+      <div class="item-formula item-prop">{{item.system.crit}}</div>
       {{#if item.system.isRangedWeapon}}
       <div class="item-formula item-prop">{{item.system.clips.current}}<a class="reload" data-item-id="{{item._id}}"><i class="fa-solid fa-rotate-right"></i></a></div>
       {{else}}

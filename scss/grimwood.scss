@@ -48,6 +48,78 @@
   background-color: red !important;
 }
 
+.critical{
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.2px;
+  word-spacing: -1px;
+  color: #00ff08;
+  font-weight: 700;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+  background: #000;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.failure{
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.2px;
+  word-spacing: -1px;
+  color: #ff0000;
+  font-weight: 700;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+  background: #000000;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.dicefailure{
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.2px;
+  word-spacing: -1px;
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+  background: #ff0000;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.dicesuccess{
+  font-family: Impact, Charcoal, sans-serif;
+  font-size: 12px;
+  letter-spacing: -0.2px;
+  word-spacing: -1px;
+  color: #000;
+  font-weight: 700;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+  background: #00ff37;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
 .pool-point-label-arcane{
   display: flex;
   max-width: 100%;

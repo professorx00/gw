@@ -131,6 +131,10 @@ export class GWActor extends Actor {
 
   async rolling(dataset) {
     let globalTN = game.settings.get("gw", "targets")[0].value;
+    let crit = 12;
+    if (dataset.hasOwnProperty("crit")) {
+      crit = dataset.crit;
+    }
     let targetTN = 0;
     let actorTargets = game.users.current.targets;
     actorTargets.forEach((target) => {
@@ -164,6 +168,7 @@ export class GWActor extends Actor {
       pool: pool,
       boonsBanes: boonsBanes,
       current: current,
+      crit: crit,
     };
 
     const weaponRollContent = await renderTemplate(
@@ -427,7 +432,7 @@ export class GWActor extends Actor {
       `systems/gw/templates/chatcards/${templateName}`,
       rollData
     );
-
+    
     const chatOptions = {
       type: CONST.CHAT_MESSAGE_TYPES.ROLL,
       roll: diceRoll,
@@ -439,7 +444,8 @@ export class GWActor extends Actor {
 
   async weaponCallback(html, rollInfo) {
     let boon = html.find('[name="boonbane"]')[0].value.trim();
-    let numberOfDice = Math.abs(boon)+1;
+    let crit = rollInfo.crit;
+    let numberOfDice = Math.abs(boon) + 1;
     let rollText = numberOfDice + "d12";
     if (boon < 0) {
       rollText = rollText + "kl";
@@ -460,12 +466,15 @@ export class GWActor extends Actor {
       rollText: rollText,
       ...rollInfo,
     };
-    if (diceRoll._total == 1) {
+    if (diceRoll._total >= crit) {
+      rollData.rollHTML = rollData.rollHTML + `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`
+
       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
-    } else if (diceRoll._total == 12) {
-      rollData.success = true;
-      rollData.actor = this._id;
-      rollData.rollHTML = rollData.rollHTML + "<h1>CRITICAL!!</h1>";
+    } else if (diceRoll._total == 1) {
+      rollData.rollHTML =
+        rollData.rollHTML +
+        `<div class="critical"><h1>CRITICAL FAILURE</h1></div>`;
+
       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
     } else {
       const usePPContent = await renderTemplate(
@@ -486,13 +495,26 @@ export class GWActor extends Actor {
           cancel: {
             icon: "<i class='fas fa-times'></i>",
             label: "cancel",
-            callback: (html) =>
-              this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs"),
+            callback: (html) => {
+              if (rollData.success) {
+                rollData.rollHTML =
+                  rollData.rollHTML +
+                  `<div class="dicesuccess"><h1>SUCCESS</h1></div>`;
+              }
+              if (!rollData.success) {
+                rollData.rollHTML =
+                  rollData.rollHTML +
+                  `<div class="dicefailure"><h1>FAILURE</h1></div>`;
+              }
+              this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+            },
           },
         },
       });
       ppdlg.render(true);
     }
+
+    
   }
 
   async usePoolPoints(html, rollData, diceRoll) {
@@ -519,9 +541,26 @@ export class GWActor extends Actor {
       rollData.rollText + "+" + poolPoints
     );
 
-    if (newTotal == 12) {
-      rollData.rollHTML = rollData.rollHTML + "<h1>CRITICAL!!</h1>";
-    }
+     if (newTotal >= rollData.crit) {
+       rollData.rollHTML =
+         rollData.rollHTML +
+         `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`;
+
+       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+     } else if (newTotal == 1) {
+       rollData.rollHTML =
+         rollData.rollHTML +
+         `<div class="critical"><h1>CRITICAL FAILURE</h1></div>`;
+
+       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+     } else if (newTotal >= rollData.target) {
+       rollData.rollHTML =
+         rollData.rollHTML +
+         `<div class="dicesuccess"><h1>Success</h1></div>`;
+     } else {
+       rollData.rollHTML =
+         rollData.rollHTML + `<div class="dicefailure"><h1>Failure</h1></div>`;
+     }
 
     this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
   }

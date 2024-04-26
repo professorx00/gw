@@ -85,6 +85,12 @@
       </div>
       {{/if}}
       <div class="resource">
+        <label class="resource-label">Critical</label>
+        <div class="clips">
+         <input type="text" name="system.crit" value="{{system.crit}}" data-dtype="Number"/>
+        </div>
+      </div>
+      <div class="resource">
         <label class="resource-label">Has Boon</label>
         <input type="checkbox" name="hasBoon" class="hasBoon" {{checked system.hasBoon}}>
       </div>
