@@ -145,9 +145,11 @@
   {{!-- Sheet Tab Navigation --}}
   <nav class="sheet-tabs tabs" data-group="primary">
     {{!-- Default tab is specified in actor-sheet.mjs --}}
-    <a class="item" data-tab="features">Features</a>
-    <a class="item" data-tab="flaws">Flaws</a>
     <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="features">Features</a>
+    <a class="item" data-tab="fighting-stances">Fighting Stances</a>
+    <a class="item" data-tab="flaws">Flaws</a>
+    <a class="item" data-tab="magical-society">Magical Societies</a>
     <a class="item" data-tab="items">Items</a>
     <!-- <a class="item" data-tab="spells">Spells</a> -->
     <a class="item" data-tab="effects">Effects</a>
@@ -168,6 +170,18 @@
       </section>
     </div>
 
+    {{!-- Owned Fighting-stances Tab --}}
+    <div class="tab features" data-group="primary" data-tab="fighting-stances">
+      <section class="grid grid-3col">
+        {{!-- For the main features list, span the right two columns --}}
+        <section class="main grid-span-3">
+          {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
+          {{> "systems/gw/templates/actor/parts/actor-fighting-stances.html" }}
+        </section>
+
+      </section>
+    </div>
+
     {{!-- Owned flaws Tab --}}
     <div class="tab flaws" data-group="primary" data-tab="flaws">
       <section class="grid grid-3col">
@@ -175,6 +189,18 @@
         <section class="main grid-span-3">
           {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
           {{> "systems/gw/templates/actor/parts/actor-flaws.html" }}
+        </section>
+
+      </section>
+    </div>
+
+     {{!-- Owned Magical Societies Tab --}}
+    <div class="tab flaws" data-group="primary" data-tab="magical-society">
+      <section class="grid grid-3col">
+        {{!-- For the main features list, span the right two columns --}}
+        <section class="main grid-span-3">
+          {{!-- This is a Handlebars partial. They're stored in the `/parts` folder next to this sheet, and defined in module/helpers/templates.mjs --}}
+          {{> "systems/gw/templates/actor/parts/actor-magical-society.html" }}
         </section>
 
       </section>

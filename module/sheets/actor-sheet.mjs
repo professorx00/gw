@@ -55,7 +55,6 @@ export class GWActorSheet extends ActorSheet {
       this._prepareItems(context, "npc", actorData);
     }
     if (actorData.type == "vehicle") {
-  
       this._prepareItems(context, "vehicle", actorData);
     }
 
@@ -379,7 +378,9 @@ export class GWActorSheet extends ActorSheet {
     const dataset = element.dataset;
     let pool = dataset.pool;
     let systemPoolCurrent = `system.${pool}.current`;
-    await this.actor.update({ [systemPoolCurrent]: this.actor.system[pool].base });
+    await this.actor.update({
+      [systemPoolCurrent]: this.actor.system[pool].base,
+    });
   }
 
   async _handleShapeShift(event) {
@@ -455,11 +456,9 @@ export class GWActorSheet extends ActorSheet {
     await this.actor.rollAbility(event);
   }
   async _handleDescription(event) {
-    console.log("Dave");
     const element = event.currentTarget;
     let name = element.dataset.item + "_description";
     const el = document.getElementById(name);
-    console.log(el)
     if (el.classList.contains("hidden")) {
       el.classList.remove("hidden");
     } else {
