@@ -306,7 +306,7 @@ export class GWActor extends Actor {
     let title = game.i18n.localize("GW.Roll");
     let weaponFormula = dataset.formula;
     if (actorData.type === "character") {
-      weaponFormula = weaponFormula + "+" + actorData.system.damageBonus;
+      weaponFormula = weaponFormula;
     }
     const dlg = new Dialog(
       {
@@ -337,6 +337,7 @@ export class GWActor extends Actor {
       let CritDie = html.find('[name="critCheck"]')[0].checked;
       let rollResults = "";
       let actionText = "Damage";
+      console.log("weapon Formula", weaponFormula);
       if (powerDie && !CritDie) {
         weaponFormula = weaponFormula + "+1" + actorData.system.powerDie;
       }
@@ -345,12 +346,15 @@ export class GWActor extends Actor {
           weaponFormula +
           "+" +
           weaponFormula +
-          "+2" +
+          "+" +
+          "2" +
           actorData.system.powerDie;
       }
       if (!powerDie && CritDie) {
         weaponFormula = weaponFormula + "+" + weaponFormula;
       }
+
+      weaponFormula = weaponFormula + "+" + actorData.system.damageBonus;
       const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
       let rollHTML = await diceRoll.render();
       const rollData = {
