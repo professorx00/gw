@@ -8,7 +8,8 @@ import { TargetContainer } from "../app/targetnumber.mjs";
 export class GWActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    console.log(foundry.utils);
+    return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["gw", "sheet", "actor"],
       template: "systems/gw/templates/actor/actor-sheet.html",
       width: 900,

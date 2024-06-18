@@ -3,7 +3,7 @@ import { i18n } from "../utils/utils.js";
 export class TimerTargetContainer extends Application {
   // ======= STATIC =======
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/gw/templates/app/timer-target-container.html",
       classes: ["target-container"],
       title: "Grimwood City Target", // Needed otherwise it can break
@@ -42,7 +42,7 @@ export class TimerTargetContainer extends Application {
   // ======= ADD / DELETE / UPDATE =======
   addTarget(options = {}) {
     this.targets = this.targets.concat([
-      mergeObject(
+      foundry.utils.mergeObject(
         { value: 10, isEasy: false, isHard: false, name: "" },
         options
       ),

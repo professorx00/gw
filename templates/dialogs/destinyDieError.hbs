@@ -1,0 +1,47 @@
+<form>
+	<div class="pool-control container">
+        <h1>You Don't Have a Destiny Die, do you want to use Pool Points</h1>
+        <div class="label">
+            <h4>Your Roll was: <span id="roll">{{roll}}</span><span></span> Your current {{pool}} is at </span><span id="pool">{{current}}</span>
+        </div>
+        <div class="point-control">
+            <a class="button" onclick="handleDecrement()">
+                <i class="fas fa-minus"></i>
+            </a>
+            <input id="poolPointsa" name="poolPointsa" type="number" data-dtype="Number" value="0">
+            <a class="button"  onclick="handleIncrement()">
+                <i class="fas fa-plus"></i>
+            </a>
+        </div>
+    </div>
+</form>
+
+<script>
+    bbField = document.getElementById("poolPointsa");
+    poolPoints = parseInt(document.getElementById("pool").innerText);
+    roll = parseInt(document.getElementById("roll").innerText);
+    var count = parseInt(bbField.value);
+    var total = roll+count
+
+    function handleIncrement() {
+        if(total < 12 && count < poolPoints){
+            count++
+        }
+        if(count < 0){
+            count = 0
+        }
+        bbField.value = count;
+        console.log(bbField)
+        total = roll + count;
+    };
+
+    function handleDecrement() {
+        console.log("decrement", count)
+        count--;
+        if(count < 0){
+            count = 0
+        }
+        bbField.value = count;
+        total = roll + count;
+    };
+</script>

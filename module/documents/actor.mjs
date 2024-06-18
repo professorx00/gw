@@ -337,7 +337,6 @@ export class GWActor extends Actor {
       let CritDie = html.find('[name="critCheck"]')[0].checked;
       let rollResults = "";
       let actionText = "Damage";
-      console.log("weapon Formula", weaponFormula);
       if (powerDie && !CritDie) {
         weaponFormula = weaponFormula + "+1" + actorData.system.powerDie;
       }
@@ -353,8 +352,9 @@ export class GWActor extends Actor {
       if (!powerDie && CritDie) {
         weaponFormula = weaponFormula + "+" + weaponFormula;
       }
-
-      weaponFormula = weaponFormula + "+" + actorData.system.damageBonus;
+      if (actorData.type == "character") {
+        weaponFormula = weaponFormula + "+" + actorData.system.damageBonus;
+      }
       const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
       let rollHTML = await diceRoll.render();
       const rollData = {
@@ -427,6 +427,137 @@ export class GWActor extends Actor {
     this.update({ "system.DDie": total - 1 });
   }
 
+  async useDestinyDie(html, rollInfo, previousRollData, previousDiceRoll) {
+    let DDie = this.system.DDie;
+    //If you have DDie
+    if (DDie > 0) {
+      this.update({ "system.DDie": DDie - 1 });
+      let crit = rollInfo.crit;
+      let rollText = "1d12";
+      let rollResults = "";
+      const diceRoll = await new Roll(rollText).evaluate({ async: true });
+      const previousRollData = {
+        rollType: rollInfo.title,
+        rollHTML: await diceRoll.render(),
+        rollResults: rollResults,
+        roll: diceRoll._total,
+        rollText: rollText,
+        ...rollInfo,
+      };
+      if (diceRoll._total >= crit) {
+        previousRollData.rollHTML =
+          previousRollData.rollHTML +
+          `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`;
+
+        this.sendRolltoChat(html, previousRollData, diceRoll, "normalroll.hbs");
+      } else if (diceRoll._total == 1) {
+        previousRollData.rollHTML =
+          previousRollData.rollHTML +
+          `<div class="critical"><h1>CRITICAL FAILURE</h1></div>`;
+
+        this.sendRolltoChat(html, previousRollData, diceRoll, "normalroll.hbs");
+      } else {
+        const usePPContent = await renderTemplate(
+          "systems/gw/templates/dialogs/ppoints.hbs",
+          previousRollData
+        );
+
+        const ppdlg = new Dialog({
+          title: "Do you want to use Power Points?",
+          content: usePPContent,
+          buttons: {
+            roll: {
+              label: "Confirm",
+              callback: (html) => {
+                this.usePoolPoints(html, previousRollData, diceRoll);
+              },
+            },
+            useDestiny: {
+              icon: "",
+              label: "Use Destiny Die",
+              callback: (html) => {
+                this.useDestinyDie(html, rollInfo, previousRollData, diceRoll);
+              },
+            },
+            cancel: {
+              icon: "<i class='fas fa-times'></i>",
+              label: "cancel",
+              callback: (html) => {
+                if (previousRollData.success) {
+                  previousRollData.rollHTML =
+                    previousRollData.rollHTML +
+                    `<div class="dicesuccess"><h1>SUCCESS</h1></div>`;
+                }
+                if (!previousRollData.success) {
+                  previousRollData.rollHTML =
+                    previousRollData.rollHTML +
+                    `<div class="dicefailure"><h1>FAILURE</h1></div>`;
+                }
+                this.sendRolltoChat(
+                  html,
+                  previousRollData,
+                  diceRoll,
+                  "normalroll.hbs"
+                );
+              },
+            },
+          },
+        });
+        ppdlg.render(true);
+      }
+    } else {
+      //If you don't
+      const destinyDie = await renderTemplate(
+        "systems/gw/templates/dialogs/destinyDieError.hbs",
+        previousRollData
+      );
+
+      const dialogDDie = new Dialog({
+        title: "Do you want to use Power Points?",
+        content: destinyDie,
+        buttons: {
+          roll: {
+            label: "Yes",
+            callback: (html) => {
+              this.usePoolPoints(html, previousRollData, previousDiceRoll);
+            },
+          },
+          cancel: {
+            icon: "<i class='fas fa-times'></i>",
+            label: "No",
+            callback: (html) => {
+              if (previousRollData.success) {
+                previousRollData.rollHTML =
+                  previousRollData.rollHTML +
+                  `<div class="dicesuccess"><h1>SUCCESS</h1></div>`;
+              }
+              if (!previousRollData.success) {
+                previousRollData.rollHTML =
+                  previousRollData.rollHTML +
+                  `<div class="dicefailure"><h1>FAILURE</h1></div>`;
+              }
+              this.sendRolltoChat(
+                html,
+                previousRollData,
+                previousDiceRoll,
+                "normalroll.hbs"
+              );
+            },
+          },
+        },
+      });
+
+      dialogDDie.render(true);
+
+      // this.sendRolltoChat(
+      //   html,
+      //   previousRollData,
+      //   previousDiceRoll,
+      //   "normalroll.hbs"
+      // );
+    }
+  }
+
   async rollAbility(event) {
     console.log(event);
   }
@@ -436,7 +567,7 @@ export class GWActor extends Actor {
       `systems/gw/templates/chatcards/${templateName}`,
       rollData
     );
-    
+
     const chatOptions = {
       type: CONST.CHAT_MESSAGE_TYPES.ROLL,
       roll: diceRoll,
@@ -445,6 +576,8 @@ export class GWActor extends Actor {
     };
     ChatMessage.create(chatOptions);
   }
+
+  async displayDestinyMessage(html, rollData, diceRoll) {}
 
   async weaponCallback(html, rollInfo) {
     let boon = html.find('[name="boonbane"]')[0].value.trim();
@@ -471,7 +604,9 @@ export class GWActor extends Actor {
       ...rollInfo,
     };
     if (diceRoll._total >= crit) {
-      rollData.rollHTML = rollData.rollHTML + `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`
+      rollData.rollHTML =
+        rollData.rollHTML +
+        `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`;
 
       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
     } else if (diceRoll._total == 1) {
@@ -487,6 +622,43 @@ export class GWActor extends Actor {
       );
 
       const ppdlg = new Dialog({
+        title: "Do you want to use Power Points?",
+        content: usePPContent,
+        buttons: {
+          roll: {
+            label: "Confirm",
+            callback: (html) => {
+              this.usePoolPoints(html, rollData, diceRoll);
+            },
+          },
+          useDestiny: {
+            icon: "",
+            label: "Use Destiny Die",
+            callback: (html) => {
+              this.useDestinyDie(html, rollInfo, rollData, diceRoll);
+            },
+          },
+          cancel: {
+            icon: "<i class='fas fa-times'></i>",
+            label: "cancel",
+            callback: (html) => {
+              if (rollData.success) {
+                rollData.rollHTML =
+                  rollData.rollHTML +
+                  `<div class="dicesuccess"><h1>SUCCESS</h1></div>`;
+              }
+              if (!rollData.success) {
+                rollData.rollHTML =
+                  rollData.rollHTML +
+                  `<div class="dicefailure"><h1>FAILURE</h1></div>`;
+              }
+              this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
+            },
+          },
+        },
+      });
+
+      const ppdlgNPC = new Dialog({
         title: "Do you want to use Power Points?",
         content: usePPContent,
         buttons: {
@@ -515,14 +687,20 @@ export class GWActor extends Actor {
           },
         },
       });
-      ppdlg.render(true);
-    }
 
-    
+      if (rollData.rollType !== "NPC") {
+        ppdlg.render(true);
+      } else {
+        ppdlgNPC.render(true);
+      }
+    }
   }
 
   async usePoolPoints(html, rollData, diceRoll) {
-    let poolPoints = html.find('[name="poolPoints"]')[0].value.trim();
+    let poolPoints = html.find('[name="poolPoints"]')[0]?.value?.trim();
+    if (!poolPoints) {
+      poolPoints = html.find('[name="poolPointsa"]')[0].value.trim();
+    }
     let change = this.system[rollData.pool].current - parseInt(poolPoints);
     let label = `system.${rollData.pool}.current`;
     this.update({ [label]: change });
@@ -545,27 +723,21 @@ export class GWActor extends Actor {
       rollData.rollText + "+" + poolPoints
     );
 
-     if (newTotal >= rollData.crit) {
-       rollData.rollHTML =
-         rollData.rollHTML +
-         `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`;
-
-       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
-     } else if (newTotal == 1) {
-       rollData.rollHTML =
-         rollData.rollHTML +
-         `<div class="critical"><h1>CRITICAL FAILURE</h1></div>`;
-
-       this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
-     } else if (newTotal >= rollData.target) {
-       rollData.rollHTML =
-         rollData.rollHTML +
-         `<div class="dicesuccess"><h1>Success</h1></div>`;
-     } else {
-       rollData.rollHTML =
-         rollData.rollHTML + `<div class="dicefailure"><h1>Failure</h1></div>`;
-     }
-
+    if (newTotal >= rollData.crit) {
+      rollData.rollHTML =
+        rollData.rollHTML +
+        `<div class="critical"><h1>CRITICAL SUCCESS</h1></div>`;
+    } else if (newTotal == 1) {
+      rollData.rollHTML =
+        rollData.rollHTML +
+        `<div class="critical"><h1>CRITICAL FAILURE</h1></div>`;
+    } else if (newTotal >= rollData.target) {
+      rollData.rollHTML =
+        rollData.rollHTML + `<div class="dicesuccess"><h1>Success</h1></div>`;
+    } else {
+      rollData.rollHTML =
+        rollData.rollHTML + `<div class="dicefailure"><h1>Failure</h1></div>`;
+    }
     this.sendRolltoChat(html, rollData, diceRoll, "normalroll.hbs");
   }
 

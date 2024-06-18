@@ -1,6 +1,6 @@
 export class TargetContainer extends Application {
   static get defaultOptions() {
-    return mergeObject(super.defaultOptions, {
+    return foundry.utils.mergeObject(super.defaultOptions, {
       template: "systems/gw/templates/app/timer-target-container.html",
       classes: ["target-container"],
       title: "GW APP", // Needed otherwise it can break
@@ -30,7 +30,7 @@ export class TargetContainer extends Application {
     console.log("Adding Target");
     this.targets = this.targets.concat([
       mergeObject(
-        { value: 10, isEasy: false, isHard: false, name: "" },
+        { value: 8, isEasy: false, isHard: false, name: "" },
         options
       ),
     ]);
