@@ -42,23 +42,23 @@
       <div class="resource">
         <label class="resource-label">Range</label>
          <select name="rangeSelect" class="rangeSelect">
-          {{#select system.range}}
+          {{#selectOptions system.range}}
             <option value="close">Close</option>
             <option value="near">Near</option>
             <option value="far">Far</option>
             <option value="extreme">Extreme</option>
-          {{/select}}  
+          {{/selectOptions}}  
         </select>
       </div>
      <div class="resource">
         <label class="resource-label">Type</label>
          <select name="lmhType" class="lmhType">
-          {{#select system.lmh}}
+          {{#selectOptions system.lmh}}
             <option value="light">Light</option>
             <option value="medium">Medium</option>
             <option value="heavy">Heavy</option>
             <option value="ultimate">Ultimate</option>
-          {{/select}}  
+          {{/selectOptions}}  
         </select>
       </div>
       <div class="resource">

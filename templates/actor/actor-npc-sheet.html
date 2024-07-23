@@ -17,13 +17,13 @@
             <label for="system.powerDie" class="resource-label">Power Die</label>
             {{system.powerDie}}
              <select name="powerDie" class="powerDie">
-          {{#select system.powerDie}}
+          {{#selectOptions system.powerDie}}
             <option value="d4">d4</option>
             <option value="d6">d6</option>
             <option value="d8">d8</option>
             <option value="d10">d10</option>
             <option value="d12">d12</option>
-          {{/select}}  
+          {{/selectOptions}}  
         </select>
         </div>
         <div class="movementContainer">

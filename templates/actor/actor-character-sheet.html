@@ -70,7 +70,16 @@
           <input type="text" name="system.toHit" value="{{system.toHit}}"  />
         </div>
       </div>
-      
+      <div class="health">
+        <div class="resource grid-span-4 flex-group-center boxed">
+          <label for="system.health.current" class="pool-point-label-mental ">Health</label>
+          <div class="resource-content flexrow flex-center flex-between">
+          <input type="text" name="system.health.current" value="{{system.health.current}}" data-dtype="Number"/>
+          <span> / </span>
+          <input type="text" name="system.health.base" value="{{system.health.base}}" data-dtype="Number"/>
+          <button class="resetPool" data-pool="health"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+      </div>
       <div class="statPoolPoints">
         <div class="resource grid-span-4 flex-group-center boxed">
           <label for="system.arcane.current" class="pool-point-label-arcane ">Arcane</label>

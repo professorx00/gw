@@ -143,10 +143,7 @@ export class GWActorSheet extends ActorSheet {
         }
       }
       if (i.type === "flaws") {
-        if (flaws.length <= 0) {
-          console.log("we have a flaw we have a flaw see no one cares");
-          flaws.push(i);
-        }
+        flaws.push(i);
       }
       if (i.type === "species") {
         if (species.length <= 0) {
@@ -208,6 +205,7 @@ export class GWActorSheet extends ActorSheet {
     html.find(".item-create").click(this._onItemCreate.bind(this));
     // Delete Inventory Item
     html.find(".item-delete").click((ev) => {
+      console.log("delete Item")
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("itemId"));
       item.delete();

@@ -39,7 +39,11 @@
       },
       "species": "",
       "class": "",
-      "banes": 0
+      "banes": 0,
+      "health": {
+        "base": 0,
+        "current": 0
+      }
     },
     "npc": {
       "templates": ["base"],
