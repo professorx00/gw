@@ -71,13 +71,21 @@
         </div>
       </div>
       <div class="health">
-        <div class="resource grid-span-4 flex-group-center boxed">
+        <div class="healthPoints">
           <label for="system.health.current" class="pool-point-label-mental ">Health</label>
-          <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.health.current" value="{{system.health.current}}" data-dtype="Number"/>
-          <span> / </span>
-          <input type="text" name="system.health.base" value="{{system.health.base}}" data-dtype="Number"/>
+          <div class="healthPointsContainer">
+            <input type="text" name="system.health.current" value="{{system.health.current}}" data-dtype="Number"/>
+            <span> / </span>
+            <input type="text" name="system.health.base" value="{{system.health.base}}" data-dtype="Number"/>
+          </div>
           <button class="resetPool" data-pool="health"><i class="fa-solid fa-repeat"></i></button>
+        </div>
+        <div class="actionPoints">
+          <label for="system.actionPoints" class="pool-point-label-mental ">Action Points</label>
+          <div class="actionPointsInput">
+            <input type="text" name="system.actionPoints" value="{{system.actionPoints}}" data-dtype="Number"/>
+          </div>
+          <button class="resetActionPoints"><i class="fa-solid fa-repeat"></i></button>
         </div>
       </div>
       <div class="statPoolPoints">

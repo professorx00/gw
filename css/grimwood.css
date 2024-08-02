@@ -9,6 +9,21 @@
   text-shadow: 0 0 10px red;
   cursor: pointer;
 }
+.health{
+  display: flex;
+  flex-direction: row;
+}
+.actionPointsInput{
+  width: 40px;
+  margin-right: 1em;
+  margin-left: 1em;
+}
+.healthPointsContainer{
+  margin-right: 1em;
+  margin-left: 1em;
+  display: flex;
+  flex-direction: row;
+}
 
 .pool-control {
   display: -webkit-box;
@@ -417,6 +432,21 @@
   align-items: center;
   text-align: center;
 }
+.gw .sheet-header .resetActionPoints {
+  max-width: 30px;
+  max-height: 28px;
+  margin-left: 4px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  text-align: center;
+}
 .gw .sheet-header .physical-roll {
   font-size: large;
   color: darkblue;
@@ -451,6 +481,7 @@
 .gw .sheet-header .arcane-roll:hover {
   color: grey;
 }
+
 .gw .sheet-header .mental-roll {
   font-size: large;
   color: darkblue;
@@ -713,6 +744,28 @@
   justify-content: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
+  align-items: center;
+}
+
+.healthPoints {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.actionPoints {
+  width: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
   align-items: center;
 }
 

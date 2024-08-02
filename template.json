@@ -12,6 +12,7 @@
         "shapeshift": false,
         "numAttacks": 1,
         "init": "d4",
+        "actionPoints": 3,
         "arcane": {
           "base": 2,
           "current": 2,

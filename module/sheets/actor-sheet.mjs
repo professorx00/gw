@@ -8,7 +8,6 @@ import { TargetContainer } from "../app/targetnumber.mjs";
 export class GWActorSheet extends ActorSheet {
   /** @override */
   static get defaultOptions() {
-    console.log(foundry.utils);
     return foundry.utils.mergeObject(super.defaultOptions, {
       classes: ["gw", "sheet", "actor"],
       template: "systems/gw/templates/actor/actor-sheet.html",
@@ -205,7 +204,7 @@ export class GWActorSheet extends ActorSheet {
     html.find(".item-create").click(this._onItemCreate.bind(this));
     // Delete Inventory Item
     html.find(".item-delete").click((ev) => {
-      console.log("delete Item")
+      console.log("delete Item");
       const li = $(ev.currentTarget).parents(".item");
       const item = this.actor.items.get(li.data("itemId"));
       item.delete();
@@ -229,32 +228,79 @@ export class GWActorSheet extends ActorSheet {
       .click((ev) => onManageActiveEffect(ev, this.actor));
 
     // Rollable abilities.
-    html.find(".rollable").click(this._onRoll.bind(this));
+    html.find(".rollable").click((ev) => {
+      this._onRoll.bind(ev);
+    });
 
-    html.find(".rollCheck").click(this._onRoll.bind(this));
-    html.find(".rollDamage").click(this._onRollDamage.bind(this));
-    html.find(".rollWeaponAttack").click(this._rollWeaponAttack.bind(this));
+    html.find(".rollCheck").click((ev) => {
+      this._onRoll.bind(ev);
+    });
+    html.find(".rollDamage").click((ev) => {
+      this._onRollDamage.bind(ev);
+    });
+    html.find(".rollWeaponAttack").click((ev) => {
+      this._rollWeaponAttack.bind(ev);
+    });
 
-    html.find(".powerDie").click(this._onPowerDieSelect.bind(this));
-    html.find(".initDie").click(this._onInitSelect.bind(this));
-    html.find(".rollPowerDie").click(this._onRollPowerDie.bind(this));
-    html.find(".rollNPC").click(this._onRollNPC.bind(this));
-    html.find(".destinyDieMinus").click(this._removeDestinyDie.bind(this));
-    html.find(".destinyDiePlus").click(this._addDestinyDie.bind(this));
-    html.find(".destinyDieSave").click(this._saveDestinyDie.bind(this));
-    html.find(".destinyDieReset").click(this._resetDestinyDie.bind(this));
-    html.find(".destinyDieroll").click(this._rollDestinyDie.bind(this));
+    html.find(".powerDie").click((ev) => {
+      this._onPowerDieSelect.bind(ev);
+    });
+    html.find(".initDie").click((ev) => {
+      this._onInitSelect.bind(ev);
+    });
+    html.find(".rollPowerDie").click((ev) => {
+      this._onRollPowerDie.bind(ev);
+    });
+    html.find(".rollNPC").click((ev) => {
+      this._onRollNPC.bind(ev);
+    });
+    html.find(".destinyDieMinus").click((ev) => {
+      this._removeDestinyDie.bind(ev);
+    });
+    html.find(".destinyDiePlus").click((ev) => {
+      this._addDestinyDie.bind(ev);
+    });
+    html.find(".destinyDieSave").click((ev) => {
+      this._saveDestinyDie.bind(ev);
+    });
+    html.find(".destinyDieReset").click((ev) => {
+      this._resetDestinyDie.bind(ev);
+    });
+    html.find(".destinyDieroll").click((ev) => {
+      this._rollDestinyDie.bind(ev);
+    });
 
     html.find(".resetPool").click(this._resetPool.bind(this));
-    html.find(".shapeShift").click(this._handleShapeShift.bind(this));
-    html.find(".clearClass").click(this._handleClearClass.bind(this));
-    html.find(".clearSpecies").click(this._handleClearSpecies.bind(this));
-    html.find(".hasBoon").click(this._changeBoon.bind(this));
-    html.find(".equipped").click(this._changeEquip.bind(this));
-    html.find(".rollInit").click(this._rollInit.bind(this));
-    html.find(".abilityRoll").click(this._rollAbility.bind(this));
-    html.find(".reload").click(this._reload.bind(this));
-    html.find(".clickDesc").click(this._handleDescription.bind(this));
+    html.find(".resetActionPoints").click((ev) => {
+      this._resetActionPoints(ev);
+    });
+    html.find(".shapeShift").click((ev) => {
+      this._handleShapeShift.bind(ev);
+    });
+    html.find(".clearClass").click((ev) => {
+      this._handleClearClass.bind(ev);
+    });
+    html.find(".clearSpecies").click((ev) => {
+      this._handleClearSpecies.bind(ev);
+    });
+    html.find(".hasBoon").click((ev) => {
+      this._changeBoon.bind(ev);
+    });
+    html.find(".equipped").click((ev) => {
+      this._changeEquip.bind(ev);
+    });
+    html.find(".rollInit").click((ev) => {
+      this._rollInit.bind(ev);
+    });
+    html.find(".abilityRoll").click((ev) => {
+      this._rollAbility.bind(ev);
+    });
+    html.find(".reload").click((ev) => {
+      this._reload.bind(ev);
+    });
+    html.find(".clickDesc").click((ev) => {
+      this._handleDescription.bind(ev);
+    });
 
     // Drag events for macros.
     if (this.actor.isOwner) {
@@ -373,13 +419,19 @@ export class GWActorSheet extends ActorSheet {
   }
 
   async _resetPool(event) {
+    console.log("reset pool");
     const element = event.currentTarget;
     const dataset = element.dataset;
     let pool = dataset.pool;
+    console.log(pool);
     let systemPoolCurrent = `system.${pool}.current`;
     await this.actor.update({
       [systemPoolCurrent]: this.actor.system[pool].base,
     });
+  }
+
+  async _resetActionPoints(event) {
+    await this.actor.update({ "system.actionPoints": 3 });
   }
 
   async _handleShapeShift(event) {
@@ -407,7 +459,6 @@ export class GWActorSheet extends ActorSheet {
     const id = dataset.itemId;
 
     let item = this.actor.items.get(id);
-    console.log(item);
     await item.update({ "system.hasBoon": !item.system.hasBoon });
   }
 
