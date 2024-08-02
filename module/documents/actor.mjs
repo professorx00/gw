@@ -132,9 +132,9 @@ export class GWActor extends Actor {
   async rolling(dataset) {
     let globalTN = game.settings.get("gw", "targets")[0].value;
     let crit = 12;
-    if (dataset.hasOwnProperty("crit")) {
-      crit = dataset.crit;
-    }
+    // if (dataset.hasOwnProperty("crit")) {
+    //   crit = dataset.crit;
+    // }
     let targetTN = 0;
     let actorTargets = game.users.current.targets;
     actorTargets.forEach((target) => {

@@ -229,45 +229,46 @@ export class GWActorSheet extends ActorSheet {
 
     // Rollable abilities.
     html.find(".rollable").click((ev) => {
-      this._onRoll.bind(ev);
+      this._onRoll(ev);
     });
 
     html.find(".rollCheck").click((ev) => {
-      this._onRoll.bind(ev);
+      this._onRoll(ev);
     });
     html.find(".rollDamage").click((ev) => {
-      this._onRollDamage.bind(ev);
+      this._onRollDamage(ev);
     });
     html.find(".rollWeaponAttack").click((ev) => {
-      this._rollWeaponAttack.bind(ev);
+      this._rollWeaponAttack(ev);
     });
 
     html.find(".powerDie").click((ev) => {
-      this._onPowerDieSelect.bind(ev);
+      this._onPowerDieSelect(ev);
     });
     html.find(".initDie").click((ev) => {
-      this._onInitSelect.bind(ev);
+      this._onInitSelect(ev);
     });
     html.find(".rollPowerDie").click((ev) => {
-      this._onRollPowerDie.bind(ev);
+      this._onRollPowerDie(ev);
     });
     html.find(".rollNPC").click((ev) => {
       this._onRollNPC.bind(ev);
     });
     html.find(".destinyDieMinus").click((ev) => {
-      this._removeDestinyDie.bind(ev);
+      console.log("Remove DDie before");
+      this._removeDestinyDie();
     });
     html.find(".destinyDiePlus").click((ev) => {
-      this._addDestinyDie.bind(ev);
+      this._addDestinyDie();
     });
     html.find(".destinyDieSave").click((ev) => {
-      this._saveDestinyDie.bind(ev);
+      this._saveDestinyDie();
     });
     html.find(".destinyDieReset").click((ev) => {
-      this._resetDestinyDie.bind(ev);
+      this._resetDestinyDie();
     });
     html.find(".destinyDieroll").click((ev) => {
-      this._rollDestinyDie.bind(ev);
+      this._rollDestinyDie();
     });
 
     html.find(".resetPool").click(this._resetPool.bind(this));
@@ -402,11 +403,13 @@ export class GWActorSheet extends ActorSheet {
     await this.actor.doRoll(dataset, this.actor);
   }
   async _removeDestinyDie() {
+    console.log("remove DDie");
     const DDieCurrent = this.actor.system.DDie;
     const newDDie = DDieCurrent - 1 > 0 ? DDieCurrent - 1 : 0;
     await this.actor.update({ "system.DDie": newDDie });
   }
   async _addDestinyDie() {
+    console.log("Add DDie");
     const DDieCurrent = this.actor.system.DDie;
     const newDDie = DDieCurrent + 1 > 0 ? DDieCurrent + 1 : 0;
     await this.actor.update({ "system.DDie": newDDie });
