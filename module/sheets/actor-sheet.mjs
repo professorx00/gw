@@ -243,12 +243,14 @@ export class GWActorSheet extends ActorSheet {
     });
 
     html.find(".powerDie").click((ev) => {
+
       this._onPowerDieSelect(ev);
     });
     html.find(".initDie").click((ev) => {
       this._onInitSelect(ev);
     });
     html.find(".rollPowerDie").click((ev) => {
+      console.log("Roll Power die");
       this._onRollPowerDie(ev);
     });
     html.find(".rollNPC").click((ev) => {
@@ -276,31 +278,31 @@ export class GWActorSheet extends ActorSheet {
       this._resetActionPoints(ev);
     });
     html.find(".shapeShift").click((ev) => {
-      this._handleShapeShift.bind(ev);
+      this._handleShapeShift(ev);
     });
     html.find(".clearClass").click((ev) => {
-      this._handleClearClass.bind(ev);
+      this._handleClearClass(ev);
     });
     html.find(".clearSpecies").click((ev) => {
-      this._handleClearSpecies.bind(ev);
+      this._handleClearSpecies(ev);
     });
     html.find(".hasBoon").click((ev) => {
-      this._changeBoon.bind(ev);
+      this._changeBoon(ev);
     });
     html.find(".equipped").click((ev) => {
-      this._changeEquip.bind(ev);
+      this._changeEquip(ev);
     });
     html.find(".rollInit").click((ev) => {
-      this._rollInit.bind(ev);
+      this._rollInit(ev);
     });
     html.find(".abilityRoll").click((ev) => {
-      this._rollAbility.bind(ev);
+      this._rollAbility(ev);
     });
     html.find(".reload").click((ev) => {
-      this._reload.bind(ev);
+      this._reload(ev);
     });
     html.find(".clickDesc").click((ev) => {
-      this._handleDescription.bind(ev);
+      this._handleDescription(ev);
     });
 
     // Drag events for macros.
