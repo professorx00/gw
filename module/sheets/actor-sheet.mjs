@@ -238,12 +238,14 @@ export class GWActorSheet extends ActorSheet {
     html.find(".rollDamage").click((ev) => {
       this._onRollDamage(ev);
     });
+    html.find(".rollMagic").click((ev) => {
+      this._onMagicDamage(ev);
+    });
     html.find(".rollWeaponAttack").click((ev) => {
       this._rollWeaponAttack(ev);
     });
 
     html.find(".powerDie").click((ev) => {
-
       this._onPowerDieSelect(ev);
     });
     html.find(".initDie").click((ev) => {
@@ -305,6 +307,19 @@ export class GWActorSheet extends ActorSheet {
       this._handleDescription(ev);
     });
 
+    html.find(".upHealth").click((ev) => {
+      this._handleHealth(ev);
+    });
+
+    html.find(".upActionPoints").click((ev) => {
+      this._handleActionPoints(ev);
+    });
+
+    html.find(".upPoolPoints").click((ev) => {
+      console.log("Pool up button hit");
+      this._handlePoolPoints(ev);
+    });
+
     // Drag events for macros.
     if (this.actor.isOwner) {
       let handler = (ev) => this._onDragStart(ev);
@@ -347,7 +362,6 @@ export class GWActorSheet extends ActorSheet {
     event.preventDefault();
     const element = event.currentTarget;
     const dataset = element.dataset;
-    console.log(dataset);
     await this.actor.doRoll(dataset);
   }
 
@@ -356,6 +370,13 @@ export class GWActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
     await this.actor.rollDamage(dataset, this.actor);
+  }
+
+  async _onMagicDamage(event) {
+    event.preventDefault();
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    await this.actor.rollMagic(dataset, this.actor);
   }
 
   async _rollWeaponAttack(event) {
@@ -467,6 +488,15 @@ export class GWActorSheet extends ActorSheet {
     await item.update({ "system.hasBoon": !item.system.hasBoon });
   }
 
+  async _changePassive(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const id = dataset.itemId;
+
+    let item = this.actor.items.get(id);
+    await item.update({ "system.passive": !item.system.passive });
+  }
+
   async _reload(event) {
     const element = event.currentTarget;
     const dataset = element.dataset;
@@ -530,6 +560,38 @@ export class GWActorSheet extends ActorSheet {
     const element = event.currentTarget;
     const dataset = element.dataset;
     await this.actor.clearSpecies(dataset);
+  }
+
+  async _handleHealth(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const change = parseInt(dataset.health);
+    await this.actor.update({
+      "system.health.current": this.actor.system.health.current + change,
+    });
+  }
+
+  async _handleActionPoints(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const change = parseInt(dataset.action);
+    await this.actor.update({
+      "system.actionPoints": this.actor.system.actionPoints + change,
+    });
+  }
+
+  async _handlePoolPoints(event) {
+    const element = event.currentTarget;
+    const dataset = element.dataset;
+    const change = parseInt(dataset.poolpoint);
+    const pool = dataset.pool;
+    let poolString = "system." + pool + ".current";
+    let poolChange = this.actor.system[pool].current + change;
+    if (poolChange <= this.actor.system[pool].base) {
+      await this.actor.update({ [poolString]: poolChange });
+    } else {
+      await this.actor.update({ [poolString]: this.actor.system[pool].base });
+    }
   }
 }
 

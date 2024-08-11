@@ -72,6 +72,7 @@ export class BoilerplateItemSheet extends ItemSheet {
       .click((ev) => onManageActiveEffect(ev, this.document));
     // Roll handlers, click handlers, etc. would go here.
     html.find(".hasBoon").click(this._hasBoon.bind(this));
+    html.find(".changePassive").click(this._changePassive.bind(this));
     html.find(".isRanged").click(this._isRanged.bind(this));
     html.find(".poolType").click(this._poolTypeSelect.bind(this));
     html.find(".rangeSelect").click(this._rangeSelect.bind(this));
@@ -82,6 +83,10 @@ export class BoilerplateItemSheet extends ItemSheet {
 
   async _hasBoon() {
     await this.object.update({ "system.hasBoon": !this.object.system.hasBoon });
+  }
+
+  async _changePassive() {
+    await this.object.update({ "system.passive": !this.object.system.passive });
   }
 
   async _isRanged() {

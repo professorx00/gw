@@ -110,6 +110,7 @@ export class GWActor extends Actor {
         this.rolling(dataset);
         break;
       case "feat":
+        this.rollAbility(dataset);
         break;
       case "attack":
         this.rolling(dataset);
@@ -381,6 +382,87 @@ export class GWActor extends Actor {
     }
   }
 
+  async rollMagic(dataset, actorData) {
+    const dlgContent = await renderTemplate(
+      "systems/gw/templates/dialogs/damageRolls.hbs",
+      dataset
+    );
+    let title = game.i18n.localize("GW.Roll");
+    let weaponFormula = "1" + actorData.system.powerDie;
+
+    const dlg = new Dialog(
+      {
+        title: title,
+        content: dlgContent,
+        buttons: {
+          roll: {
+            icon: "<i class='fas fa-dice-d12'></i>",
+            label: "Roll",
+            callback: (html) => rollCallback(html),
+          },
+          cancel: {
+            icon: "<i class='fas fa-times'></i>",
+            label: "cancel",
+          },
+        },
+        default: "roll",
+      },
+      {
+        id: "roll-dialog",
+      }
+    );
+
+    dlg.render(true);
+
+    async function rollCallback(html) {
+      let powerDie = html.find('[name="powerDieCheck"]')[0].checked;
+      let CritDie = html.find('[name="critCheck"]')[0].checked;
+      let rollResults = "";
+      let actionText = "Damage";
+      if (powerDie && !CritDie) {
+        weaponFormula = weaponFormula + "+1" + actorData.system.powerDie;
+      }
+      if (powerDie && CritDie) {
+        weaponFormula =
+          weaponFormula +
+          "+" +
+          weaponFormula +
+          "+" +
+          "2" +
+          actorData.system.powerDie;
+      }
+      if (!powerDie && CritDie) {
+        weaponFormula = weaponFormula + "+" + weaponFormula;
+      }
+      if (actorData.type == "character") {
+        weaponFormula = weaponFormula + "+" + actorData.system.damageBonus;
+      }
+      const diceRoll = await new Roll(weaponFormula).evaluate({ async: true });
+      let rollHTML = await diceRoll.render();
+      const rollData = {
+        rollType: actionText,
+        rollHTML: rollHTML,
+        rollResults: rollResults,
+      };
+      sendRolltoChat(html, rollData, diceRoll);
+    }
+
+    async function sendRolltoChat(html, rollData, diceRoll) {
+      let cardContent = await renderTemplate(
+        "systems/gw/templates/chatcards/normalroll.hbs",
+        rollData
+      );
+
+      const chatOptions = {
+        type: CONST.CHAT_MESSAGE_TYPES.ROLL,
+        roll: diceRoll,
+        content: cardContent,
+        speaker: ChatMessage.getSpeaker({ actor: this }),
+      };
+      ChatMessage.create(chatOptions);
+    }
+  }
+
   async _updatePowerDie(value) {
     await this.update({ "system.powerDie": value });
   }
@@ -558,8 +640,16 @@ export class GWActor extends Actor {
     }
   }
 
-  async rollAbility(event) {
-    console.log(event);
+  async rollAbility(dataset) {
+    console.log("rolling actions");
+    const actionCost = dataset.actionpoints;
+    const currentPoints = this.system.actionPoints;
+    if (currentPoints - actionCost >= 0) {
+      this.update({ "system.actionPoints": currentPoints - actionCost });
+      alert("You used your ability");
+    } else {
+      alert("Not enough points");
+    }
   }
 
   async sendRolltoChat(html, rollData, diceRoll, templateName) {

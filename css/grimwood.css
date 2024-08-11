@@ -25,6 +25,36 @@
   flex-direction: row;
 }
 
+.upHealth{
+  width: 2em;
+  height: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.upActionPoints{
+  width: 2em;
+  height: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.upPool{
+  width: 2em;
+  height: 1.5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rowHealth{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .pool-control {
   display: -webkit-box;
   display: -ms-flexbox;

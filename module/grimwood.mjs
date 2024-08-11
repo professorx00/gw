@@ -71,6 +71,22 @@ Handlebars.registerHelper("toLowerCase", function (str) {
   return str.toLowerCase();
 });
 
+Handlebars.registerHelper("isNotPassive", function (item) {
+  if (!item) {
+    return true;
+  } else {
+    return false;
+  }
+});
+
+Handlebars.registerHelper("isPassive", function (item) {
+  if (!item) {
+    return false;
+  } else {
+    return true;
+  }
+});
+
 Handlebars.registerHelper("isWere", function (str) {
   if (str && str !== "") {
     return str.includes("were") || str.includes("Were");

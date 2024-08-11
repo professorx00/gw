@@ -74,16 +74,24 @@
         <div class="healthPoints">
           <label for="system.health.current" class="pool-point-label-mental ">Health</label>
           <div class="healthPointsContainer">
-            <input type="text" name="system.health.current" value="{{system.health.current}}" data-dtype="Number"/>
-            <span> / </span>
-            <input type="text" name="system.health.base" value="{{system.health.base}}" data-dtype="Number"/>
+            <div class="rowHealth">
+              <button class="upHealth" data-health="1">+</button>
+              <input type="text" name="system.health.current" value="{{system.health.current}}" data-dtype="Number"/>
+              <button class="upHealth"  data-health="-1">-</button>
+              <span> / </span>
+              <input type="text" name="system.health.base" value="{{system.health.base}}" data-dtype="Number"/>
+            </div>
           </div>
           <button class="resetPool" data-pool="health"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="actionPoints">
           <label for="system.actionPoints" class="pool-point-label-mental ">Action Points</label>
           <div class="actionPointsInput">
-            <input type="text" name="system.actionPoints" value="{{system.actionPoints}}" data-dtype="Number"/>
+             <div class="rowHealth">
+                <button class="upActionPoints" data-action="1">+</button>
+               <input type="text" name="system.actionPoints" value="{{system.actionPoints}}" data-dtype="Number"/>
+                <button class="upActionPoints" data-action="-1">-</button>
+             </div>
           </div>
           <button class="resetActionPoints"><i class="fa-solid fa-repeat"></i></button>
         </div>
@@ -92,9 +100,13 @@
         <div class="resource grid-span-4 flex-group-center boxed">
           <label for="system.arcane.current" class="pool-point-label-arcane ">Arcane</label>
           <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.arcane.current" value="{{system.arcane.current}}" data-dtype="Number"/>
-          <span> / </span>
-          <input type="text" name="system.arcane.base" value="{{system.arcane.base}}" data-dtype="Number"/>
+          <div class="rowHealth">
+            <button class="upPoolPoints"  data-poolpoint="1" data-pool="arcane">+</button>
+            <input type="text" name="system.arcane.current" value="{{system.arcane.current}}" data-dtype="Number"/>
+            <span> / </span>
+            <input type="text" name="system.arcane.base" value="{{system.arcane.base}}" data-dtype="Number"/>
+            <button class="upPoolPoints"  data-poolpoint="-1" data-pool="arcane">-</button>
+          </div>  
           <button class="resetPool" data-pool="arcane"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">
@@ -114,9 +126,13 @@
         <div class="resource grid-span-4 flex-group-center boxed">
           <label for="system.physical.current" class="pool-point-label-physical ">Physical</label>
           <div class="resource-content flexrow flex-center flex-between">
-            <input type="text" name="system.physical.current" value="{{system.physical.current}}" data-dtype="Number"/>
-            <span> / </span>
-            <input type="text" name="system.physical.base" value="{{system.physical.base}}" data-dtype="Number"/>
+            <div class="rowHealth">
+              <button class="upPoolPoints"  data-poolpoint="1" data-pool="physical">+</button>
+              <input type="text" name="system.physical.current" value="{{system.physical.current}}" data-dtype="Number"/>
+              <span> / </span>
+              <input type="text" name="system.physical.base" value="{{system.physical.base}}" data-dtype="Number"/>
+              <button class="upPoolPoints"  data-poolpoint="-1" data-pool="physical">-</button>
+            </div>
             <button class="resetPool" data-pool="physical"><i class="fa-solid fa-repeat"></i></button>
           </div>
           <div class="defense flexrow flex-center flex-between">
@@ -136,9 +152,13 @@
         <div class="resource grid-span-4 flex-group-center  boxed">
           <label for="system.mental.current" class="pool-point-label-mental ">Mental</label>
           <div class="resource-content flexrow flex-center flex-between">
-          <input type="text" name="system.mental.current" value="{{system.mental.current}}" data-dtype="Number"/>
-          <span> / </span>
-          <input type="text" name="system.mental.base" value="{{system.mental.base}}" data-dtype="Number"/>
+          <div class="rowHealth">
+            <button class="upPoolPoints"  data-poolpoint="1" data-pool="mental">+</button>
+            <input type="text" name="system.mental.current" value="{{system.mental.current}}" data-dtype="Number"/>
+            <span> / </span>
+            <input type="text" name="system.mental.base" value="{{system.mental.base}}" data-dtype="Number"/>
+            <button class="upPoolPoints"  data-poolpoint="-1" data-pool="mental">-</button>
+          </div>
           <button class="resetPool" data-pool="mental"><i class="fa-solid fa-repeat"></i></button>
         </div>
         <div class="defense flexrow flex-center flex-between">

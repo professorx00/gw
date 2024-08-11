@@ -97,7 +97,8 @@
         "equipped": false,
         "session": false,
         "scene": false,
-        "crit": 12
+        "crit": 12,
+        "actionPoints": 0
       }
     },
     "item": {
@@ -135,7 +136,13 @@
       "source": "",
       "pool": "",
       "formula": "",
-      "passive": true
+      "passive": true,
+      "poolTypes": {
+        "None": "none",
+        "Arcane": "arcane",
+        "Physical": "physical",
+        "Mental": "mental"
+      }
     },
     "flaws": {
       "templates": ["base"],
